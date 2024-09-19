@@ -1,4 +1,6 @@
-<footer class="main-footer">
+    
+    
+    <footer class="main-footer">
         <!-- To the right -->
         <div class="float-right d-none d-sm-inline">
             Buy anything you want
@@ -14,3 +16,6 @@
             Copyright &copy; 2024-2025 <a href="#" target="0">{{config('app.name')}}</a>.
         </strong>
     </footer>
+
+
+    

@@ -1,0 +1,93 @@
+Here is the list of items in the given `ul` element, organized by their categories:
+
+### Topwear
+1. Oversized T-shirts (New)
+2. Casual Shirts
+3. Polos
+4. All T-Shirts
+5. Solid T-shirts
+6. All Shirts
+7. Classic Fit T-shirts
+8. Oversized Full Sleeve
+9. Dropcut T-shirts
+10. Co-ord Sets
+11. Jackets
+12. Hoodies & Sweatshirts
+
+### Bottomwear
+1. All Bottoms
+2. Pants
+3. Cargos
+4. Jeans
+5. Joggers
+6. Shorts
+7. Boxers & Innerwear
+8. Pajamas
+
+### Bestsellers
+1. Top 20 T-Shirts
+2. Top 20 Shirts
+3. Top 20 Polos
+4. Top 20 Bottoms
+5. Top 20 Sneakers
+
+### Sneakers
+1. Sneakers
+
+### Accessories
+1. Backpacks
+2. Perfumes
+3. Caps
+
+### Collections
+1. New Arrivals
+2. Best Sellers
+3. Restocked (New)
+4. Supima
+5. Superheros
+6. Pet Merch
+
+### Themes
+1. TSS Originals
+2. Solids
+3. Superheroes
+    - All Superheroes
+    - Captain America™
+    - X-Men™
+    - Marvel™
+    - Spider-Man™
+    - Black Panther™
+    - Iron Man™
+    - Captain Marvel™
+    - Punisher™
+    - Doctor Strange
+    - DC Comics™
+    - Batman™
+    - Superman™
+    - Wonder Woman™
+    - The Flash™
+    - Hulk™
+    - Thor™
+    - Joker™
+4. Movies & TV Shows
+    - All Movies & TV Shows
+    - Naruto
+    - Wednesday
+    - Harry Potter™
+    - The GodFather (New)
+    - Jurassic Park (New)
+    - Avatar: The Last Airbender
+    - One Piece (New)
+    - F.R.I.E.N.D.S™
+    - Fighter
+    - Kung Fu Panda
+    - House of the Dragon
+    - Disney™
+    - The Boys (New)
+    - Breaking Bad
+    - Fantastic Beasts
+    - Star Wars
+    - The Office
+    - Brooklyn Nine-Nine
+    - TMNT
+5. Music Artist (New)

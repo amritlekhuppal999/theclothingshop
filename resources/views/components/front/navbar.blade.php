@@ -1,7 +1,7 @@
 
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <!-- LOGO -->
-        <a href="#" class="navbar-brand">
+        <a href="/" class="navbar-brand">
             <!-- src="../../dist/img/AdminLTELogo.png" -->
             <!-- https://www.thesouledstore.com/static/img/newlogosticky.f7f01f0.png -->
             <img 
