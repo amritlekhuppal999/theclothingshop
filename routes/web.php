@@ -35,6 +35,12 @@ Route::get('/product/{product_slug}', function (string $product_slug) {
     return view(FRONT_END.'/product', ['product_slug' => $product_slug]);
 });
 
+Route::get('/account', function () {
+    return view(FRONT_END.'/account');
+});
+Route::get('/wishlist', function () {
+    return view(FRONT_END.'/wishlist');
+});
 Route::get('/cart', function () {
     return view(FRONT_END.'/cart');
 });
