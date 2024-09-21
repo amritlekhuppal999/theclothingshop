@@ -44,5 +44,8 @@ Route::get('/wishlist', function () {
 Route::get('/cart', function () {
     return view(FRONT_END.'/cart');
 });
+Route::get('/checkout', function () {
+    return view(FRONT_END.'/checkout');
+});
 
 

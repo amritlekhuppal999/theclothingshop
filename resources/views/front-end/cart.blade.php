@@ -9,16 +9,19 @@
 
 @section('content')
     
-    <!-- <div class="banner">
-        @include('components.front.carousel')
-    </div> -->
+    <style>
+        .billing-side{
+            width:80%; 
+            margin-left: 44px;
+        }
+    </style>
 
     <div class="content"> 
         <div class="container">
             <!-- <p>Page Content..</p> -->
 
             
-            <div class="row mb-5">
+            <div class="row ">
 
                 <!-- display applied filters here, along with pagination if possible -->
                 
@@ -28,7 +31,7 @@
                 </div>
 
                 <!-- ITEMS -->
-                <div class="col-md-7">
+                <div class="col-md-8">
                     
                     <!-- Item 1 -->
                     <div class="card mb-3" style="">
@@ -44,7 +47,7 @@
                             </div>
                             
                             <!-- Product Details -->
-                            <div class="col-md-9 pt-3">
+                            <div class="col-md-9 p-3">
                                 
                                 <div class="row">
                                     
@@ -79,17 +82,32 @@
 
                                     <!-- Price breakdown -->
                                     <div class="col-md-6 text-right pr-3 text-muted small">
-                                        <div> ₹ 699  <strike>₹ 1299</strike>  </div>
+                                        <div> 
+                                            <span class="text-bold text-dark">₹ 699</span>   <strike>₹ 1299</strike>  
+                                        </div>
                                         <div> MRP incl. of all taxes </div>
-                                        <div> ₹ 600 OFF </div>
+                                        <div class="text-red"> ₹ 600 OFF </div>
                                     </div>
 
                                     
-
                                     <!-- Estimated delivery -->
-                                    <div class="col-md-12 mt-3 small"> 
+                                    <div class="col-md-4 mt-3 small"> 
                                         <span class="text-muted">Estimated Delivery by </span>
                                         <b>25 Sep</b> 
+                                    </div>
+
+                                    <!-- Remove and wishlist BTNS -->
+                                    <div class="col-md-6 offset-md-6 text-right pr-3">
+                                        
+                                        <!-- Remove from cart -->
+                                        <a href="#" class="card-link text-red remove-item">
+                                            Remove
+                                        </a>
+
+                                        <!-- Add to wishlist -->
+                                        <a href="#" class="card-link move-to-wishlist">
+                                            Add to wishlist
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +128,7 @@
                             </div>
                             
                             <!-- Product Details -->
-                            <div class="col-md-9 pt-3">
+                            <div class="col-md-9 p-3">
                                 
                                 <div class="row">
                                     
@@ -144,18 +162,33 @@
                                     </div>
 
                                     <!-- Price breakdown -->
-                                    <div class="col-md-6 text-right pr-3 text-muted small">
-                                        <div> ₹ 699  <strike>₹ 1299</strike>  </div>
+                                    <div class="col-md-6 pr-3 text-right text-muted small">
+                                        <div> 
+                                            <span class="text-bold text-dark">₹ 699</span>   <strike>₹ 1299</strike>  
+                                        </div>
                                         <div> MRP incl. of all taxes </div>
-                                        <div> ₹ 600 OFF </div>
+                                        <div class="text-red"> ₹ 600 OFF </div>
                                     </div>
 
                                     
-
                                     <!-- Estimated delivery -->
-                                    <div class="col-md-12 mt-3 small"> 
+                                    <div class="col-md-4 mt-3 small"> 
                                         <span class="text-muted">Estimated Delivery by </span>
                                         <b>25 Sep</b> 
+                                    </div>
+
+                                    <!-- Remove and wishlist BTNS -->
+                                    <div class="col-md-6 offset-md-6 text-right pr-3">
+                                        
+                                        <!-- Remove from cart -->
+                                        <a href="#" class="card-link text-red remove-item">
+                                            Remove
+                                        </a>
+
+                                        <!-- Add to wishlist -->
+                                        <a href="#" class="card-link move-to-wishlist">
+                                            Add to wishlist
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -164,18 +197,12 @@
 
                 </div>
 
-                <!-- Place Order -->
-                <div class="col-md-4 ml-5">
+                <!-- Billing Side -->
+                <div class="col-md-4 ">
                     
-                    <!-- <ul class="list-group">
-                        <li class="list-group-item">Apply Coupon</li>
-                        <li class="list-group-item">Gift Voucher</li>
-                        <li class="list-group-item">Gift Wrap</li>
-                    </ul> -->
-
                     <!-- Coupons and vouchers -->
-                    <table class="table bg-white" style="width:90%;">
-                        <tbody class="text-muted ">
+                    <table class="table bg-white billing-side">
+                        <tbody class="text-muted small">
                             <tr>
                                 <td> Apply Coupon </td>
                             </tr>
@@ -185,34 +212,33 @@
                             </tr>
 
                             <tr>
-                                <td> GST </td>
-                            </tr>
-
-                            <tr>
                                 <td> Gift Wrap </td>
                             </tr>
                         </tbody>
                     </table>
 
                     <!-- Billing Details -->
-                    <span class="text-muted mt-3" style="display:block;"> Billing Details </span>
+                    <span class="text-muted mt-3 billing-side"> Billing Details </span>
 
                     <!-- Billing Details TABLE -->
-                    <table class="table bg-white" style="width:90%;">
-                        <tbody class="">
+                    <table class="table bg-white billing-side">
+                        <tbody class="text-muted small">
                             <tr>
-                                <td> Cart Total (Excl. of all taxes) </td>
-                                <td class="text-right"> ₹ 6084.46 </td>
+                                <td> 
+                                    Cart Total 
+                                    <!-- (Excl. of all taxes) -->
+                                </td>
+                                <td class="text-right text-bold"> ₹ 6084.46 </td>
                             </tr>
 
                             <tr>
                                 <td> Discount </td>
-                                <td class="text-right"> ₹ 600.00 </td>
+                                <td class="text-right text-green"> - ₹ 600.00 </td>
                             </tr>
 
                             <tr>
                                 <td> GST </td>
-                                <td class="text-right"> ₹ 611.54 </td>
+                                <td class="text-right text-red"> ₹ 611.54 </td>
                             </tr>
 
                             <tr>
@@ -220,15 +246,15 @@
                                 <td class="text-right"> ₹ 0 </td>
                             </tr>
 
-                            <tr class="table-secondary">
+                            <tr class="table-secondary text-bold">
                                 <td> Total Amount </td>
                                 <td class="text-right"> ₹ 6096.00 </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <!-- Place Order BTN -->
-                    <button class="btn btn-primary" style="width: 90%;"> Place Order </button>
+                    <!-- Checkout BTN -->
+                    <button class="btn btn-primary billing-side" id="checkout-btn"> Checkout </button>
                     
                 </div>
             </div>
