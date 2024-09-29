@@ -2,7 +2,7 @@
 @extends('front-end.layouts.pages')    
 
 @section('content-css')
-    <link rel="stylesheet" href="{{ asset('css/front-end/category.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/front-end/orders.css') }}">
 @endsection
 
 
@@ -268,8 +268,8 @@
 
                         <!-- ORDER card footer -->
                         <div class="card-footer">
-                            <button type="button" class="btn btn-sm btn-warning">Track</button>
-                            <button type="button" class="btn btn-sm btn-default">View or Edit Order</button>
+                            <button type="button" class="btn btn-sm btn-warning text-white">Track</button>
+                            <button type="button" class="btn btn-sm btn-default text-secondary">View or Edit Order</button>
                             <button type="button" class="btn btn-sm btn-secondary">Feedback</button>
                         </div>
                     </div>
@@ -361,8 +361,8 @@
 
                         <!-- ORDER card footer -->
                         <div class="card-footer">
-                            <button type="button" class="btn btn-sm btn-warning">Track</button>
-                            <button type="button" class="btn btn-sm btn-default">Return or Replace Items</button>
+                            <button type="button" class="btn btn-sm btn-warning text-white">Track</button>
+                            <button type="button" class="btn btn-sm btn-default text-secondary">Return or Replace Items</button>
                             <button type="button" class="btn btn-sm btn-secondary">Feedback</button>
                         </div>
                     </div>
@@ -454,7 +454,7 @@
 
                         <!-- ORDER card footer -->
                         <div class="card-footer">
-                            <button type="button" class="btn btn-sm btn-warning">Track</button>
+                            <button type="button" class="btn btn-sm btn-warning text-white">Track</button>
                             <button type="button" class="btn btn-sm btn-secondary">Feedback</button>
                         </div>
                     </div>

@@ -20,26 +20,32 @@
             
             <div class="row">
 
-                <!-- display applied filters here, along with pagination if possible -->
+                <!-- <div class="col-md-12 mt-3"></div> -->
 
-                <!-- SORT OPTIONS -->
-                <div class="col-md-6 offset-md-6 text-right mt-3 mb-2"> 
-                    <!-- <h3>SORT OPTIONS</h3> -->
+                <!-- search bar -->
+                <div class="col-md-6 offset-md-3 mt-3">
+                    <input class="form-control" type="search" placeholder="Search orders" id="orders-search-bar" >
+                </div>
+                
+                <!-- Order Duration Filter -->
+                <div class="col-md-3 text-right mt-3">
+
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                            Select Sorting Options
+                            Newest First
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2" style="">
-                            <li><a class="dropdown-item active" href="#">A-Z</a></li>
-                            <li><a class="dropdown-item" href="#">Price- High to Low </a></li>
-                            <li><a class="dropdown-item" href="#">Price- Low to High </a></li>
-                            <li><a class="dropdown-item" href="#"> Newest </a></li>
-                            <li><a class="dropdown-item" href="#"> Oldest </a></li>
-                            <!-- <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Separated link</a></li> -->
+                            <li><a class="dropdown-item active" href="#">Newest First</a></li>
+                            <li><a class="dropdown-item" href="#">Oldest First</a></li>
                         </ul>
                     </div>
                 </div>
+            </div>
+
+            
+            <div class="row">
+
+                <div class="col-md-12 mt-3"></div>
 
                 <!-- PRODUCT & SUB-CATEGORY -->
                 <div class="col-md-12">
@@ -51,13 +57,14 @@
 
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="card bg-dark text-white" style="">
+                                    <div class="card" style="">
                                         <a href="/product/product_slug">
                                             <img src="{{ asset('images/one-piece.webp') }}" class="card-img-top" alt="...">
                                         </a>
                                         
                                         <div class="card-body">
                                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <a href="#" class="btn btn-block btn-danger text-white">Remove</a>
                                         </div>
                                     </div>
                                 </div>
@@ -70,6 +77,7 @@
 
                                         <div class="card-body">
                                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <a href="#" class="btn btn-block btn-danger text-white">Remove</a>
                                         </div>
                                     </div>
                                 </div>
@@ -82,6 +90,7 @@
 
                                         <div class="card-body">
                                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <a href="#" class="btn btn-block btn-danger text-white">Remove</a>
                                         </div>
                                     </div>
                                 </div>
@@ -94,6 +103,7 @@
                                         
                                         <div class="card-body">
                                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <a href="#" class="btn btn-block btn-danger text-white">Remove</a>
                                         </div>
                                     </div>
                                 </div>
