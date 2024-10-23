@@ -6,7 +6,6 @@
 @endsection
 
 
-
 @section('content')
     
     <div class="banner">

@@ -10,6 +10,13 @@
     <body class="hold-transition layout-top-nav">
         <!-- <h1>Welcome to the {{config('app.name')}}</h1> -->
 
+        {{-- 
+        @php 
+            var_dump(session()->all());
+        @endphp
+        --}}
+        
+
         <div class="wrapper">
             <!-- Navbar -->
             @include('components.front.navbar')
