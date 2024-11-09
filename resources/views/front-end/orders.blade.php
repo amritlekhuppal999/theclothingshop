@@ -6,6 +6,115 @@
 @endsection
 
 
+@php
+    $order_data_list = array(
+        [
+            "order_id" => "ORD123456789",
+            "order_date"    => "27th Sept 2024",
+            "order_total"   => "1585.00",
+            "shipping_address"  =>  "Shipping Address",
+
+            "download_invoice" => "",
+            "status" => "Undelivered",
+            "expected_delivery" =>  "30th Sept 2024",
+            "delivered_on"  =>  "",
+            
+            "order_items" => array(
+                [
+                    "product_id"    =>  "1",
+                    "product_slug"  =>  "product_slug",
+                    "product_image"  =>  "/images/one-piece.webp",
+                    "product_name"  =>  "Party Tees",
+                    "category"  =>  "Oversized",
+                    "size"  =>  "L",
+                    "color" =>  "Brown",
+                    "quantity"  =>  "5",
+                    "status"    => "Undelivered",
+                    "review_link"   =>  ""
+                ],
+                [
+                    "product_id"    =>  "2",
+                    "product_slug"  =>  "product_slug",
+                    "product_image"  =>  "/images/op-hoodie.webp",
+                    "product_name"  =>  "HULK TEEs",
+                    "category"  =>  "Sleeveless",
+                    "size"  =>  "L",
+                    "color" =>  "Green",
+                    "quantity"  =>  "1",
+                    "status"    => "Undelivered",
+                    "review_link"   =>  ""
+                ],
+                [
+                    "product_id"    =>  "3",
+                    "product_slug"  =>  "product_slug",
+                    "product_image"  =>  "/images/rick-n-m-tees.webp",
+                    "product_name"  =>  "Rick N Morty",
+                    "category"  =>  "Te-Shirts",
+                    "size"  =>  "XL",
+                    "color" =>  "Black",
+                    "quantity"  =>  "2",
+                    "status"    => "Undelivered",
+                    "review_link"   =>  ""
+                ]
+            )
+        ],
+
+        [
+            "order_id" => "ORD223456789",
+            "order_date"    => "19th Sept 2024",
+            "order_total"   => "585.00",
+            "shipping_address"  =>  "Shipping Address 2",
+
+            "download_invoice" => "",
+            "status" => "Delivered",
+            "expected_delivery" =>  "",
+            "delivered_on"  =>  "20th Sept 2024",
+            
+            "order_items" => array(
+                [
+                    "product_id"    =>  "3",
+                    "product_slug"  =>  "product_slug",
+                    "product_image"  =>  "/images/rick-n-m-tees.webp",
+                    "product_name"  =>  "Rick N Morty",
+                    "category"  =>  "Te-Shirts",
+                    "size"  =>  "XL",
+                    "color" =>  "Black",
+                    "quantity"  =>  "2",
+                    "status"    => "Undelivered",
+                    "review_link"   =>  ""
+                ]
+            )
+        ],
+
+        [
+            "order_id" => "ORD323456789",
+            "order_date"    => "20th Sept 2024",
+            "order_total"   => "1170.00",
+            "shipping_address"  =>  "Shipping Address",
+
+            "download_invoice" => "",
+            "status" => "Cancelled",
+            "expected_delivery" =>  "",
+            "delivered_on"  =>  "",
+            
+            "order_items" => array(
+                [
+                    "product_id"    =>  "3",
+                    "product_slug"  =>  "product_slug",
+                    "product_image"  =>  "/images/op-hoodie.webp",
+                    "product_name"  =>  "HULK TEEs",
+                    "category"  =>  "Sleeveless",
+                    "size"  =>  "XL",
+                    "color" =>  "Green",
+                    "quantity"  =>  "2",
+                    "status"    => "Undelivered",
+                    "review_link"   =>  ""
+                ]
+            )
+        ]
+    );
+@endphp
+
 
 @section('content')
     
@@ -29,26 +138,26 @@
                     <div class="row">
 
                         <!-- search bar -->
-                        <div class="col-md-8">
-                            <input class="form-control" type="search" placeholder="Search orders" id="orders-search-bar" >
-                        </div>
+                        <x-front.search-bar 
+                            page="orders" 
+                            divClass="col-md-8"
+                            placeholder="Search orders"
+                            id="orders-search-bar"
+                        />
                         
                         <!-- Order Duration Filter -->
-                        <div class="col-md-4 text-right">
+                        <x-front.sort-button 
+                            page="orders" 
+                            buttonText="Orders In Last 30 Days" >
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2" style="">
+                                <li><a class="dropdown-item active" href="#">Last 30 Days</a></li>
+                                <li><a class="dropdown-item" href="#">Last 3 Months</a></li>
+                                <li><a class="dropdown-item" href="#">2024</a></li>
+                                <li><a class="dropdown-item" href="#"> 2023 </a></li>
+                                <li><a class="dropdown-item" href="#"> 2024 </a></li>
+                            </ul>
+                        </x-front.sort-button>
 
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Orders In Last 30 Days
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2" style="">
-                                    <li><a class="dropdown-item active" href="#">Last 30 Days</a></li>
-                                    <li><a class="dropdown-item" href="#">Last 3 Months</a></li>
-                                    <li><a class="dropdown-item" href="#">2024</a></li>
-                                    <li><a class="dropdown-item" href="#"> 2023 </a></li>
-                                    <li><a class="dropdown-item" href="#"> 2024 </a></li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -101,363 +210,11 @@
                 <!-- ORDERS -->
                 <div class="col-md-9">
 
-                    <!-- Order 1 -->    
-                    <div class="card card-success card-outline">
+                    @foreach($order_data_list as $orderRec)
                         
-                        <!-- ORDER card header -->
-                        <div class="card-header">
-                            <div class="row small">
-                                <div class="col-md-6 d-flex ">
-                                    <div class="mr-3">
-                                        <span class="text-muted">ORDER PLACED</span> 
-                                        <span class="d-block text-muted text-bold"> 27th Sept 2024</span>
-                                    </div>
+                        <x-front.orders.order-card :$orderRec />
 
-                                    <!-- Total Amount -->
-                                    <div class="mr-3">
-                                        <span class="text-muted">TOTAL</span>
-                                        <span class="d-block text-muted text-bold">₹1,585.00</span>
-                                    </div>
-
-                                    <div class="mr-3">
-                                        <span class="text-muted">SHIP TO</span>
-                                        <span class="d-block text-muted text-bold">Shipping Address</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6 text-right"> 
-                                    <span class="text-muted">Order Id #</span>
-                                    <div class="d-block">
-                                        <a href="#">View Order Details</a> |
-                                        <a href="#">Invoice</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ORDER card body -->
-                        <div class="card-body">
-                            <div class="row">
-
-                                <div class="col-md-12 mb-3">
-                                    <h5 class="card-text text-success">
-                                        Arriving on 30th Sept 2024
-                                    </h5>
-                                </div>
-                                
-                                <!-- Order Item 1 -->
-                                <div class="col-md-12">
-                                    <div class="card mb-3" style="">
-                                        <div class="row g-0">
-                                            <div class="col-md-2">
-                                                <a href="/product/product_slug">
-                                                    <img 
-                                                        src="http://127.0.0.1:8000/images/one-piece.webp" 
-                                                        class="img-fluid rounded-start" 
-                                                        alt="..." 
-                                                        style="height:167px;"
-                                                    />
-                                                    
-                                                </a>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <h5 class="card-text">
-                                                        <a href="/product/product_slug">Party Tees</a>    
-                                                    </h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">Oversized</h6>
-                                                    
-                                                    <div class="text-muted small">
-                                                        <span>Size: L</span> | <span>Qty: 5</span>
-                                                    </div>
-
-                                                    <p class="card-text">
-                                                        <small class="text-muted">Status: </small>
-                                                        <small class="text-muted">Undelivered</small>
-                                                    </p>
-
-                                                    <button type="button" class="btn btn-secondary btn-xs" class="write-product-review">
-                                                        Write Review
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Order Item 2 -->
-                                <div class="col-md-12">
-                                    <div class="card mb-3" style="">
-                                        <div class="row g-0">
-                                            <div class="col-md-2">
-                                                <a href="/product/product_slug">
-                                                    <img 
-                                                        src="{{ asset('images/op-hoodie.webp') }}" 
-                                                        class="img-fluid rounded-start" 
-                                                        alt="..." 
-                                                        style="height:167px;"
-                                                    />
-                                                    
-                                                </a>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <h5 class="card-text">
-                                                        <a href="/product/product_slug">HULK TEEs</a>    
-                                                    </h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">Sleeveless</h6>
-                                                    
-                                                    <div class="text-muted small">
-                                                        <span>Size: L</span> | <span>Qty: 1</span>
-                                                    </div>
-
-                                                    <p class="card-text">
-                                                        <small class="text-muted">Status: </small>
-                                                        <small class="text-muted">Undelivered</small>
-                                                    </p>
-
-                                                    <button type="button" class="btn btn-secondary btn-xs" class="write-product-review">
-                                                        Write Review
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Order Item 3 -->
-                                <div class="col-md-12">
-                                    <div class="card mb-3" style="">
-                                        <div class="row g-0">
-                                            <div class="col-md-2">
-                                                <a href="/product/product_slug">
-                                                    <img 
-                                                        src="{{ asset('images/rick-n-m-tees.webp') }}" 
-                                                        class="img-fluid rounded-start" 
-                                                        alt="..." 
-                                                        style="height:167px;"
-                                                    />
-                                                </a>                                                
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <h5 class="card-text">
-                                                        <a href="/product/product_slug">Rick N Morty</a>    
-                                                    </h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">Te-Shirts</h6>
-                                                    
-                                                    <div class="text-muted small">
-                                                        <span>Size: XL</span> | <span>Qty: 2</span>
-                                                    </div>
-
-                                                    <p class="card-text">
-                                                        <small class="text-muted">Status: </small>
-                                                        <small class="text-muted">Undelivered</small>
-                                                    </p>
-
-                                                    <button type="button" class="btn btn-secondary btn-xs" class="write-product-review">
-                                                        Write Review
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ORDER card footer -->
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-sm btn-warning text-white">Track</button>
-                            <button type="button" class="btn btn-sm btn-default text-secondary">View or Edit Order</button>
-                            <button type="button" class="btn btn-sm btn-secondary">Feedback</button>
-                        </div>
-                    </div>
-
-                    <!-- Order 2 (EXAMPLE: DELIVERED) -->    
-                    <div class="card card-secondary card-outline">
-                        
-                        <!-- ORDER card header -->
-                        <div class="card-header">
-                            <div class="row small">
-                                <div class="col-md-6 d-flex ">
-                                    <div class="mr-3">
-                                        <span class="text-muted">ORDER PLACED</span> 
-                                        <span class="d-block text-muted text-bold"> 19th Sept 2024</span>
-                                    </div>
-
-                                    <!-- Total Amount -->
-                                    <div class="mr-3">
-                                        <span class="text-muted">TOTAL</span>
-                                        <span class="d-block text-muted text-bold">₹1,585.00</span>
-                                    </div>
-
-                                    <div class="mr-3">
-                                        <span class="text-muted">SHIP TO</span>
-                                        <span class="d-block text-muted text-bold">Shipping Address</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6 text-right"> 
-                                    <span class="text-muted">Order Id #</span>
-                                    <div class="d-block">
-                                        <a href="#">View Order Details</a> |
-                                        <a href="#">Invoice</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ORDER card body -->
-                        <div class="card-body">
-                            <div class="row">
-
-                                <div class="col-md-12 mb-3">
-                                    <h5 class="card-text text-secondary">
-                                        Delivered on 20th Sept 2024
-                                    </h5>
-                                </div>
-                                
-                                <!-- Order Item 1 -->
-                                <div class="col-md-12">
-                                    <div class="card mb-3" style="">
-                                        <div class="row g-0">
-                                            <div class="col-md-2">
-                                                <a href="/product/product_slug">
-                                                    <img 
-                                                        src="{{ asset('images/rick-n-m-tees.webp') }}" 
-                                                        class="img-fluid rounded-start" 
-                                                        alt="..." 
-                                                        style="height:167px;"
-                                                    />
-                                                </a>                                                
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <h5 class="card-text">
-                                                        <a href="/product/product_slug">Rick N Morty</a>    
-                                                    </h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">Te-Shirts</h6>
-                                                    
-                                                    <div class="text-muted small">
-                                                        <span>Size: XL</span> | <span>Qty: 2</span>
-                                                    </div>
-
-                                                    <p class="card-text">
-                                                        <small class="text-muted">Status: </small>
-                                                        <small class="text-muted">Undelivered</small>
-                                                    </p>
-
-                                                    <button type="button" class="btn btn-secondary btn-xs" class="write-product-review">
-                                                        Write Review
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ORDER card footer -->
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-sm btn-warning text-white">Track</button>
-                            <button type="button" class="btn btn-sm btn-default text-secondary">Return or Replace Items</button>
-                            <button type="button" class="btn btn-sm btn-secondary">Feedback</button>
-                        </div>
-                    </div>
-
-                    <!-- Order 3 (EXAMPLE: CANCELLED) -->    
-                    <div class="card card-danger card-outline">
-                        
-                        <!-- ORDER card header -->
-                        <div class="card-header">
-                            <div class="row small">
-                                <div class="col-md-6 d-flex ">
-                                    <div class="mr-3">
-                                        <span class="text-muted">ORDER PLACED</span> 
-                                        <span class="d-block text-muted text-bold"> 19th Sept 2024</span>
-                                    </div>
-
-                                    <!-- Total Amount -->
-                                    <div class="mr-3">
-                                        <span class="text-muted">TOTAL</span>
-                                        <span class="d-block text-muted text-bold">₹1,585.00</span>
-                                    </div>
-
-                                    <div class="mr-3">
-                                        <span class="text-muted">SHIP TO</span>
-                                        <span class="d-block text-muted text-bold">Shipping Address</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6 text-right"> 
-                                    <span class="text-muted">Order Id #</span>
-                                    <div class="d-block">
-                                        <a href="#">View Order Details</a> |
-                                        <a href="#">Invoice</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ORDER card body -->
-                        <div class="card-body">
-                            <div class="row">
-
-                                <div class="col-md-12 mb-3">
-                                    <h5 class="card-text text-danger">
-                                        Order Cancelled
-                                    </h5>
-                                </div>
-                                
-                                <!-- Order Item 1 -->
-                                <div class="col-md-12">
-                                    <div class="card mb-3" style="">
-                                        <div class="row g-0">
-                                            <div class="col-md-2">
-                                                <a href="/product/product_slug">
-                                                    <img 
-                                                        src="{{ asset('images/rick-n-m-tees.webp') }}" 
-                                                        class="img-fluid rounded-start" 
-                                                        alt="..." 
-                                                        style="height:167px;"
-                                                    />
-                                                </a>                                                
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <h5 class="card-text">
-                                                        <a href="/product/product_slug">Rick N Morty</a>    
-                                                    </h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">Te-Shirts</h6>
-                                                    
-                                                    <div class="text-muted small">
-                                                        <span>Size: XL</span> | <span>Qty: 2</span>
-                                                    </div>
-
-                                                    <p class="card-text">
-                                                        <small class="text-muted">Status: </small>
-                                                        <small class="text-muted">Undelivered</small>
-                                                    </p>
-
-                                                    <button type="button" class="btn btn-secondary btn-xs" class="write-product-review">
-                                                        Write Review
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ORDER card footer -->
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-sm btn-warning text-white">Track</button>
-                            <button type="button" class="btn btn-sm btn-secondary">Feedback</button>
-                        </div>
-                    </div>
+                    @endforeach
 
                 </div>
             </div>

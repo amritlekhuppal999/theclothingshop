@@ -21,31 +21,35 @@
             <div class="row">
 
                 <!-- <div class="col-md-12 mt-3"></div> -->
-
-                <!-- search bar -->
-                <div class="col-md-6 offset-md-3 mt-3">
-                    <input class="form-control" type="search" placeholder="Search orders" id="orders-search-bar" >
-                </div>
-                
-                <!-- Order Duration Filter -->
-                <div class="col-md-3 text-right mt-3">
-
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                            Newest First
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2" style="">
-                            <li><a class="dropdown-item active" href="#">Newest First</a></li>
-                            <li><a class="dropdown-item" href="#">Oldest First</a></li>
-                        </ul>
+                <div class="col-md-9 offset-md-3 mt-3 mb-2">
+                    <div class="row">
+                        <!-- search bar -->
+                        <x-front.search-bar 
+                            page="wishlist"
+                            divClass="col-md-8"
+                            placeholder="Search wishlist"
+                            id="wishlist-search-bar"
+                        />
+                        
+                        <!-- Order Duration Filter -->
+                        <x-front.sort-button 
+                            page="wishlist" 
+                            buttonText="Newest First">
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2" style="">
+                                <li><a class="dropdown-item active" href="#">Newest First</a></li>
+                                <li><a class="dropdown-item" href="#">Oldest First</a></li>
+                            </ul>
+                        </x-front.sort-button>
                     </div>
                 </div>
+
+
             </div>
 
             
             <div class="row">
 
-                <div class="col-md-12 mt-3"></div>
+                {{-- <div class="col-md-12 mt-3"></div> --}}
 
                 <!-- PRODUCT & SUB-CATEGORY -->
                 <div class="col-md-12">
@@ -56,57 +60,48 @@
                         <div class="col-md-12">
 
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="card" style="">
-                                        <a href="/product/product_slug">
-                                            <img src="{{ asset('images/one-piece.webp') }}" class="card-img-top" alt="...">
-                                        </a>
-                                        
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="#" class="btn btn-block btn-danger text-white">Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-3">
-                                    <div class="card" style="">
-                                        <a href="product/product_slug">
-                                            <img src="{{ asset('images/op-hoodie.webp') }}" class="card-img-top" alt="...">
-                                        </a>
+                                <x-front.product.product-card
+                                    displayPage="wishlist"
+                                    cardType="wishlist"
+                                    cardSize="3"
+                                    cardTheme=""
+                                    slug="/product/product_slug"
+                                    imageSlug="images/one-piece.webp"
+                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                                />
 
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="#" class="btn btn-block btn-danger text-white">Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <x-front.product.product-card
+                                    displayPage="wishlist"
+                                    cardType="wishlist"
+                                    cardSize="3"
+                                    cardTheme=""
+                                    slug="/product/product_slug"
+                                    imageSlug="images/op-hoodie.webp"
+                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                                />
 
-                                <div class="col-md-3">
-                                    <div class="card" style="">
-                                        <a href="product/product_slug">
-                                            <img src="{{ asset('images/rick-n-m-tees.webp') }}" class="card-img-top" alt="...">
-                                        </a>
+                                <x-front.product.product-card
+                                    displayPage="wishlist"
+                                    cardType="wishlist"
+                                    cardSize="3"
+                                    cardTheme=""
+                                    slug="/product/product_slug"
+                                    imageSlug="images/rick-n-m-tees.webp"
+                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                                />
 
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="#" class="btn btn-block btn-danger text-white">Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <x-front.product.product-card
+                                    displayPage="wishlist"
+                                    cardType="wishlist"
+                                    cardSize="3"
+                                    cardTheme=""
+                                    slug="/product/product_slug"
+                                    imageSlug="images/rick-n-m-tees.webp"
+                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                                />
 
-                                <div class="col-md-3">
-                                    <div class="card" style="">
-                                        <a href="product/product_slug">
-                                            <img src="{{ asset('images/rick-n-m-tees.webp') }}" class="card-img-top" alt="...">
-                                        </a>
-                                        
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="#" class="btn btn-block btn-danger text-white">Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                             </div>
 
                         </div>

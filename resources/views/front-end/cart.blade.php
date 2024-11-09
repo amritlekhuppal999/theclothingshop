@@ -6,6 +6,71 @@
 @endsection
 
 
+@php
+    $itemDetailsArr = array(
+        [
+            "product_id"    => "1",
+            "product_slug"    => "product_slug",
+            "product_name"  =>  "Hulk",
+            "product_category"  =>  "Sleeveless",
+            "product_image"  =>  "images/op-hoodie.webp",
+            "size"  =>  "L",
+            "quantity"  =>  "1",
+            "color" =>  "Green",
+            "item_price" =>  "699",
+            "item_discount" => "100",
+            "delivery_details"  =>  array(
+                "estimated_delivery" => "31 Oct",
+                "delivery_status"   => ""
+            )
+        ],
+        
+        [
+            "product_id"    => "2",
+            "product_slug"    => "product_slug",
+            "product_name"  =>  "Rick-N-Morty Tees",
+            "product_category"  =>  "Oversized",
+            "product_image"  =>  "images/rick-n-m-tees.webp",
+            "size"  =>  "L",
+            "quantity"  =>  "1",
+            "color" =>  "Black",
+            "item_price" =>  "699",
+            "item_discount" => "100",
+            "delivery_details"  =>  array(
+                "estimated_delivery" => "2 Nov",
+                "delivery_status"   => ""
+            )
+        ],
+
+        [
+            "product_id"    => "3",
+            "product_slug"    => "product_slug",
+            "product_name"  =>  "One Piece Shirts",
+            "product_category"  =>  "Oversized",
+            "product_image"  =>  "images/one-piece.webp",
+            "size"  =>  "XL",
+            "quantity"  =>  "3",
+            "color" =>  "Grey",
+            "item_price" =>  "699",
+            "item_discount" => "100",
+            "delivery_details"  =>  array(
+                "estimated_delivery" => "5 Nov",
+                "delivery_status"   => ""
+            )
+        ]
+    );
+
+
+    $billing_details = array(
+        "cart_total" => "6084.00",
+        "discount" =>  "600.00",
+        "GST" => "611.54",
+        "shipping_charges"  => "20",
+        "total_amount" => "6093"
+    );
+@endphp
+
+
 
 @section('content')
     
@@ -32,168 +97,12 @@
 
                 <!-- ITEMS -->
                 <div class="col-md-8">
-                    
-                    <!-- Item 1 -->
-                    <div class="card mb-3" style="">
-                        <div class="row g-0">
 
-                            <!-- Product Image -->
-                            <div class="col-md-3">
-                                <img 
-                                    src="{{ asset('images/op-hoodie.webp') }}" 
-                                    class="img-fluid rounded-start" 
-                                    alt="..."
-                                />
-                            </div>
-                            
-                            <!-- Product Details -->
-                            <div class="col-md-9 p-3">
-                                
-                                <div class="row">
-                                    
-                                    <!-- Product & category name -->
-                                    <div class="col-md-6">
-                                        <h5>
-                                            <a href="/product/product_slug">Hulk</a>
-                                        </h5>
-                                        
-                                        <!-- category name -->
-                                        <p class="text-muted "> Sleeveless </p>
+                    @foreach($itemDetailsArr as $itemDetails)
+                        
+                        <x-front.cart.cart-item  :itemDetails="$itemDetails" />
 
-                                        <!-- Size & Quantity -->
-                                        <div class="d-flex">
-                                            <!-- Size -->
-                                            <select name="" id="" class="form-control mr-2">
-                                                @for ($i=0; $i<10; $i++)
-                                                    <option value="{{$i}}">Size {{$i}}</option>
-                                                @endfor
-                                            </select>
-
-                                            <!-- Quantity -->
-                                            <select name="" id="" class="form-control">
-                                                @for ($i=1; $i<=10; $i++)
-                                                    <option value="{{$i}}">Quantity {{$i}}</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-
-                                        <!-- <div class="clearfix"></div> -->
-                                    </div>
-
-                                    <!-- Price breakdown -->
-                                    <div class="col-md-6 text-right pr-3 text-muted small">
-                                        <div> 
-                                            <span class="text-bold text-dark">₹ 699</span>   <strike>₹ 1299</strike>  
-                                        </div>
-                                        <div> MRP incl. of all taxes </div>
-                                        <div class="text-red"> ₹ 600 OFF </div>
-                                    </div>
-
-                                    
-                                    <!-- Estimated delivery -->
-                                    <div class="col-md-4 mt-3 small"> 
-                                        <span class="text-muted">Estimated Delivery by </span>
-                                        <b>25 Sep</b> 
-                                    </div>
-
-                                    <!-- Remove and wishlist BTNS -->
-                                    <div class="col-md-6 offset-md-6 text-right pr-3">
-                                        
-                                        <!-- Remove from cart -->
-                                        <a href="#" class="card-link text-red remove-item">
-                                            Remove
-                                        </a>
-
-                                        <!-- Add to wishlist -->
-                                        <a href="#" class="card-link move-to-wishlist">
-                                            Add to wishlist
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                     
-                    <!-- Item 2 -->
-                    <div class="card mb-3" style="">
-                        <div class="row g-0">
-
-                            <!-- Product Image -->
-                            <div class="col-md-3">
-                                <img 
-                                    src="{{ asset('images/rick-n-m-tees.webp') }}" 
-                                    class="img-fluid rounded-start" 
-                                    alt="..."
-                                />
-                            </div>
-                            
-                            <!-- Product Details -->
-                            <div class="col-md-9 p-3">
-                                
-                                <div class="row">
-                                    
-                                    <!-- Product & category name -->
-                                    <div class="col-md-6">
-                                        <h5>
-                                            <a href="/product/product_slug">Rick-N-Morty Tees</a>
-                                        </h5>
-                                        
-                                        <!-- category name -->
-                                        <p class="text-muted "> Sleeveless </p>
-
-                                        <!-- Size & Quantity -->
-                                        <div class="d-flex">
-                                            <!-- Size -->
-                                            <select name="" id="" class="form-control mr-2">
-                                                @for ($i=0; $i<10; $i++)
-                                                    <option value="{{$i}}">Size {{$i}}</option>
-                                                @endfor
-                                            </select>
-
-                                            <!-- Quantity -->
-                                            <select name="" id="" class="form-control">
-                                                @for ($i=1; $i<=10; $i++)
-                                                    <option value="{{$i}}">Quantity {{$i}}</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-
-                                        <!-- <div class="clearfix"></div> -->
-                                    </div>
-
-                                    <!-- Price breakdown -->
-                                    <div class="col-md-6 pr-3 text-right text-muted small">
-                                        <div> 
-                                            <span class="text-bold text-dark">₹ 699</span>   <strike>₹ 1299</strike>  
-                                        </div>
-                                        <div> MRP incl. of all taxes </div>
-                                        <div class="text-red"> ₹ 600 OFF </div>
-                                    </div>
-
-                                    
-                                    <!-- Estimated delivery -->
-                                    <div class="col-md-4 mt-3 small"> 
-                                        <span class="text-muted">Estimated Delivery by </span>
-                                        <b>25 Sep</b> 
-                                    </div>
-
-                                    <!-- Remove and wishlist BTNS -->
-                                    <div class="col-md-6 offset-md-6 text-right pr-3">
-                                        
-                                        <!-- Remove from cart -->
-                                        <a href="#" class="card-link text-red remove-item">
-                                            Remove
-                                        </a>
-
-                                        <!-- Add to wishlist -->
-                                        <a href="#" class="card-link move-to-wishlist">
-                                            Add to wishlist
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach  
 
                 </div>
 
@@ -202,17 +111,27 @@
                     
                     <!-- Coupons and vouchers -->
                     <table class="table bg-white billing-side">
-                        <tbody class="text-muted small">
+                        <tbody class="text text-danger small">
                             <tr>
-                                <td> Apply Coupon </td>
+                                <td colspan="2"> 
+                                    <input type="text" name="coupon" class="form-control" placeholder="Apply Coupon" /> 
+                                </td>
                             </tr>
 
                             <tr>
-                                <td> Gift Voucher </td>
+                                <td colspan="2"> 
+                                    <input type="text" name="gift_voucher" class="form-control" placeholder="Gift Voucher" /> 
+                                </td>
                             </tr>
 
                             <tr>
-                                <td> Gift Wrap </td>
+                                {{-- <td> Gift Wrap </td> --}}
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input " name="" type="checkbox" id="customCheckbox2" checked="">
+                                        <label for="customCheckbox2" class="custom-control-label mt-1"> Gift Wrap </label>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

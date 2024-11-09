@@ -8,14 +8,17 @@
 
 
 
-# New Task
+# New Tasks
 
 ## Components for product/category card 
 make it dynamic as per need so later DB integration becomes easy.
+
 Pass some data like current URI to customize how it will appear, like size, color, information, etc.
-Pages they appear different: home, category, wishlist
+
+Pages they appear different in: home, category, wishlist
 
 Create an array of objects that holds data for individual products that are currently displayed on the website
+>Lets complete it by 26th OCT 2024
 
 ## Make the home page categories as components aswell
 All these sections like best selling, new addition should be their independent sections integrated 
@@ -74,3 +77,5 @@ Development pending
 # Database Integration
 
 # Entire Backend :'-)
+## Customer Analytics
+### Use kaggle dummy data for customer analtics

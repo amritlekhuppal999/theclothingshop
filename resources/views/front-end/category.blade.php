@@ -21,26 +21,40 @@
             <div class="row">
 
                 <!-- display applied filters here, along with pagination if possible -->
+                <div class="col-md-9 offset-md-3 mt-2 mb-2">
 
-                <!-- SORT OPTIONS -->
-                <div class="col-md-6 offset-md-6 text-right mt-3 mb-2"> 
-                    <!-- <h3>SORT OPTIONS</h3> -->
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                            Select Sorting Options
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2" style="">
-                            <li><a class="dropdown-item active" href="#">A-Z</a></li>
-                            <li><a class="dropdown-item" href="#">Price- High to Low </a></li>
-                            <li><a class="dropdown-item" href="#">Price- Low to High </a></li>
-                            <li><a class="dropdown-item" href="#"> Newest </a></li>
-                            <!-- <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Separated link</a></li> -->
-                        </ul>
+                    <div class="row">
+                        {{-- searchbar --}}
+                        {{-- <x-front.search-bar 
+                            page="category" 
+                            divClass="col-md-8"
+                            placeholder="Search category"
+                            id="category-search-bar"
+                        /> --}}
+
+                        <!-- SORT OPTIONS -->
+                        <x-front.sort-button 
+                            page="category"
+                            class="offset-md-8"
+                            buttonText="Select Sorting Options">
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2" style="">
+                                <li><a class="dropdown-item active" href="#">A-Z</a></li>
+                                <li><a class="dropdown-item" href="#">Price- High to Low </a></li>
+                                <li><a class="dropdown-item" href="#">Price- Low to High </a></li>
+                                <li><a class="dropdown-item" href="#"> Newest </a></li>
+                            </ul>
+                        </x-front.sort-button>
+
                     </div>
                 </div>
 
-                <!-- PRODUCT & SUB-CATEGORY -->
+
+            </div>
+
+            
+            <!-- PRODUCT & SUB-CATEGORY -->
+            <div class="row">
+            
                 <div class="col-md-12">
 
                     <div class="row">
@@ -168,60 +182,55 @@
                         <div class="col-md-9">
 
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="card bg-dark text-white" style="">
-                                        <a href="/product/product_slug">
-                                            <img src="{{ asset('images/one-piece.webp') }}" class="card-img-top" alt="...">
-                                        </a>
-                                        
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-3">
-                                    <div class="card" style="">
-                                        <a href="product/product_slug">
-                                            <img src="{{ asset('images/op-hoodie.webp') }}" class="card-img-top" alt="...">
-                                        </a>
+                                <x-front.product.product-card
+                                    displayPage="home"
+                                    cardType="category"
+                                    cardSize="3"
+                                    cardTheme="dark"
+                                    slug="/product/product_slug"
+                                    imageSlug="images/one-piece.webp"
+                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                                />
 
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <x-front.product.product-card
+                                    displayPage="home"
+                                    cardType="category"
+                                    cardSize="3"
+                                    cardTheme=""
+                                    slug="/product/product_slug"
+                                    imageSlug="images/op-hoodie.webp"
+                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                                />
 
-                                <div class="col-md-3">
-                                    <div class="card" style="">
-                                        <a href="product/product_slug">
-                                            <img src="{{ asset('images/rick-n-m-tees.webp') }}" class="card-img-top" alt="...">
-                                        </a>
+                                <x-front.product.product-card
+                                    displayPage="home"
+                                    cardType="category"
+                                    cardSize="3"
+                                    cardTheme=""
+                                    slug="/product/product_slug"
+                                    imageSlug="images/rick-n-m-tees.webp"
+                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                                />
 
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="card" style="">
-                                        <a href="product/product_slug">
-                                            <img src="{{ asset('images/rick-n-m-tees.webp') }}" class="card-img-top" alt="...">
-                                        </a>
-                                        
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <x-front.product.product-card
+                                    displayPage="home"
+                                    cardType="category"
+                                    cardSize="3"
+                                    cardTheme=""
+                                    slug="/product/product_slug"
+                                    imageSlug="images/rick-n-m-tees.webp"
+                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                                />
                             </div>
 
                         </div>
                     </div>
 
                 </div>
+            
             </div>
+
         </div>
     </div>
 @endsection

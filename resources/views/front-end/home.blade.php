@@ -9,12 +9,13 @@
 @section('content')
     
     <div class="banner">
-        @include('components.front.carousel')
+        {{-- @include('components.front.carousel') --}}
         <!-- <img src="{{ asset('images/all-star.jpg') }}" alt="Banner Image"> -->
         <!-- <div class="banner-text">
             <h1>Welcome to Our Store</h1>
             <p>Find the best products here!</p>
         </div> -->
+        <x-front.carousel />
     </div>
 
     <div class="content"> 
@@ -28,117 +29,121 @@
                 </div>
 
                 <!-- BIG THREE -->
-                    <div class="col-md-4">
-                        <div class="card bg-dark text-white" style="">
-                            <a href="category">
-                                <img src="{{ asset('images/one-piece.webp') }}" class="card-img-top" alt="...">
-                            </a>
-                            
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="4"
+                        cardTheme="dark"
+                        slug="category"
+                        imageSlug="images/one-piece.webp"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                        itemName="Oversized T-shirt"
+                    />
 
-                    <div class="col-md-4">
-                        <div class="card" style="">
-                            <img src="{{ asset('images/op-hoodie.webp') }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="4"
+                        cardTheme=""
+                        slug="category"
+                        imageSlug="images/op-hoodie.webp"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                        itemName="Polos"
+                    />
 
-                    <div class="col-md-4">
-                        <div class="card" style="">
-                            <img src="{{ asset('images/rick-n-m-tees.webp') }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="4"
+                        cardTheme=""
+                        slug="category"
+                        imageSlug="images/rick-n-m-tees.webp"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                        itemName="Solid T-shirts"
+                    />
                 <!-- BIG THREE END --> 
 
                 <!-- Remaining Categories -->
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-white" style="">
-                            <img src="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1724912570_5870366.jpg?format=webp&w=480&dpr=1.0" class="card-img-top" alt="...">
-                            
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="3"
+                        cardTheme=""
+                        slug="category"
+                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1724912570_5870366.jpg?format=webp&w=480&dpr=1.0"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                        itemName="Polos"
+                    />
 
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-white" style="">
-                            <img src="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1713943206_9376927.png?format=webp&w=480&dpr=1.0" class="card-img-top" alt="...">
-                            
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="3"
+                        cardTheme=""
+                        slug="category"
+                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1713943206_9376927.png?format=webp&w=480&dpr=1.0"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                    />
 
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-white" style="">
-                            <img src="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1723875789_8404256.jpg?format=webp&w=480&dpr=1.0" class="card-img-top" alt="...">
-                            
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="3"
+                        cardTheme=""
+                        slug="category"
+                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1723875789_8404256.jpg?format=webp&w=480&dpr=1.0"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                    />
 
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-white" style="">
-                            <img src="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1723875789_7940407.jpg?format=webp&w=480&dpr=1.0" class="card-img-top" alt="...">
-                            
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="3"
+                        cardTheme=""
+                        slug="category"
+                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1723875789_7940407.jpg?format=webp&w=480&dpr=1.0"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                    />
 
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-white" style="">
-                            <img src="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1709968005_4121325.jpg?format=webp&w=480&dpr=1.0" class="card-img-top" alt="...">
-                            
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="3"
+                        cardTheme=""
+                        slug="category"
+                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1709968005_4121325.jpg?format=webp&w=480&dpr=1.0"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                    />
 
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-white" style="">
-                            <img src="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1726122231_3508839.jpg?exp_id=41fc062fc4&group=b&format=webp&w=480&dpr=1.0" class="card-img-top" alt="...">
-                            
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="3"
+                        cardTheme=""
+                        slug="category"
+                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1726122231_3508839.jpg?exp_id=41fc062fc4&group=b&format=webp&w=480&dpr=1.0"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                    />
 
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-white" style="">
-                            <img src="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1726325300_2818328.jpg?format=webp&w=480&dpr=1.0" class="card-img-top" alt="...">
-                            
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="3"
+                        cardTheme=""
+                        slug="category"
+                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1726325300_2818328.jpg?format=webp&w=480&dpr=1.0"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                    />
 
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-white" style="">
-                            <img src="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1726325221_5236500.jpg?format=webp&w=480&dpr=1.0" class="card-img-top" alt="...">
-                            
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-front.product.product-card
+                        displayPage="home"
+                        cardType="category"
+                        cardSize="3"
+                        cardTheme=""
+                        slug="category"
+                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1726325221_5236500.jpg?format=webp&w=480&dpr=1.0"
+                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                    />
                 <!-- Remaining Categories END -->
             </div>
 
@@ -148,45 +153,45 @@
                     <h3>NEW ADDITIONS</h3>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="card bg-dark text-white" style="">
-                        <img src="{{ asset('images/brown-fit.webp') }}" class="card-img-top" alt="...">
-                        
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+                <x-front.product.product-card
+                    displayPage="home"
+                    cardType="new-additions"
+                    cardSize="3"
+                    cardTheme="dark"
+                    slug=""
+                    imageSlug="images/brown-fit.webp"
+                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                />
 
-                <div class="col-md-3">
-                    <div class="card bg-dark text-white" style="">
-                        <img src="{{ asset('images/oversized-fit.webp') }}" class="card-img-top" alt="...">
-                        
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+                <x-front.product.product-card
+                    displayPage="home"
+                    cardType="new-additions"
+                    cardSize="3"
+                    cardTheme=""
+                    slug=""
+                    imageSlug="images/oversized-fit.webp"
+                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                />
 
-                <div class="col-md-3">
-                    <div class="card bg-dark text-white" style="">
-                        <img src="{{ asset('images/grey.webp') }}" class="card-img-top" alt="...">
-                        
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+                <x-front.product.product-card
+                    displayPage="home"
+                    cardType="new-additions"
+                    cardSize="3"
+                    cardTheme=""
+                    slug=""
+                    imageSlug="images/grey.webp"
+                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                />
 
-                <div class="col-md-3">
-                    <div class="card bg-dark text-white" style="">
-                        <img src="{{ asset('images/slim-fit.webp') }}" class="card-img-top" alt="...">
-                        
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+                <x-front.product.product-card
+                    displayPage="home"
+                    cardType="new-additions"
+                    cardSize="3"
+                    cardTheme=""
+                    slug=""
+                    imageSlug="images/slim-fit.webp"
+                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                />
             </div>
 
             <!-- BEST SELLING -->
@@ -195,45 +200,45 @@
                     <h3>BEST SELLING</h3>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="card bg-dark text-white" style="">
-                        <img src="{{ asset('images/bs-popoye-tees.webp') }}" class="card-img-top" alt="...">
-                        
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+                <x-front.product.product-card
+                    displayPage="home"
+                    cardType="best-selling"
+                    cardSize="3"
+                    cardTheme="dark"
+                    slug=""
+                    imageSlug="images/bs-popoye-tees.webp"
+                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                />
 
-                <div class="col-md-3">
-                    <div class="card bg-dark text-white" style="">
-                        <img src="{{ asset('images/bs-star-wars-pant.webp') }}" class="card-img-top" alt="...">
-                        
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+                <x-front.product.product-card
+                    displayPage="home"
+                    cardType="best-selling"
+                    cardSize="3"
+                    cardTheme=""
+                    slug=""
+                    imageSlug="images/bs-star-wars-pant.webp"
+                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                />
 
-                <div class="col-md-3">
-                    <div class="card bg-dark text-white" style="">
-                        <img src="{{ asset('images/bs-st-fit.webp') }}" class="card-img-top" alt="...">
-                        
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+                <x-front.product.product-card
+                    displayPage="home"
+                    cardType="best-selling"
+                    cardSize="3"
+                    cardTheme=""
+                    slug=""
+                    imageSlug="images/bs-st-fit.webp"
+                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                />
 
-                <div class="col-md-3">
-                    <div class="card bg-dark text-white" style="">
-                        <img src="{{ asset('images/bs-straight-fit.webp') }}" class="card-img-top" alt="...">
-                        
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+                <x-front.product.product-card
+                    displayPage="home"
+                    cardType="best-selling"
+                    cardSize="3"
+                    cardTheme=""
+                    slug=""
+                    imageSlug="images/bs-straight-fit.webp"
+                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
+                />
             </div>
 
             <!-- POP CULTURE / SHOP BY FANDOM -->

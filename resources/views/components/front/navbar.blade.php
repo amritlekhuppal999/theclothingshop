@@ -1,3 +1,91 @@
+@php
+    $navItems = array(
+        [
+            "name" => "Topwear",
+            "items" =>  [
+                "All Topwear" => "all-topwear",
+                "All T-Shirts" => "all-tshirts",
+                "All Shirts" => "all-shirts",
+                "Oversized  T-shirts" => "oversized-tshirts",
+                "Polos" => "polos",
+                "Solid  T-shirts" => "solid-tshirts",
+                "Classic Fit T-shirts" => "classic-fit-tshirts",
+                "Oversized Full Sleeve" => "oversized-full-sleeve",
+                "Dropcut T-shirts" => "dropcut-tshirts",
+                "Co-ord Sets" => "co-ord-sets",
+                "Jackets" => "jackets",
+                "Hoodies Sweatshirts" => "hoodies-sweatshirts"
+            ]
+        ],
+
+        [
+            "name" => "Bottomwear",
+            "items" =>  [
+                "All Bottomwear" => "all-bottomwear",
+                "Pants" => "pants", 
+                "Cargos" => "cargos",
+                "Jeans" => "jeans",
+                "Joggers" => "joggers",
+                "Shorts" => "shorts",
+                "Boxers Innerwear" => "boxers-innerwear",
+                "Pajamas" => "pajamas"
+            ]
+        ],
+
+        [
+            "name" => "Bestseller",
+            "items" =>  [
+                "Best of T-shirts" => "best-of-tshirts",
+                "Best of Shirts" => "best-of-shirts",
+                "Best of Polos" => "best-of-polos",
+                "Best of Bottoms" => "best-of-bottoms",
+                "Best of Sneakers" => "best-of-sneakers"
+            ]
+        ],
+
+        [
+            "name" => "Sneakers",
+            "items" =>  [
+                "Sneakers" => "sneakers"
+            ]
+        ],
+
+        [
+            "name" => "Accessories",
+            "items" =>  [
+                "Comics" => "comics",
+                "Manga" => "manga",
+                "Mobile Covers" => "mobile-covers",
+                "Backpacks" => "backpacks",
+                "Posters" => "posters"
+            ]
+        ],
+
+        [
+            "name" => "Collection",
+            "items" =>  [
+                "New Arrivals" => "new-arrivals",
+                "Best Sellers" => "best-sellers",
+                "Supima" => "supima",
+                "Pet Merch" => "pet-merch",
+            ]
+        ],
+
+        [
+            "name" => "Themes",
+            "items" =>  [
+                "Cartoons" => "cartoons",
+                "Anime" => "anime",
+                "Movies" => "movies",
+                "TV Shows" => "tv-shows",
+                "Sports" => "sports",
+                "Games" => "games",
+            ]
+        ],
+    );
+@endphp
+
+
 
     <nav class="main-header navbar navbar-expand-md navbar-white navbar-light">
         <div class="container-fluid">
@@ -31,13 +119,13 @@
                     <!-- <li class="nav-item">
                         <a href="#" class="nav-link">TopWear</a>
                     </li> -->
-                    <x-front.dropdown_menu name="Topwear" use="nav-bar" />
-                    <x-front.dropdown_menu name="BottomWear" use="nav-bar" />
-                    <x-front.dropdown_menu name="Bestseller" use="nav-bar" />
-                    <x-front.dropdown_menu name="Sneakers" use="nav-bar" />
-                    <x-front.dropdown_menu name="Accessories" use="nav-bar" />
-                    <x-front.dropdown_menu name="Collection" use="nav-bar" />
-                    <x-front.dropdown_menu name="Themes" use="nav-bar" />
+                    @foreach($navItems as $navItem)
+                        
+                        <x-front.navbar.nav-items 
+                            :navItem="$navItem"
+                        />
+                        
+                    @endforeach
                 </ul>
                 
                 <!-- SEARCH FORM -->
