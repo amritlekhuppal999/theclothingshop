@@ -11,10 +11,17 @@
 
         <div class="login-box">
             <div class="login-logo">
-                <a href="/"><b>{{config('app.name')}}</b></a>
+                
+                <a href="/"> 
+                    @if(Request::is('admin/*'))
+                        <small class="text-danger">AdminLogin</small>
+                    @endif
+
+                    <b> {{config('app.name')}} </b> 
+                </a>
             </div>
             
-            <div class="card">
+            <div class="card ">
                 <div class="card-body login-card-body">
                     <p class="login-box-msg" id="login-box-msg">
                         @if ($errors->any())
@@ -22,12 +29,12 @@
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         @else
-                            Sign in for a more tailored experience
+                            Manage your store
                         @endif
                     </p>
 
                     <!-- Login Form -->
-                    <form action="{{ route('login-user') }}" method="POST">
+                    <form action="{{ Request::is('admin/*') ? route('login-admin') : route('login-user') }}" method="POST">
                         @csrf 
                         <!-- Email -->
                         <div class="input-group mb-3">

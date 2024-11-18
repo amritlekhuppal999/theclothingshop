@@ -13,7 +13,7 @@ class RegisterController extends Controller
     //
     public function showRegistrationForm()
     {
-        return view('front-end/layouts/register');
+        return view('layouts/register');
         // return view(FRONT_END.'/layouts/login');
     }
 

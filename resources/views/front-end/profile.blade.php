@@ -1,5 +1,5 @@
     
-@extends('front-end.layouts.pages')    
+@extends('layouts.pages')
 
 @section('content-css')
     <link rel="stylesheet" href="{{ asset('css/front-end/profile.css') }}">

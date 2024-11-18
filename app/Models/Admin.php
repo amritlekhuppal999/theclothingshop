@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class Admin extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    protected $table = 'users';
+    protected $table = 'admins';
+
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +23,10 @@ class User extends Authenticatable
         'email',
         'phone_no',
         'password',
-        'status'
+        
+        'admin_type',
+        'admin_level',
+        'status',
     ];
 
     /**
@@ -35,6 +38,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
 
     /**
      * Get the attributes that should be cast. (Type Cast)

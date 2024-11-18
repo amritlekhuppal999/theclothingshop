@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -8,26 +10,26 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    
     //To return login page view
-    public function showLoginForm()
+    public function showAdminLoginForm()
     {
         return view('layouts/login');
         // return view(FRONT_END.'/layouts/login');
     }
- 
+
+
     //Method to LOGIN the User
-    public function authenticate(Request $request): RedirectResponse
+    public function authenticateAdmin(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
             "email" => ["required", "email"],
             "password" => ['required', 'string']
         ]);
 
-        if(Auth::attempt($credentials)){
+        if(Auth::guard('admin')->attempt($credentials)){
             $request->session()->regenerate();
 
-            return redirect()->intended('home');
+            return redirect()->intended('admin.home');
         }
 
         return back()->withErrors([
@@ -35,16 +37,14 @@ class LoginController extends Controller
         ])->onlyInput('email');
     }
 
-
     // Method to LOGOUT user
     public function logout(Request $request): RedirectResponse
     {
-        Auth::logout();
+        Auth::guard("admin")->logout();
         
-        $request->session()->invalidate();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
  
-        $request->session()->regenerateToken();
- 
-        return redirect('/');
+        return redirect('/admin');
     }
 }

@@ -76,5 +76,7 @@ define('ADMIN_LTE', "XAdminLTE");
 
 
 require __DIR__.'/auth.php';
-require __DIR__.'/route-controllers.php';
+
+require __DIR__.'/admin-auth.php';
+require __DIR__.'/admin-routes.php';
 
