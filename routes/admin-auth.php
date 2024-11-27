@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\LoginController;
 
 // Admin Authentication Routes
     Route::prefix('admin')->group(function () {
-        Route::get('/login', [LoginController::class, 'showAdminLoginForm'])->name('login');
+        Route::get('/login', [LoginController::class, 'showAdminLoginForm'])->name('login-admin');
         Route::post('/login', [LoginController::class, 'authenticateAdmin'])->name('login-admin');
 
         Route::get('/forgot-password', function () {

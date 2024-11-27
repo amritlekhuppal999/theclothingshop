@@ -2,12 +2,12 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <!-- headers -->
-        <x-admin.dashboard-header />
+        <x-admin.dashboard-header pageTitle="Dashboard" />
 
         @yield('content-css')
     </head>
     
-    <body class="hold-transition sidebar-mini">
+    <body class="hold-transition sidebar-mini layout-fixed">
         <!-- <h1>Welcome to the {{config('app.name')}}</h1> -->
 
         {{-- 
@@ -25,7 +25,7 @@
             <x-admin.dashboard-sidebar />
 
             <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper">
+            <div class="content-wrapper ">
                 
                 @yield('content')
 

@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 
 class AdminDashboardController extends Controller
 {
-    //To return login page view
+    //To return dashboard page view
     public function showDashboard()
     {
         return view('admin-panel/admin-dashboard');

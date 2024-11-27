@@ -1,6 +1,6 @@
     
     
-    <footer class="main-footer">
+    <footer class="main-footer text-sm">
         <!-- To the right -->
         <div class="float-right d-none d-sm-inline">
             Manage your store

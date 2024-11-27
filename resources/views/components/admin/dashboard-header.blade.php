@@ -3,7 +3,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>{{config('app.name')}}</title>
+<title>{{ isset($pageTitle) ? $pageTitle.' | '.config('app.name') : config('app.name')}}</title>
+
 <link rel="icon" href="https://tss-static-images.gumlet.io/fevicon.png" type="image/x-icon">
 <link rel="icon" href="{{ asset('images/ico/snorlax.ico') }}" type="image/x-icon">
 
@@ -15,9 +16,14 @@
 <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
 <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 
+<!-- overlayScrollbars (used in sidebar) -->
+<link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }} ">
+
 <!-- MAIN CSS -->
 <link rel="stylesheet" href="{{ asset('css/front-end/main.css') }}">
 
+{{-- <link rel="stylesheet" href="{{ asset("plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css")}}"> --}}
+
 
 <!-- Google Font: Source Sans Pro -->
-<!-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> -->
+ {{-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">  --}}
