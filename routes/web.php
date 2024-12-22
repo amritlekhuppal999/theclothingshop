@@ -12,6 +12,8 @@ use Illuminate\Http\Request;    //to have the current HTTP request automatically
 
 define('FRONT_END', "front-end");
 
+define('ADMIN_PANEL', "admin-panel");
+
 define('ADMIN_LTE', "XAdminLTE");
 
 
@@ -76,7 +78,17 @@ define('ADMIN_LTE', "XAdminLTE");
 
 
 require __DIR__.'/user-auth.php';
-
 require __DIR__.'/admin-auth.php';
 require __DIR__.'/admin-routes.php';
 
+
+
+Route::fallback(function () {
+    // return response()->view('errors.404', [], 404);
+
+    $data_arr = [
+        "error_message" => "We could not find the page you were looking for. Please enter a valid URL."
+    ];
+
+    return view(FRONT_END.'/404', $data_arr);
+}); 

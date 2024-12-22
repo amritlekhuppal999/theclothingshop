@@ -10,6 +10,9 @@
 
     <!-- overlayScrollbars (used in sidebar) -->
     <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }} "></script>
+    
+    {{-- My GLOBAL JS  --}}
+    <script src="{{ asset('js/globals.js') }} "></script>
 
     
     {{-- <script src="{{ asset("plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js") }}"></script> --}}

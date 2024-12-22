@@ -38,30 +38,53 @@
             </a>
 
             <ul class="nav nav-treeview">
+              
+              {{-- Manage Products --}}
               <li class="nav-item">
                 <a href="/admin/products" class="nav-link {{ (request()->is('admin/products')) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Products</p>
                 </a>
               </li>
+
+              {{-- Manage Stock --}}
               <li class="nav-item">
                 <a href="/admin/products-stock" class="nav-link {{ (request()->is('admin/products-stock')) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Stock</p>
                 </a>
               </li>
+
+              {{-- Add Products --}}
               <li class="nav-item">
-                <a href="/admin/products-add" class="nav-link {{ (request()->is('admin/products-add')) ? "active" : ""}}">
+                <a href="/admin/products-add" class="nav-link {{ (request()->is('admin/products-add') || request()->is('admin/products-add/*')) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Products</p>
                 </a>
               </li>
+
+              {{-- Add Product Images --}}
+              <li class="nav-item">
+                <a href="/admin/products-add-images" class="nav-link {{ (request()->is('admin/products-add-images') || request()->is('admin/products-add-images/*')) ? "active" : ""}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Product Images</p>
+                </a>
+              </li>
+
+              {{-- Add Variants --}}
+              <li class="nav-item">
+                <a href="/admin/products-add-variants" class="nav-link {{ (request()->is('admin/products-add-variants') || request()->is('admin/products-add-variants/*')) ? "active" : ""}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Variants</p>
+                </a>
+              </li>
+
             </ul>
           </li>
 
           {{-- Categories --}}
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+          <li class="nav-item has-treeview {{ (request()->is('admin/category*') || request()->is('admin/sub-category*') ) ? "menu-open" : ""}} ">
+            <a href="#" class="nav-link {{ (request()->is('admin/category*') || request()->is('admin/sub-category*')) ? "active" : ""}}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Categories
@@ -71,31 +94,31 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/admin/category" class="nav-link">
+                <a href="/admin/category" class="nav-link {{ (request()->is('admin/category')) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>View Categories</p>
+                  <p>Manage Categories</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="/admin/category-add" class="nav-link">
+                <a href="/admin/category-add" class="nav-link {{ (request()->is('admin/category-add') || request()->is('admin/category-update') ) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Category</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="/admin/sub-category" class="nav-link">
+                <a href="/admin/sub-category" class="nav-link {{ ( request()->is('admin/sub-category*') ) ? 'active' : ''}}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Sub Category</p>
+                  <p>Manage Sub-category</p>
                 </a>
               </li>
             </ul>
           </li>
 
           {{-- Attributes --}}
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+          <li class="nav-item has-treeview {{ (request()->is('admin/attribute*')) ? "menu-open" : ""}}">
+            <a href="#" class="nav-link {{ (request()->is('admin/attribute*')) ? "active" : ""}}">
               {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
               <i class="nav-icon fas fa-palette"></i>
               <p>
@@ -107,7 +130,7 @@
             {{-- Size --}}
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/admin/attribute" class="nav-link">
+                <a href="/admin/attribute" class="nav-link {{ (request()->is('admin/attribute')) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Attributes</p>
                 </a>
@@ -115,7 +138,7 @@
 
               {{-- Color --}}
               <li class="nav-item">
-                <a href="/admin/attribute-add" class="nav-link">
+                <a href="/admin/attribute-add" class="nav-link {{ (request()->is('admin/attribute-add*')) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Attributes</p>
                 </a>
