@@ -37,7 +37,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/category', [CategoryController::class, 'showCategoryView']);
         Route::get('/category-add', [CategoryController::class, 'showAddCategoryForm']);
-        Route::post('/category-add', [CategoryController::class, 'showAddCategoryForm'])->name('add-category');
+        Route::post('/category-add', [CategoryController::class, 'store'])->name('add-category');
+        
         Route::get('/sub-category', [CategoryController::class, 'showSubCategoryView']);
         Route::get('/sub-category/{catgorySlug}', [CategoryController::class, 'showSubCategoryView']);
 
@@ -49,7 +50,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/attribute', [AttributeController::class, 'showAttributeView']);
         
         Route::get('/attribute-add', [AttributeController::class, 'showAddAttributeForm']);
-        Route::post('/attribute-add', [AttributeController::class, 'store'])->name('add-attribute');
+        Route::post('/attribute-add', [AttributeController::class, 'storeCategory'])->name('add-attribute');
 
         Route::get('/attribute-update/{attributeId}', [AttributeController::class, 'showUpdateAttributeForm']);
         

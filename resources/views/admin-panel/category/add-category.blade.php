@@ -29,23 +29,8 @@
                         <div class="card-body">
                             
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Attribute Value</label>
-                                <input type="text" class="form-control" id="attributeValue" placeholder="XS,Red">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Name</label>
-                                <input type="text" class="form-control" id="attributeName" placeholder="Name of attribute">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="exampleInputFile">Type</label>
-                                <select name="attributeType" id="attributeType" class="form-control select2bs4">
-                                    <option value="0">Select</option>
-                                    <option value="1">Size</option>
-                                    <option value="2">Color</option>
-                                    <option value="3">Theme</option>
-                                </select>
+                                <label>Category Name</label>
+                                <input type="text" class="form-control" name="categoryName" id="categoryName" placeholder="XS,Red">
                             </div>
 
                             {{-- <div class="form-check">
