@@ -69,8 +69,17 @@
                                             <td>{{ $attribute->label }}</td>
                                             <td>{{ $attribute->type }}</td>
                                             <td>
-                                                <a href="edit/{{$attribute->id}}" class="btn btn-sm btn-secondary">Edit</a>
-                                                <a href="delete/{{$attribute->id}}" class="btn btn-sm btn-danger">Edit</a>
+                                                <a 
+                                                    href="attribute/{{$attribute->id}}/edit" 
+                                                    class="btn btn-sm btn-secondary">
+                                                    Edit
+                                                </a>
+
+                                                {{-- <button
+                                                    data-attribute_id="{{$attribute->id}}"
+                                                    class="btn btn-sm btn-danger delete-attribute">
+                                                    Delete
+                                                </button> --}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -187,5 +196,55 @@
 
 
 @section('content-scripts')
-    
+    <script>
+        document.addEventListener('click', event=>{
+            let element = event.target;
+
+            if(element.className.includes("delete-attribute")){
+                alert(element.dataset.attribute_id);
+                
+                async function delete_attribute(attribute_id){
+                    let form_data = {
+                        attribute_id: attribute_id,
+                    };
+
+                    // console.log(form_data);
+
+                    const request_options = {
+                        method: 'POST',
+                        // headers: {},
+                        body: JSON.stringify(form_data)
+                    };
+
+                    let url = '/admin/attribute-update';
+
+                    try{
+                        let response = await fetch(url, request_options);
+                        // console.log(response);
+                        let response_data = await response.json();
+
+                        // console.log('Response:', response_data);
+                        if(response_data.deleted){
+                            toastr.success(response_data.message);
+                        }
+                        else {
+                            toastr.error(response_data.message);
+                            //submit_btn.innerHTML = submit_btn_cont;
+                            //submit_btn.disabled = false;
+                            //resetForm();
+                            // submit_btn.remove();
+                            setTimeout(() => {
+                                location.reload();
+                                //window.location.href = home_url;
+                            }, 1000);
+                        }
+                    }
+                    catch(error){
+                        console.error('Error:', error);
+                    }
+                }
+            }
+        });
+
+    </script>
 @endsection

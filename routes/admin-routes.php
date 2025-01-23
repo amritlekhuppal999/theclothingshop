@@ -3,9 +3,20 @@
 use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Admin\Products\ProductsController;
 use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\Admin\Category\SubCategoryController;
 use App\Http\Controllers\Admin\Attribute\AttributeController;
 
 Route::prefix('admin')->group(function () {
+
+
+    /*
+        NOTE !!!
+
+        Route::get('/category-image/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY']);
+
+        Here "?" in the route parameter tells laravel that the parameter is optional
+    
+    */
     
     // Dashboard Routes
     Route::get('/dashboard', [AdminDashboardController::class, 'showDashboard'])->name('dashboard');
@@ -35,12 +46,29 @@ Route::prefix('admin')->group(function () {
 
     // CATEGORY Routes
 
-        Route::get('/category', [CategoryController::class, 'showCategoryView']);
-        Route::get('/category-add', [CategoryController::class, 'showAddCategoryForm']);
-        Route::post('/category-add', [CategoryController::class, 'store'])->name('add-category');
+        Route::get('/category', [CategoryController::class, 'INDEX']);
+        Route::get('/category-add', [CategoryController::class, 'CREATE']);
+        Route::post('/category-add', [CategoryController::class, 'STORE'])->name('add-category');
         
-        Route::get('/sub-category', [CategoryController::class, 'showSubCategoryView']);
-        Route::get('/sub-category/{catgorySlug}', [CategoryController::class, 'showSubCategoryView']);
+        Route::get('/category-images/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY']);
+        Route::get('/category-images-add/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY']);
+        
+        Route::get('/category-edit/{categorySlug}', [CategoryController::class, 'EDIT']);
+        Route::post('/category-update/', [CategoryController::class, 'UPDATE'])->name('update-category');
+        Route::post('/category-delete/', [CategoryController::class, 'DELETE'])->name('delete-category');
+
+        Route::get('/get-category-list', [CategoryController::class, 'get_category_list']);
+        
+        Route::get('/sub-category/{catgorySlug?}', [SubCategoryController::class, 'INDEX']);
+        Route::get('/sub-category-add/', [SubCategoryController::class, 'CREATE']);
+
+        // yes its CATEGORY SLUG HERE DON'T sweat it!!
+        Route::get('/sub-category-add/{catgorySlug}', [SubCategoryController::class, 'CREATE']);
+
+        Route::post('/sub-category-add/', [SubCategoryController::class, 'STORE'])->name('add-sub-category');
+        Route::post('/sub-category-delete', [SubCategoryController::class, 'DELETE'])->name('delete-sub-category');
+        Route::get('/sub-category-edit/{subCategorySlug}', [SubCategoryController::class, 'EDIT']);
+        Route::post('/sub-category-update/', [SubCategoryController::class, 'UPDATE'])->name('update-sub-category');
 
     // CATEGORY Routes END
 
@@ -52,7 +80,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/attribute-add', [AttributeController::class, 'showAddAttributeForm']);
         Route::post('/attribute-add', [AttributeController::class, 'storeCategory'])->name('add-attribute');
 
-        Route::get('/attribute-update/{attributeId}', [AttributeController::class, 'showUpdateAttributeForm']);
+        Route::get('/attribute/{attributeId}/edit/', [AttributeController::class, 'edit']);
+        Route::post('/attribute-update/', [AttributeController::class, 'update'])->name('update-attribute');
+        Route::post('/attribute-delete/', [AttributeController::class, 'delete'])->name('delete-attribute');
         
     // Attribute Routes END
 

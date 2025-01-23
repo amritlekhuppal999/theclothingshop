@@ -74,13 +74,15 @@ define('ADMIN_LTE', "XAdminLTE");
         return view(FRONT_END.'/checkout');
     });
 
-// FRONT-END   END
-
-
-require __DIR__.'/user-auth.php';
-require __DIR__.'/admin-auth.php';
-require __DIR__.'/admin-routes.php';
-
+    
+    // FRONT-END   END
+    
+    
+    require __DIR__.'/user-auth.php';
+    require __DIR__.'/admin-auth.php';
+    require __DIR__.'/admin-routes.php';
+    
+    
 
 
 Route::fallback(function () {

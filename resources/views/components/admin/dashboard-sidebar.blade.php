@@ -101,6 +101,13 @@
               </li>
 
               <li class="nav-item">
+                <a href="/admin/category-images" class="nav-link {{ (request()->is('admin/category')) ? "active" : ""}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Category Images</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
                 <a href="/admin/category-add" class="nav-link {{ (request()->is('admin/category-add') || request()->is('admin/category-update') ) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Category</p>
@@ -108,9 +115,23 @@
               </li>
 
               <li class="nav-item">
-                <a href="/admin/sub-category" class="nav-link {{ ( request()->is('admin/sub-category*') ) ? 'active' : ''}}">
+                <a href="/admin/sub-category" class="nav-link {{ ( request()->is('admin/sub-category') || request()->is('admin/sub-category/*') ) ? 'active' : ''}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Sub-category</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="/admin/sub-category-images" class="nav-link {{ (request()->is('admin/category')) ? "active" : ""}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Sub-Category Images</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="/admin/sub-category-add" class="nav-link {{ (request()->is('admin/sub-category-add') || request()->is('admin/sub-category-update*') ) ? "active" : ""}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Sub-category</p>
                 </a>
               </li>
             </ul>

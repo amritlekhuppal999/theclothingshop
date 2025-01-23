@@ -22,20 +22,25 @@
             <div class="col-md-6">
                 <div class="card card-purple">
                     <div class="card-header">
-                        <h3 class="card-title">Add Attribute</h3>
+                        <h3 class="card-title">Update Attribute</h3>
                     </div>
                     
-                    <form action="{{ route('add-attribute') }}" method="POST" role="form">
+                    <form action="{{ route('update-attribute') }}" method="POST" role="form">
                         @csrf
+
+                        {{-- Attribute ID --}}
+                        <input type="hidden" value="{{$attributeId}}" name="attributeId">
 
                         <div class="card-body">
                             
                             {{-- Type --}}
                             <div class="form-group">
+                                <label for="">Attribute Type</label>
                                 <select name="attributeType" id="attributeType" class="form-control" required>
                                     <option value="0">Select Type</option>
+
                                     @foreach($attr_type as $key => $type)
-                                        <option value="{{$key}}">{{ $type }}</option>
+                                        <option value="{{$key}}" {{ ($attribute->type == $key) ? "selected" : "" }}>{{ $type }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -46,8 +51,8 @@
                             {{-- Attribute Value --}}
                             <div class="form-group">
                                 <label for="">Attribute Value</label>
-                                <input type="text" class="form-control" name="attributeValue" id="attributeValue" value="{{ old('attributeValue') }}" placeholder="XS,Red" required>
-                                <input type="hidden" class="" name="attributeValue" id="attributeValueColor" value="{{ old('attributeValue') }}" placeholder="XS,Red" required>
+                                <input type="{{ ($attribute->type !== 2) ? "text" : "hidden" }}" class="form-control" name="attributeValue" id="attributeValue" value="{{ $attribute->attribute }}" placeholder="XS,Red" required>
+                                <input type="{{ ($attribute->type == 2) ? "color" : "hidden" }}" class="" name="attributeValue" id="attributeValueColor" value="{{ $attribute->attribute }}" placeholder="XS,Red" required>
                             </div>
                             
                             @error('attributeValue')
@@ -57,7 +62,7 @@
                             {{-- Attribute Label --}}
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Label</label>
-                                <input type="text" class="form-control" name="attributeLabel" id="attributeLabel" value="{{ old('attributeLabel') }}" placeholder="Name of attribute" required>
+                                <input type="text" class="form-control" name="attributeLabel" id="attributeLabel" value="{{ $attribute->label }}" placeholder="Name of attribute" required>
                             </div>
                             @error('attributeLabel')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -89,7 +94,7 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
                 </div>

@@ -16,3 +16,6 @@
 
     
     {{-- <script src="{{ asset("plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js") }}"></script> --}}
+
+    <!-- Toastr -->
+    <script src="{{ asset("plugins/toastr/toastr.min.js") }}"></script>

@@ -25,8 +25,10 @@
                         <h3 class="card-title">Add Category</h3>
                     </div>
                     
-                    <form action="{{ route('add-category') }}" method="POST" role="form">
+                    <form action="{{ route('update-category') }}" method="POST" role="form">
                         @csrf
+
+                        <input type="hidden" name="category_id" value="{{ $category[0]->id }}">
 
                         <div class="card-body">
                             
@@ -38,7 +40,7 @@
                                     name="categoryName" 
                                     id="categoryName" 
                                     placeholder="Topwear"
-                                    value="{{ old('categoryName') }}"
+                                    value="{{ $category[0]->category_name }}"
                                 />
                             </div>
                             @error('categoryName')
@@ -53,7 +55,7 @@
                                     name="categorySlug" 
                                     id="categorySlug" 
                                     placeholder="topwear"
-                                    value="{{ old('categorySlug') }}"
+                                    value="{{ $category[0]->category_slug }}"
                                 />
                             </div>
                             @error('categorySlug')
@@ -78,7 +80,7 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
                 </div>
