@@ -102,8 +102,8 @@
                                     <input 
                                         type="file" 
                                         class="form-control pl-0 pt-1" 
-                                        name="categoryBanner" 
-                                        id="categoryBanner" 
+                                        name="categoryImages" 
+                                        id="categoryImages" 
                                         accept="image/*"
                                         multiple
                                     />
@@ -117,97 +117,7 @@
                                     <label> Selected Image</label>
                                     <div id="image-preview" class="d-flex flex-wrap"> {{-- position-relative --}}
                                         
-                                        {{-- SELECTED IMAGE CONTAINER --}}
-                                        <div class="card mr-2">
-                                            <div class="card-body p-0">
-                                                {{-- card-img-top --}}
-                                                <div class="image-wrapper">
-                                                    <img 
-                                                        src="{{asset("/images/one-piece.webp")}}" 
-                                                        alt="Sample image" 
-                                                        class="selected-image"
-                                                    />
-                                                    
-                                                    <button class="remove-btn">
-                                                        <span class="remove-icon">&times;</span>
-                                                    </button>
-                                                    
-                                                    <label class="btn  btn-success mb-0 radio-wrapper">
-                                                        <input type="radio" name="select-image" id="">
-                                                        Set Primary
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {{-- SELECTED IMAGE CONTAINER --}}
-                                        <div class="card mr-2">
-                                            <div class="card-body p-0">
-                                                {{-- card-img-top --}}
-                                                <div class="image-wrapper">
-                                                    <img 
-                                                        src="{{asset("/images/one-piece.webp")}}" 
-                                                        alt="Sample image" 
-                                                        class="selected-image"
-                                                    />
-                                                    
-                                                    <button class="remove-btn">
-                                                        <span class="remove-icon">&times;</span>
-                                                    </button>
-                                                    
-                                                    <label class="btn  btn-success mb-0 radio-wrapper">
-                                                        <input type="radio" name="select-image" id="">
-                                                        Set Primary
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {{-- SELECTED IMAGE CONTAINER 2 --}}
-                                        <div class="card mr-2">
-                                            <div class="card-body p-0">
-                                                {{-- card-img-top --}}
-                                                <div class="image-wrapper">
-                                                    <img 
-                                                        src="{{asset("images/naruto-ultimate-collection.webp")}}" 
-                                                        alt="Sample image" 
-                                                        class="selected-image"
-                                                    />
-                                                    
-                                                    <button class="remove-btn">
-                                                        <span class="remove-icon">&times;</span>
-                                                    </button>
-                                                    
-                                                    <label class="btn  btn-success mb-0 radio-wrapper">
-                                                        <input type="radio" name="select-image" id="">
-                                                        Set Primary
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {{-- SELECTED IMAGE CONTAINER 3 --}}
-                                        <div class="card mr-2">
-                                            <div class="card-body p-0">
-                                                {{-- card-img-top --}}
-                                                <div class="image-wrapper">
-                                                    <img 
-                                                        src="{{asset("images/rick-n-morty.webp")}}" 
-                                                        alt="Sample image" 
-                                                        class="selected-image"
-                                                    />
-                                                    
-                                                    <button class="remove-btn">
-                                                        <span class="remove-icon">&times;</span>
-                                                    </button>
-                                                    
-                                                    <label class="btn  btn-success mb-0 radio-wrapper">
-                                                        <input type="radio" name="select-image" id="">
-                                                        Set Primary
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
 
 
                                     </div>
@@ -248,6 +158,8 @@
     <script>
 
         window.onload = ()=> {
+
+            image_arr = [];
             
             load_category_list();
             async function load_category_list(){
@@ -290,6 +202,116 @@
                 catch(error){
                     console.error('Error:', error);
                 }
+            }
+
+            
+            document.getElementById('categoryImages').addEventListener('change', (event)=>{
+
+                let img_input_field = event.target;
+                console.log(img_input_field.files);
+                let file_list = img_input_field.files;
+        
+                // if(file_list[0].type.includes("image")){
+                //     create_image_preview(file_list[0]);        
+                // }
+        
+                // else preview_div.innerHTML = '<h3> Invalid file type !!!</h3>';
+
+                /*
+                    if(file_list[0].size > 0 && file_list[0].size < 5000000){
+                        if(file_list[0].type.includes("image")){
+                            create_image_preview(file_list[0]);        
+                        }
+            
+                        // else preview_div.innerHTML = '<h3> Invalid file type !!!</h3>';
+                    }
+                    else alert('File size greater than 5MB!!!');
+                */
+
+                for(let i=0; i< file_list.length; i++){
+                    if(file_list[i].size > 0 && file_list[i].size < 5000000){
+                        if(file_list[i].type.includes("image")){
+                            create_image_preview(file_list[i]);        
+                        }
+            
+                        // else preview_div.innerHTML = '<h3> Invalid file type !!!</h3>';
+                    }
+                    else toastr.warning('File size greater than 5MB!!!');
+                }
+            });
+
+
+            async function create_image_preview(image_file){
+
+                // async function cause it took an oath to deal with a promise BITCH !!!
+
+                let image_preview = document.getElementById('image-preview');
+                // preview_div.innerHTML = '';
+
+                // image_file.name
+                // image_file.size
+                // image_file.type
+
+                // let video_heading = document.createElement("h3");
+                // video_heading.innerText = image_file.name;
+
+                let img_id = Math.floor(Math.random() * 100);
+                let IMG_URI = await generate_URI(image_file);
+
+                image_arr.push({
+                    img_id : img_id,
+                    img_uri: IMG_URI,
+                });
+                
+                let div_ele = document.createElement('div');
+                div_ele.dataset.img_id = img_id;
+                div_ele.classList = "card mr-2";
+
+                div_ele.innerHTML = `
+                    <div class="card-body p-0" data-img_id="${img_id}">
+                        <div class="image-wrapper">
+                            <img 
+                                src="${IMG_URI}" 
+                                alt="Sample image" 
+                                class="selected-image"
+                                id="${img_id}"
+                            />
+                            
+                            <button class="remove-btn" data-img_id="${img_id}">
+                                <span class="remove-icon">&times;</span>
+                            </button>
+                            
+                            <label class="btn  btn-success mb-0 radio-wrapper">
+                                <input type="radio" name="select-image" id="" data-img_id="${img_id}">
+                                Set Primary
+                            </label>
+                        </div>
+                    </div>`;
+
+                
+                console.log(div_ele);
+                // console.log(image_arr);
+
+                image_preview.appendChild(div_ele); 
+            }
+
+
+            function generate_URI(media_file){
+                return new Promise((resolve, reject) =>{
+
+                    const reader = new FileReader();
+                    // const baseURI = '';
+                    reader.onload = event =>{
+                        // baseURI = event.target.result;
+                        resolve(event.target.result);
+                    }
+                    reader.onerror = event =>{
+                        reject(event.target.error);
+                    }
+
+                    reader.readAsDataURL(media_file);
+                });
+
             }
 
         };
