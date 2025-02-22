@@ -53,6 +53,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/category-images/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY']);
         Route::get('/category-images-add/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY']);
         
+        Route::post('/category-images-add', [CategoryController::class, 'ADD_IMAGE'])->name('add-category-images');
+        
         Route::get('/category-edit/{categorySlug}', [CategoryController::class, 'EDIT']);
         Route::post('/category-update/', [CategoryController::class, 'UPDATE'])->name('update-category');
         Route::post('/category-delete/', [CategoryController::class, 'DELETE'])->name('delete-category');

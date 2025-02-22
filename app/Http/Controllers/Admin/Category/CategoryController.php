@@ -192,6 +192,21 @@ class CategoryController extends Controller
         return view($this->category_route.'category-images-add', ["categorySlug" => $categorySlug]);
     }
 
+
+    // function to add images
+    public function ADD_IMAGE(Request $request){
+
+        //print_r($request);
+
+        // Redirect with a success message
+        return [
+            "type" => "Success",
+            "message" => "Upload Request received successfully!",
+            "requested_action_performed" => true,
+            "reload" => true
+        ];
+    }
+
     // DEALS With Front-End JS requests
     public function get_category_list(){
 

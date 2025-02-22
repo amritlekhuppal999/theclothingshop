@@ -3,6 +3,10 @@
 @section('content-css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <meta name="img-category-url" content="{{ route('add-category-images') }}">
+
+    <link rel="stylesheet" href="{{asset("css/animation.css")}}">
+
     <style>
         .image-container {
             position: relative;
@@ -56,6 +60,13 @@
             bottom:10px;
             right:10px;
         }
+
+
+
+        .highlighter{
+            border: 3px solid rgba(255,0,255,0.7);
+            animation: movingShadow 4s linear infinite;
+        }
     </style>
 @endsection
 
@@ -78,7 +89,12 @@
                             <h3 class="card-title">Add Category Image</h3>
                         </div>
                         
-                        <form action="{{-- route('add-category-image') --}}" method="POST" role="form">
+                        <form 
+                            action="{{-- route('add-category-image') --}}" 
+                            method="POST" 
+                            role="form" 
+                            id="category-image-form" 
+                            enctype="multipart/form-data" >
                             @csrf
 
                             {{-- <input type="hidden" name="category_id" value=""> --}}
@@ -91,7 +107,8 @@
                                         name="select-category" 
                                         id="select-category" 
                                         class="form-control" 
-                                        data-value="{{ $categorySlug }}">
+                                        data-value="{{ $categorySlug }}"
+                                        required>
                                         <option value="">Loading...</option>
                                     </select>
                                 </div>
@@ -118,32 +135,22 @@
                                     <div id="image-preview" class="d-flex flex-wrap"> {{-- position-relative --}}
                                         
                                         
-
-
                                     </div>
                                 </div>
 
                                 {{-- Operation Error Message --}}
-                                @if(session('error'))
-                                    <div class="form-group">
-                                        <span class="text-danger">
-                                            {{ session('error') }}
-                                        </span>
-                                    </div>
-                                @elseif(session('success'))
-                                    <div class="form-group">
-                                        <span class="text-success">
-                                            {{ session('success') }}
-                                        </span>
-                                    </div>
-                                @endif
+                                <div class="form-group">
+                                    <span id="error-msg"></span>
+                                </div>
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" id="upload-images" class="btn btn-primary">Upload Images</button>
                             </div>
                         </form>
+
+                        <button type="button" id="upload-images-test" class="btn btn-warning">Upload TEST</button>
                     </div>
 
                 </div>
@@ -159,7 +166,8 @@
 
         window.onload = ()=> {
 
-            image_arr = [];
+            let image_arr = [];
+            let primary_img = 0;
             
             load_category_list();
             async function load_category_list(){
@@ -182,7 +190,7 @@
                     let response = await fetch(url, request_options);
                     // console.log(response);
                     let response_data = await response.json();
-                    console.log(response_data);
+                    //console.log(response_data);
                     //return response_data;
 
                     let category_element = document.getElementById('select-category');
@@ -208,26 +216,9 @@
             document.getElementById('categoryImages').addEventListener('change', (event)=>{
 
                 let img_input_field = event.target;
-                console.log(img_input_field.files);
+                //console.log(img_input_field.files);
                 let file_list = img_input_field.files;
         
-                // if(file_list[0].type.includes("image")){
-                //     create_image_preview(file_list[0]);        
-                // }
-        
-                // else preview_div.innerHTML = '<h3> Invalid file type !!!</h3>';
-
-                /*
-                    if(file_list[0].size > 0 && file_list[0].size < 5000000){
-                        if(file_list[0].type.includes("image")){
-                            create_image_preview(file_list[0]);        
-                        }
-            
-                        // else preview_div.innerHTML = '<h3> Invalid file type !!!</h3>';
-                    }
-                    else alert('File size greater than 5MB!!!');
-                */
-
                 for(let i=0; i< file_list.length; i++){
                     if(file_list[i].size > 0 && file_list[i].size < 5000000){
                         if(file_list[i].type.includes("image")){
@@ -237,6 +228,44 @@
                         // else preview_div.innerHTML = '<h3> Invalid file type !!!</h3>';
                     }
                     else toastr.warning('File size greater than 5MB!!!');
+                }
+            });
+
+
+            // IMAGE PREVIEW CLICK EVENT
+            document.getElementById("image-preview").addEventListener('click', event=>{
+                let element = event.target;
+                
+                // SET PRIMARY
+                if(element.className.includes("set_primary")){
+                    //alert(element.dataset.img_id+" Set Primary");
+
+                    // the highlighter class highlights the element as primary
+                    if(document.querySelector(".highlighter")){
+                        let previous_primary = document.querySelector(".highlighter");
+                        previous_primary.classList.remove("highlighter");
+
+                    }
+
+                    element.closest(".card").classList.add("highlighter");
+                    primary_img = element.dataset.img_id;
+                }
+
+                // REMOVE ADDED IMAGE
+                else if(element.className.includes("remove-img")){
+                    if(confirm("Delete Image?")){
+                        if(primary_img == element.dataset.img_id){
+                            primary_img = 0;
+                        }
+
+                        // remove from the image_array
+                        const index = image_arr.findIndex(obj => obj.img_id == element.dataset.img_id);
+                        if (index !== -1) {
+                            image_arr.splice(index, 1);
+                        }
+
+                        element.closest(".card").remove();
+                    }
                 }
             });
 
@@ -252,9 +281,6 @@
                 // image_file.size
                 // image_file.type
 
-                // let video_heading = document.createElement("h3");
-                // video_heading.innerText = image_file.name;
-
                 let img_id = Math.floor(Math.random() * 100);
                 let IMG_URI = await generate_URI(image_file);
 
@@ -265,7 +291,7 @@
                 
                 let div_ele = document.createElement('div');
                 div_ele.dataset.img_id = img_id;
-                div_ele.classList = "card mr-2";
+                div_ele.classList = "card mr-2 ";
 
                 div_ele.innerHTML = `
                     <div class="card-body p-0" data-img_id="${img_id}">
@@ -277,19 +303,19 @@
                                 id="${img_id}"
                             />
                             
-                            <button class="remove-btn" data-img_id="${img_id}">
-                                <span class="remove-icon">&times;</span>
+                            <button type="button" class="remove-btn" data-img_id="${img_id}">
+                                <span class="remove-icon remove-img" data-img_id="${img_id}">&times;</span>
                             </button>
                             
-                            <label class="btn  btn-success mb-0 radio-wrapper">
-                                <input type="radio" name="select-image" id="" data-img_id="${img_id}">
+                            <label class="btn btn-success mb-0 radio-wrapper">
+                                <input type="radio" class="set_primary" name="select-image" id="" data-img_id="${img_id}">
                                 Set Primary
                             </label>
                         </div>
                     </div>`;
 
                 
-                console.log(div_ele);
+                // console.log(div_ele);
                 // console.log(image_arr);
 
                 image_preview.appendChild(div_ele); 
@@ -314,6 +340,54 @@
 
             }
 
+
+            // FORM SUBMIT 
+            document.getElementById("category-image-form").addEventListener('submit', async event=>{
+                event.preventDefault();
+
+                // alert(document.querySelector('input[name="_token"]').value);
+
+                
+                let category_id = document.getElementById('select-category').value;
+
+                if(!image_arr.length){
+                    alert("You haven't added any image...");
+                    return false;
+                }
+                
+                let form_data = {
+                    category_id: category_id,
+                    image_arr: image_arr,
+                    primary_img_id: primary_img,
+
+                };
+
+                const request_options = {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                        //'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify(form_data)
+                };
+
+                let url = document.querySelector('meta[name="img-category-url"]').getAttribute('content');
+
+                try{
+                    let response = await fetch(url, request_options);     
+                    console.log(response);
+                    let response_data = await response.json();
+                    console.log(response_data);
+                    //return response_data;
+
+                    //let error_message_span = document.getElementById('error-msg');
+                }
+                catch(error){
+                    console.error('Error:', error);
+                }
+
+            })
         };
 
     </script>
