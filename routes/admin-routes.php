@@ -56,6 +56,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/category-images-update/{categorySlug}', [CategoryController::class, 'UPDATE_IMAGE_INDEX']);
         Route::post('/category-images-update', [CategoryController::class, 'UPDATE_IMAGE'])->name('update-category-images');
         Route::post('/category-images-remove', [CategoryController::class, 'REMOVE_CATEGORY_IMAGE'])->name('remove-category-images');
+        Route::post('/category-images-banner', [CategoryController::class, 'UPDATE_BANNER_IMAGE'])->name('update-category-primary-image');
 
         Route::get('/category-images-add/{categorySlug?}', [CategoryController::class, 'ADD_IMAGE_INDEX']);
         Route::post('/category-images-add', [CategoryController::class, 'ADD_IMAGE'])->name('add-category-images');

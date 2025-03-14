@@ -5,6 +5,7 @@
     
     <meta name="img-category-url" content="{{ route('update-category-images') }}">
     <meta name="remove-img-url" content="{{ route('remove-category-images') }}">
+    <meta name="update-banner-img" content="{{ route('update-category-primary-image') }}">
 
     <link rel="stylesheet" href="{{asset("css/animation.css")}}">
 
@@ -88,11 +89,11 @@
                 <div class="col-md-12 mb-2"></div>
             </div>
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-12 mb-2">
                     <h3 class="text-danger">WORKING ON UPDATING BANNER IMAGE</h3>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- Image FORM --}}
             <div class="row">
@@ -455,8 +456,13 @@
                             let image_URL = element.image_location;
                             let prime_image = element.prime_image;
 
+                            let highlighter_selector = "", checked = "";
+                            if(prime_image){
+                                highlighter_selector = "highlighter"; checked = "checked";
+                            }
+
                         inner_HTML += `
-                            <div class="col-md-3 img-block">
+                            <div class="col-md-3 img-block ${highlighter_selector}">
                                 <div class="card card bg-dark text-white" style="" data-img_id="${image_id}">
                                     <img src="${PUBLIC_PATH}/${image_URL}" class="card-img-top" />
 
@@ -468,7 +474,7 @@
                                         </button>
                                         
                                         <label class="btn btn-success radio-wrapper" title="Change Banner Image">
-                                            <input type="radio" class="change_primary" name="select-image" id="" data-img_id="${image_id}">
+                                            <input type="radio" class="change_primary" name="select-image" id="" data-img_id="${image_id}" ${checked}>
                                             Set Banner
                                         </label>
                                     </div>
@@ -541,7 +547,7 @@
                             toastr.success(response_data.message);
                             setTimeout(()=>{
                                 parent_DIV.remove();
-                            }, 1500);
+                            }, 1000);
                             /*
                             submit_btn.innerHTML = CHECK_SUCCESS;
                             if(response_data.reload){
@@ -564,6 +570,73 @@
                         delete_BTN.disabled = false;
                         
                     }
+                }
+
+                // UPDATE banner IMAGE
+                if(element.className.includes("change_primary")){
+                    
+                    // check for action confirmation
+                    if(!confirm("Set selected image as primary?")){
+                        return false;
+                    }
+
+                    //assign BTN
+                    let setBannerBTN = element;
+                    let setBTN_content = setBannerBTN.innerHTML;
+                    // setBannerBTN.disabled = true;
+
+                    // get parent div
+                    let parent_DIV = setBannerBTN.closest(".img-block");
+
+                    // data to send
+                    let send_data = {
+                        img_id: setBannerBTN.dataset.img_id,
+                        category_id: document.getElementById("category-id").value
+                    };
+
+                    // fetch request option
+                    const request_options = {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify(send_data)
+                    };
+
+                    let url = document.querySelector('meta[name="update-banner-img"]').getAttribute('content');
+                    // update-category-primary-image
+
+                    try{
+                        let response = await fetch(url, request_options);     
+                        //console.log(response);
+                        let response_data = await response.json();
+                        console.log(response_data);
+                        //return response_data;
+
+                        if(response_data.requested_action_performed){
+                            toastr.success(response_data.message);
+                            setTimeout(()=>{
+                                let img_block = document.querySelectorAll(".img-block");
+                                img_block.forEach(element => {
+                                    element.classList.remove('highlighter');
+                                });
+                                parent_DIV.classList.add("highlighter");
+                            }, 1000);
+                        }
+                        else {
+                            
+                            toastr.error(response_data.message);
+                            setBannerBTN.checked = false;
+                            
+                        }
+                    }
+                    catch(error){
+                        //console.error('Error:', error);
+                        toastr.error("Something went wrong!!");
+                        setBannerBTN.checked = false;                        
+                    }
+
                 }
             });
         }

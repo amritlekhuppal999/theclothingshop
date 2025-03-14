@@ -520,6 +520,34 @@ class CategoryController extends Controller
             ];
         }
     }
+
+    public function UPDATE_BANNER_IMAGE(Request $request){
+        
+        $img_id = $request->img_id;
+        $category_id = $request->category_id;
+
+        try {
+            CategoryImage::where("category_id", $category_id)->update([ "prime_image" => 0 ]);
+            CategoryImage::where("id", $img_id)->update([ "prime_image" => 1 ]);
+
+            return [
+                "type" => "Success",
+                "message" => "Banner image update",
+                "requested_action_performed" => true,
+                "reload" => false
+            ];
+        
+        } 
+        catch (QueryException $e) {
+            
+            return [
+                "type" => "Failed",
+                "message" => "An error occurred: " . $e->getMessage(),
+                "requested_action_performed" => false,
+                "reload" => false
+            ];
+        }
+    }
     
 
     // DEALS With Front-End JS requests
