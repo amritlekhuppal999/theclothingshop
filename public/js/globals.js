@@ -11,6 +11,8 @@ const LOADER_BIG = '<span class="spinner-border spinner-border-sm" role="status"
 
 const EXCLAMATION_DANGER = '<i class="fas fa-exclamation-triangle" style="color:#dc3545;"></i>';
 
+const CHECK_SUCCESS = '<i class="fas fa-check"></i>';
+
 // Get the current URL of the page
 const CURRENT_URL = window.location.href; 
 
@@ -25,6 +27,8 @@ const PROTOCOL = window.location.protocol;
 
 // Get the port number of the current URL
 const PORT = window.location.port; 
+
+const PUBLIC_PATH = document.querySelector('meta[name="public-path"]').getAttribute('content');
 
 
 // FUNCTION TO REMOVE WHITESPACES FROM a STRING

@@ -14,6 +14,7 @@ class CategoryImage extends Model
     protected $fillable = [
         'category_id',
         'image_location',
-        'prime_image'
+        'prime_image',
+        'status'
     ];
 }

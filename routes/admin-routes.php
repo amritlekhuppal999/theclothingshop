@@ -50,9 +50,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/category-add', [CategoryController::class, 'CREATE']);
         Route::post('/category-add', [CategoryController::class, 'STORE'])->name('add-category');
         
-        Route::get('/category-images/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY']);
-        Route::get('/category-images-add/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY']);
+        // Route::get('/category-images/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY']);
+        Route::get('/get-category-images/{categoryID}', [CategoryController::class, 'CATEGORY_IMAGE_GALLERY']);
         
+        Route::get('/category-images-update/{categorySlug}', [CategoryController::class, 'UPDATE_IMAGE_INDEX']);
+        Route::post('/category-images-update', [CategoryController::class, 'UPDATE_IMAGE'])->name('update-category-images');
+        Route::post('/category-images-remove', [CategoryController::class, 'REMOVE_CATEGORY_IMAGE'])->name('remove-category-images');
+
+        Route::get('/category-images-add/{categorySlug?}', [CategoryController::class, 'ADD_IMAGE_INDEX']);
         Route::post('/category-images-add', [CategoryController::class, 'ADD_IMAGE'])->name('add-category-images');
         
         Route::get('/category-edit/{categorySlug}', [CategoryController::class, 'EDIT']);

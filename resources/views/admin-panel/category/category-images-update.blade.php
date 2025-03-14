@@ -2,8 +2,9 @@
 
 @section('content-css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <meta name="img-category-url" content="{{ route('add-category-images') }}">
+    
+    <meta name="img-category-url" content="{{ route('update-category-images') }}">
+    <meta name="remove-img-url" content="{{ route('remove-category-images') }}">
 
     <link rel="stylesheet" href="{{asset("css/animation.css")}}">
 
@@ -29,6 +30,12 @@
             display: block;
         }
 
+        .added-images{
+            
+            height: 300px;
+        }
+
+        
         .remove-btn {
             position: absolute;
             top: 10px;
@@ -54,10 +61,11 @@
             font-weight: bold;
             font-size: 16px;
         }
+        
 
         .radio-wrapper {
             position:absolute;
-            bottom:10px;
+            bottom:12px;
             right:10px;
         }
 
@@ -81,12 +89,18 @@
             </div>
 
             <div class="row">
+                <div class="col-md-12 mb-2">
+                    <h3 class="text-danger">WORKING ON UPDATING BANNER IMAGE</h3>
+                </div>
+            </div>
 
+            {{-- Image FORM --}}
+            <div class="row">
                 <div class="col-8 offset-md-2">
                     
                     <div class="card card-purple">
                         <div class="card-header">
-                            <h3 class="card-title">Add Category Image</h3>
+                            <h4 class="card-title"> Update {{$category["category_name"]}} Images</h4>
                         </div>
                         
                         <form 
@@ -97,22 +111,11 @@
                             enctype="multipart/form-data" >
                             @csrf
 
-                            {{-- <input type="hidden" name="category_id" value=""> --}}
+                            {{-- category ID --}}
+                            <input type="hidden" name="category-id" id="category-id" value="{{$category["id"]}}">
 
                             <div class="card-body">
 
-                                {{-- Select Category --}}
-                                <div class="form-group">
-                                    <select 
-                                        name="select-category" 
-                                        id="select-category" 
-                                        class="form-control" 
-                                        data-value="{{ $categorySlug }}"
-                                        required>
-                                        <option value="">Loading...</option>
-                                    </select>
-                                </div>
-                                
                                 {{-- Select Image --}}
                                 <div class="form-group">
                                     <label>Select Image</label>
@@ -132,10 +135,8 @@
                                 {{-- Image Preview --}}
                                 <div>
                                     <label> Selected Image</label>
-                                    <div id="image-preview" class="d-flex flex-wrap"> {{-- position-relative --}}
-                                        
-                                        
-                                    </div>
+                                    {{-- position-relative --}}
+                                    <div id="image-preview" class="d-flex flex-wrap"> </div>
                                 </div>
 
                                 {{-- Operation Error Message --}}
@@ -155,6 +156,36 @@
 
                 </div>
             </div>
+
+            {{-- Load added/saved category images --}}
+            <div class="row" id="saved-category-images">
+
+                <!--
+                <div class="col-md-3">
+                    <div class="card" style="" data-img_id="">
+                        <img src="http://127.0.0.1:8000/images/one-piece.webp" class="card-img-top" />
+
+                        <div class="card-body">
+                            {{-- 
+                            <h5 class="card-title">Banner Image</h5> <br />
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a> --}}
+                            
+                            <button type="button" class="btn btn-danger" data-img_id="">
+                                <span class="remove-img" data-img_id=""> × </span>
+                            </button>
+                            
+                            <label class="btn btn-success radio-wrapper">
+                                <input type="radio" class="set_primary" name="select-image" id="" data-img_id="">
+                                Set Banner
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                -->
+
+            </div>
+
         </div>
     </section>
 
@@ -164,70 +195,31 @@
 @section('content-scripts')
     <script>
 
-        window.onload = ()=> {
-
+        window.onload = ()=>{
             let image_arr = [];
             let primary_img = 0;
-            let category_id = 0;
-            
-            load_category_list();
-            async function load_category_list(){
-                /*
-                const request_data = {
-                    result_count: result_count
-                };
-                const params = new URLSearchParams(request_data);
-                */
-                
-                const request_options = {
-                    method: 'GET',
-                    // headers: {},
-                    // body: JSON.stringify(request_data)
-                };
+            let category_id = document.getElementById("category-id").value;
+            const MAX_FILE_UPLOAD_LIMIT = 5;
 
-                let url = '/admin/get-category-list';
 
-                try{
-                    let response = await fetch(url, request_options);
-                    // console.log(response);
-                    let response_data = await response.json();
-                    //console.log(response_data);
-                    //return response_data;
-
-                    let category_element = document.getElementById('select-category');
-
-                    category_element.innerHTML = '<option value="">Select Category</option>';
-
-                    let category_list = response_data.category_list;
-                    category_list.forEach((element, index)=>{
-                        let selected = (category_element.dataset.value === element.category_slug) ? "selected" : "";
-
-                        let opt_str = `<option value="${element.category_slug}" ${selected} data-id=${element.id}>${element.category_name}</option>`;
-                        category_element.innerHTML += opt_str;
-                    });
-                    
-
-                }
-                catch(error){
-                    console.error('Error:', error);
-                }
-            }
-
-            // get id from the select category element
-            document.getElementById("select-category").addEventListener('change', event=>{
-                let select_element = event.target;
-
-                let selected_option = select_element.options[select_element.selectedIndex];
-                category_id = selected_option.dataset.id;
-            });
-
-            
-            // GET Category ID
             document.getElementById('categoryImages').addEventListener('change', (event)=>{
 
                 let img_input_field = event.target;
                 //console.log(img_input_field.files);
                 let file_list = img_input_field.files;
+
+                // checks how many images user has selected. Must not me greater than MAX_FILE_UPLOAD_LIMIT
+                if(file_list.length > MAX_FILE_UPLOAD_LIMIT){
+                    toastr.warning('You cannot add more than '+ MAX_FILE_UPLOAD_LIMIT +' images.');
+                    return false;
+                }
+
+                // checks if the total image count of user selected and already added is less than 5
+                if( (parseInt(image_arr.length) + parseInt(file_list.length)) > MAX_FILE_UPLOAD_LIMIT){
+                    let msg_str = 'You have added '+image_arr.length+' images. You can add '+( MAX_FILE_UPLOAD_LIMIT - parseInt(image_arr.length) )+' more.';
+                    toastr.warning(msg_str);
+                    return false;
+                }
         
                 for(let i=0; i< file_list.length; i++){
                     if(file_list[i].size > 0 && file_list[i].size < 5000000){
@@ -240,7 +232,6 @@
                     else toastr.warning('File size greater than 5MB!!!');
                 }
             });
-
 
             // IMAGE PREVIEW CLICK EVENT
             document.getElementById("image-preview").addEventListener('click', event=>{
@@ -352,27 +343,30 @@
 
             }
 
-
-            // FORM SUBMIT 
+            // FORM SUBMIT (UPDATE operations)
             document.getElementById("category-image-form").addEventListener('submit', async event=>{
                 event.preventDefault();
+
+                if(!image_arr.length){
+                    alert("You haven't added any image...");
+                    return false;
+                }
+
+                if(image_arr.length > 5){
+                    alert("You cannot add more than 5 images.");
+                    return false;
+                }
 
                 let submit_btn = document.getElementById("upload-images");
                 let submit_btn_content = submit_btn.innerHTML;
 
                 submit_btn.innerHTML = LOADER_SMALL;
                 submit_btn.disabled = true;
-
-                if(!image_arr.length){
-                    alert("You haven't added any image...");
-                    return false;
-                }
                 
                 let form_data = {
                     category_id: category_id,
                     image_arr: image_arr,
                     primary_img_id: primary_img,
-
                 };
 
                 //console.log(image_arr);
@@ -381,8 +375,8 @@
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',
-                        //'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                        //'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify(form_data)
                 };
@@ -423,7 +417,156 @@
                 }
 
             })
-        };
+
+
+            load_category_images();
+            // function to load ADDED category images
+            async function load_category_images(){
+
+                document.getElementById("saved-category-images").innerHTML = `
+                    <div class="col-md-6">
+                        <h5 class="card-title"> Loading Images... ${LOADER_MEDIUM} </h5> <br />
+                    </div>
+                `; 
+
+                
+                
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = `/admin/get-category-images/${document.getElementById("category-id").value}`;
+                // console.log(url);
+
+                try{
+                    let response = await fetch(url, request_options);
+                    //console.log(response);
+                    let response_data = await response.json();
+                    // console.log(response_data);
+                    //return response_data;
+                    
+                    if(response_data.requested_action_performed){
+                        let inner_HTML = '';
+                        
+                        response_data.categoryImages.forEach((element, index)=>{
+                            let image_id = element.category_img_id;
+                            let image_URL = element.image_location;
+                            let prime_image = element.prime_image;
+
+                        inner_HTML += `
+                            <div class="col-md-3 img-block">
+                                <div class="card card bg-dark text-white" style="" data-img_id="${image_id}">
+                                    <img src="${PUBLIC_PATH}/${image_URL}" class="card-img-top" />
+
+                                    <div class="card-body">
+                                        <button type="button" class="btn btn-danger delete-image" data-img_id="${image_id}" title="Delete Image">
+                                            <span class="remove-img" data-img_id="${image_id}"> 
+                                                <i class="fas fa-trash-alt"></i>
+                                            </span>
+                                        </button>
+                                        
+                                        <label class="btn btn-success radio-wrapper" title="Change Banner Image">
+                                            <input type="radio" class="change_primary" name="select-image" id="" data-img_id="${image_id}">
+                                            Set Banner
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
+
+
+                        document.getElementById("saved-category-images").innerHTML = inner_HTML;
+                    }
+
+                    else{
+                        document.getElementById("saved-category-images").innerHTML = `
+                            <div class="col-md-12">
+                                <h3 class="text-danger"> No Images added for this category.</h3>
+                            </div>`;
+                    }
+                }
+
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+
+
+            // Event Listener for LOADED IMAGES SECTION
+            document.getElementById("saved-category-images").addEventListener("click", async event=>{
+                let element = event.target;
+
+                // DELETE saved Images
+                if(element.className.includes("delete-image")){
+
+                    if(!confirm("Delete selected image?")){
+                        return false;
+                    }
+
+                    let delete_BTN = element;
+
+                    let delete_BTN_content = delete_BTN.innerHTML;
+                    delete_BTN.innerHTML = LOADER_SMALL;
+                    delete_BTN.disabled = true;
+
+                    let parent_DIV = delete_BTN.closest(".img-block");
+                    // element.closest(".img-block").remove();
+
+                    let send_data = {
+                        img_id: delete_BTN.dataset.img_id
+                    };
+
+                    const request_options = {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify(send_data)
+                    };
+
+                    let url = document.querySelector('meta[name="remove-img-url"]').getAttribute('content');
+                    // remove-category-images
+
+                    try{
+                        let response = await fetch(url, request_options);     
+                        //console.log(response);
+                        let response_data = await response.json();
+                        console.log(response_data);
+                        //return response_data;
+
+                        if(response_data.requested_action_performed){
+                            toastr.success(response_data.message);
+                            setTimeout(()=>{
+                                parent_DIV.remove();
+                            }, 1500);
+                            /*
+                            submit_btn.innerHTML = CHECK_SUCCESS;
+                            if(response_data.reload){
+                            }
+                            */
+                        }
+                        else {
+                            
+                            toastr.error(response_data.message);
+                            delete_BTN.innerHTML = delete_BTN_content;
+                            delete_BTN.disabled = false;
+                            
+                        }
+                    }
+                    catch(error){
+                        console.error('Error:', error);
+
+                        toastr.error("Something went wrong!!");
+                        delete_BTN.innerHTML = delete_BTN_content;
+                        delete_BTN.disabled = false;
+                        
+                    }
+                }
+            });
+        }
 
     </script>
 @endsection
