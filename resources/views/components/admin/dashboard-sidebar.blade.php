@@ -101,7 +101,7 @@
               </li>
 
               <li class="nav-item">
-                <a href="/admin/category-images" class="nav-link {{ (request()->is('admin/category')) ? "active" : ""}}">
+                <a href="/admin/category-images" class="nav-link {{ (request()->is('admin/category-images*')) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Category Images</p>
                 </a>
@@ -122,7 +122,7 @@
               </li>
 
               <li class="nav-item">
-                <a href="/admin/sub-category-images" class="nav-link {{ (request()->is('admin/category')) ? "active" : ""}}">
+                <a href="/admin/sub-category-images" class="nav-link {{ (request()->is('admin/sub-category-images*')) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sub-Category Images</p>
                 </a>

@@ -90,25 +90,29 @@
                             name="select-category" 
                             id="select-category" 
                             class="form-control" 
-                            data-value="{{ $categorySlug }}"
-                            required>
+                            data-value="{{-- $categorySlug --}}">
                             <option value="">Loading...</option>
                         </select>
                     </div>
+                </div>
 
-                    {{-- <div class="card card-purple">
-                        <div class="card-header">
-                            <h3 class="card-title">Add Category Image</h3>
-                        </div>
-
-                        <div class="card-body"></div>
-                    </div> --}}
-
+                <div class="col-4">
+                    
+                    {{-- Select Category --}}
+                    <div class="form-group">
+                        <select 
+                            name="select-sub-category" 
+                            id="select-sub-category" 
+                            class="form-control" 
+                            data-value="">
+                            <option value="">Loading...</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
             {{-- Load added/saved category images --}}
-            <div class="row" id="saved-category-images"></div>
+            <div class="row" id="saved-sub-category-images"></div>
         </div>
     </section>
 
@@ -126,6 +130,9 @@
             
             load_category_list();
             async function load_category_list(){
+                let category_element = document.getElementById('select-category');
+
+                category_element.innerHTML = '<option value="">Loading...</option>';
                 /*
                 const request_data = {
                     result_count: result_count
@@ -148,8 +155,6 @@
                     //console.log(response_data);
                     //return response_data;
 
-                    let category_element = document.getElementById('select-category');
-
                     category_element.innerHTML = '<option value="">Select Category</option>';
 
                     let category_list = response_data.category_list;
@@ -167,6 +172,52 @@
                 }
             }
 
+            load_sub_category_list();
+            async function load_sub_category_list(category_id=""){
+
+                let sub_category_element = document.getElementById('select-sub-category');
+
+                sub_category_element.innerHTML = '<option value="">Loading...</option>';
+
+                /*
+                const request_data = {
+                    result_count: result_count
+                };
+                const params = new URLSearchParams(request_data);
+                */
+                
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = '/admin/get-sub-category-list/'+category_id;
+
+                try{
+                    let response = await fetch(url, request_options);
+                    // console.log(response);
+                    let response_data = await response.json();
+                    //console.log(response_data);
+                    //return response_data;
+
+                    sub_category_element.innerHTML = '<option value="">Select Sub Category</option>';
+
+                    let sub_category_list = response_data.sub_category_list;
+                    sub_category_list.forEach((element, index)=>{
+                        let selected = (sub_category_element.dataset.value === element.sub_category_slug) ? "selected" : "";
+
+                        let opt_str = `<option value="${element.sub_category_slug}" ${selected} data-id=${element.id}>${element.sub_category_name}</option>`;
+                        sub_category_element.innerHTML += opt_str;
+                    });
+                    
+
+                }
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+
             // get id from the select category element
             document.getElementById("select-category").addEventListener('change', event=>{
                 let select_element = event.target;
@@ -174,18 +225,26 @@
                 let selected_option = select_element.options[select_element.selectedIndex];
                 // category_id = selected_option.dataset.id;
 
-                load_category_images(selected_option.dataset.id);
+                //load_category_images(selected_option.dataset.id);
+                load_sub_category_list(selected_option.dataset.id);
             });
 
-            // load_category_images(category_id);
-            // function to load ADDED category images
-            async function load_category_images(category_id){
+            document.getElementById("select-sub-category").addEventListener('change', event=>{
+                let select_element = event.target;
 
-                document.getElementById("saved-category-images").innerHTML = `
+                let selected_option = select_element.options[select_element.selectedIndex];
+                // category_id = selected_option.dataset.id;
+
+                load_sub_category_images(selected_option.dataset.id);
+            });
+
+            // function to load ADDED category images
+            async function load_sub_category_images(sub_category_id){
+
+                document.getElementById("saved-sub-category-images").innerHTML = `
                     <div class="col-md-6">
                         <h5 class="card-title"> Loading Images... ${LOADER_MEDIUM} </h5> <br />
-                    </div>
-                `; 
+                    </div>`; 
 
                 const request_options = {
                     method: 'GET',
@@ -193,7 +252,7 @@
                     // body: JSON.stringify(request_data)
                 };
 
-                let url = `/admin/get-category-images/${category_id}`;
+                let url = `/admin/get-sub-category-images/${sub_category_id}`;
                 // console.log(url);
 
                 try{
@@ -202,12 +261,14 @@
                     let response_data = await response.json();
                     // console.log(response_data);
                     //return response_data;
+
+                    //document.getElementById("saved-sub-category-images").innerHTML = ``;
                     
                     if(response_data.requested_action_performed){
                         let inner_HTML = '';
                         
-                        response_data.categoryImages.forEach((element, index)=>{
-                            let image_id = element.category_img_id;
+                        response_data.subCategoryImages.forEach((element, index)=>{
+                            let image_id = element.sub_category_img_id;
                             let image_URL = element.image_location;
                             let prime_image = element.prime_image;
 
@@ -240,11 +301,11 @@
                         });
 
 
-                        document.getElementById("saved-category-images").innerHTML = inner_HTML;
+                        document.getElementById("saved-sub-category-images").innerHTML = inner_HTML;
                     }
 
                     else{
-                        document.getElementById("saved-category-images").innerHTML = `
+                        document.getElementById("saved-sub-category-images").innerHTML = `
                             <div class="col-md-12">
                                 <h3 class="text-danger"> No images were added for this category!</h3>
                             </div>`;

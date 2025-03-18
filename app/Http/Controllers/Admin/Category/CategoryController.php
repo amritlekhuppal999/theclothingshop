@@ -187,12 +187,12 @@ class CategoryController extends Controller
 
 
     // View Category Image Gallery
-    // public function IMAGE_GALLERY($categorySlug=null){
-    //     // do the thing with the slug
+    public function IMAGE_GALLERY_INDEX($categorySlug=null){
+        // do the thing with the slug
         
-    //     // return view($this->category_route.'category-images', ["categorySlug" => $categorySlug]);
-    //     return view($this->category_route.'category-images-add', ["categorySlug" => $categorySlug]);
-    // }
+        // return view($this->category_route.'category-images', ["categorySlug" => $categorySlug]);
+        return view($this->category_route.'category-images', ["categorySlug" => $categorySlug]);
+    }
 
     // View Category Image Gallery
     public function ADD_IMAGE_INDEX($categorySlug=null){
@@ -440,13 +440,26 @@ class CategoryController extends Controller
 
             // return ["categoryImages" => $categoryImages];
 
-            return [
-                "type" => "Success",
-                "categoryImages" => $categoryImages,
-                "message" => "",
-                "requested_action_performed" => true,
-                "reload" => false
-            ];
+            if (count($categoryImages)) {
+                # code...
+                return [
+                    "type" => "Success",
+                    "categoryImages" => $categoryImages,
+                    "message" => "",
+                    "requested_action_performed" => true,
+                    "reload" => false
+                ];
+            }
+            else {
+                return [
+                    "type" => "Failure",
+                    "categoryImages" => $categoryImages,
+                    "message" => "No images added.",
+                    "requested_action_performed" => false,
+                    "reload" => false
+                ];
+            }
+
         } 
         catch (QueryException $e) {
             

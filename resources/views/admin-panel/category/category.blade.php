@@ -99,7 +99,7 @@
                                                 @if($category["status"])
                                                     {{-- Add Images --}}
                                                     <a 
-                                                        href="/admin/category-images/{{ $category["category_slug"] }}"
+                                                        href="/admin/category-images-update/{{ $category["category_slug"] }}"
                                                         class="btn btn-sm btn-info">
                                                         Images
                                                     </a>

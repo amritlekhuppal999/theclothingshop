@@ -115,7 +115,7 @@
                                                     @if($subCategory["status"])
                                                         {{-- Add Images --}}
                                                         <a 
-                                                            href="/admin/sub-category-images/{{ $subCategory["sub_category_slug"] }}"
+                                                            href="/admin/sub-category-images-update/{{ $subCategory["sub_category_slug"] }}"
                                                             class="btn btn-sm btn-info">
                                                             Images
                                                         </a>

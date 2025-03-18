@@ -50,8 +50,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/category-add', [CategoryController::class, 'CREATE']);
         Route::post('/category-add', [CategoryController::class, 'STORE'])->name('add-category');
         
-        // Route::get('/category-images/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY']);
-        Route::get('/get-category-images/{categoryID}', [CategoryController::class, 'CATEGORY_IMAGE_GALLERY']);
+        Route::get('/category-images/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY_INDEX']);
+        Route::get('/get-category-images/{categoryID}', [CategoryController::class, 'CATEGORY_IMAGE_GALLERY']); // API CALL
         
         Route::get('/category-images-update/{categorySlug}', [CategoryController::class, 'UPDATE_IMAGE_INDEX']);
         Route::post('/category-images-update', [CategoryController::class, 'UPDATE_IMAGE'])->name('update-category-images');
@@ -65,7 +65,20 @@ Route::prefix('admin')->group(function () {
         Route::post('/category-update/', [CategoryController::class, 'UPDATE'])->name('update-category');
         Route::post('/category-delete/', [CategoryController::class, 'DELETE'])->name('delete-category');
 
-        Route::get('/get-category-list', [CategoryController::class, 'get_category_list']);
+        Route::get('/get-category-list', [CategoryController::class, 'get_category_list']); //API CALL
+    
+    // CATEGORY Routes END
+        
+        
+    // SUB-CATEGORY Routes
+        Route::get('/sub-category-images/{categorySlug?}', [SubCategoryController::class, 'IMAGE_GALLERY_INDEX']);
+        Route::get('/get-sub-category-images/{subCategoryID}', [SubCategoryController::class, 'SUB_CATEGORY_IMAGE_GALLERY']); // API CALL
+
+        Route::get('/sub-category-images-update/{subCategorySlug?}', [SubCategoryController::class, 'ADD_IMAGE_INDEX']);
+        // Route::post('/sub-category-images-update', [CategoryController::class, 'ADD_IMAGE'])->name('add-sub-category-images');
+        Route::post('/sub-category-images-update', [SubCategoryController::class, 'UPDATE_IMAGE'])->name('update-sub-category-images');
+        Route::post('/sub-category-images-remove', [SubCategoryController::class, 'REMOVE_SUB_CATEGORY_IMAGE'])->name('remove-sub-category-images');
+        Route::post('/sub-category-images-banner', [SubCategoryController::class, 'UPDATE_BANNER_IMAGE'])->name('update-sub-category-primary-image');
         
         Route::get('/sub-category/{catgorySlug?}', [SubCategoryController::class, 'INDEX']);
         Route::get('/sub-category-add/', [SubCategoryController::class, 'CREATE']);
@@ -78,7 +91,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/sub-category-edit/{subCategorySlug}', [SubCategoryController::class, 'EDIT']);
         Route::post('/sub-category-update/', [SubCategoryController::class, 'UPDATE'])->name('update-sub-category');
 
-    // CATEGORY Routes END
+        Route::get('/get-sub-category-list/{categoryID?}', [SubCategoryController::class, 'get_sub_category_list']); //API CALL
+
+    // SUB-CATEGORY Routes END
 
     
     // Attribute Routes
