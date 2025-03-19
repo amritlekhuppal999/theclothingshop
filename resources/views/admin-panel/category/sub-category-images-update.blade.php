@@ -89,13 +89,6 @@
                 <div class="col-md-12 mb-2"></div>
             </div>
 
-            <div class="row">
-                <div class="col-md-12 mb-2">
-                    <h3 class="text-danger">WORKING ON UPDATING SUB CATEGORY REMOVE IMAGE</h3>
-                    <h3 class="text-danger">WORKING ON UPDATING SUB CATEGORY UPDATE BANNER IMAGE</h3>
-                </div>
-            </div>
-
             {{-- Image FORM --}}
             <div class="row">
                 <div class="col-8 offset-md-2">
@@ -216,75 +209,18 @@
             const MAX_FILE_UPLOAD_LIMIT = 5;
 
             load_sub_category_list();
-            async function load_sub_category_list(category_id=""){
-
-                let sub_category_element = document.getElementById('select-sub-category');
-
-                sub_category_element.innerHTML = '<option value="">Loading...</option>';
-
-                /*
-                const request_data = {
-                    result_count: result_count
-                };
-                const params = new URLSearchParams(request_data);
-                */
-                
-                const request_options = {
-                    method: 'GET',
-                    // headers: {},
-                    // body: JSON.stringify(request_data)
-                };
-
-                let url = '/admin/get-sub-category-list/'+category_id;
-
-                try{
-                    let response = await fetch(url, request_options);
-                    // console.log(response);
-                    let response_data = await response.json();
-                    //console.log(response_data);
-                    //return response_data;
-
-                    sub_category_element.innerHTML = '<option value="">Select Sub Category</option>';
-
-                    let sub_category_list = response_data.sub_category_list;
-                    sub_category_list.forEach((element, index)=>{
-                        let selected = (sub_category_element.dataset.value === element.sub_category_slug) ? "selected" : "";
-
-                        let opt_str = `<option value="${element.sub_category_slug}" ${selected} data-id=${element.id}>
-                                ${element.sub_category_name}
-                            </option>`;
-                        sub_category_element.innerHTML += opt_str;
-                    });
-
-                    sub_category_id = set_category_id();
-                    
-
-                }
-                catch(error){
-                    console.error('Error:', error);
-                }
-            }
-
-
+            
             // get id from the select category element
             document.getElementById("select-sub-category").addEventListener('change', event=>{
                 // let select_element = event.target;
                 // let selected_option = select_element.options[select_element.selectedIndex];
                 // sub_category_id = selected_option.dataset.id;
                 sub_category_id = set_category_id();
+                load_sub_category_images();
                 
             });
 
-            // function to set the category ID variable value
-            function set_category_id(){
-                let select_element = document.getElementById("select-sub-category");
-
-                let selected_option = select_element.options[select_element.selectedIndex];
-                console.log(selected_option);
-                return selected_option.dataset.id;
-            }
-
-
+            
             document.getElementById('subCategoryImages').addEventListener('change', (event)=>{
 
                 let img_input_field = event.target;
@@ -353,78 +289,6 @@
                     }
                 }
             });
-
-
-            // Create IMAGE PREVIEW
-            async function create_image_preview(image_file){
-
-                // async function cause it took an oath to deal with a promise BITCH !!!
-
-                let image_preview = document.getElementById('image-preview');
-                // preview_div.innerHTML = '';
-
-                // image_file.name
-                // image_file.size
-                // image_file.type
-
-                let img_id = Math.floor(Math.random() * 100);
-                let IMG_URI = await generate_URI(image_file);
-
-                image_arr.push({
-                    img_id : img_id,
-                    img_uri: IMG_URI,
-                });
-                
-                let div_ele = document.createElement('div');
-                div_ele.dataset.img_id = img_id;
-                div_ele.classList = "card mr-2 ";
-
-                div_ele.innerHTML = `
-                    <div class="card-body p-0" data-img_id="${img_id}">
-                        <div class="image-wrapper">
-                            <img 
-                                src="${IMG_URI}" 
-                                alt="Sample image" 
-                                class="selected-image"
-                                id="${img_id}"
-                            />
-                            
-                            <button type="button" class="remove-btn" data-img_id="${img_id}">
-                                <span class="remove-icon remove-img" data-img_id="${img_id}">&times;</span>
-                            </button>
-                            
-                            <label class="btn btn-success mb-0 radio-wrapper">
-                                <input type="radio" class="set_primary" name="select-image" id="" data-img_id="${img_id}">
-                                Set Primary
-                            </label>
-                        </div>
-                    </div>`;
-
-                
-                // console.log(div_ele);
-                // console.log(image_arr);
-
-                image_preview.appendChild(div_ele); 
-            }
-
-            // Generate Image URI
-            function generate_URI(media_file){
-                return new Promise((resolve, reject) =>{
-
-                    const reader = new FileReader();
-                    // const baseURI = '';
-                    reader.onload = event =>{
-                        // baseURI = event.target.result;
-                        resolve(event.target.result);
-                    }
-                    reader.onerror = event =>{
-                        reject(event.target.error);
-                    }
-
-                    reader.readAsDataURL(media_file);
-                });
-
-            }
 
             // FORM SUBMIT (UPDATE operations)
             document.getElementById("sub-category-image-form").addEventListener('submit', async event=>{
@@ -506,87 +370,6 @@
                 }
 
             })
-
-
-            load_sub_category_images();
-            // function to load ADDED category images
-            async function load_sub_category_images(){
-
-                document.getElementById("saved-sub-category-images").innerHTML = `
-                    <div class="col-md-6">
-                        <h5 class="card-title"> Loading Images... ${LOADER_MEDIUM} </h5> <br />
-                    </div>
-                `; 
-
-                
-                
-                const request_options = {
-                    method: 'GET',
-                    // headers: {},
-                    // body: JSON.stringify(request_data)
-                };
-
-                let url = `/admin/get-sub-category-images/${sub_category_id}`;
-                // console.log(url);
-
-                try{
-                    let response = await fetch(url, request_options);
-                    //console.log(response);
-                    let response_data = await response.json();
-                    // console.log(response_data);
-                    //return response_data;
-                    
-                    if(response_data.requested_action_performed){
-                        let inner_HTML = '';
-                        
-                        response_data.subCategoryImages.forEach((element, index)=>{
-                            let image_id = element.sub_category_img_id;
-                            let image_URL = element.image_location;
-                            let prime_image = element.prime_image;
-
-                            let highlighter_selector = "", checked = "";
-                            if(prime_image){
-                                highlighter_selector = "highlighter"; checked = "checked";
-                            }
-
-                        inner_HTML += `
-                            <div class="col-md-3 img-block ${highlighter_selector}">
-                                <div class="card card bg-dark text-white" style="" data-img_id="${image_id}">
-                                    <img src="${PUBLIC_PATH}/${image_URL}" class="card-img-top" />
-
-                                    <div class="card-body">
-                                        <button type="button" class="btn btn-danger delete-image" data-img_id="${image_id}" title="Delete Image">
-                                            <span class="remove-img" data-img_id="${image_id}"> 
-                                                <i class="fas fa-trash-alt"></i>
-                                            </span>
-                                        </button>
-                                        
-                                        <label class="btn btn-success radio-wrapper" title="Change Banner Image">
-                                            <input type="radio" class="change_primary" name="select-image" id="" data-img_id="${image_id}" ${checked}>
-                                            Set Banner
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>`;
-                        });
-
-
-                        document.getElementById("saved-sub-category-images").innerHTML = inner_HTML;
-                    }
-
-                    else{
-                        document.getElementById("saved-sub-category-images").innerHTML = `
-                            <div class="col-md-12">
-                                <h3 class="text-danger"> No Images added for this sub category.</h3>
-                            </div>`;
-                    }
-                }
-
-                catch(error){
-                    console.error('Error:', error);
-                }
-            }
-
 
             // Event Listener for LOADED IMAGES SECTION
             document.getElementById("saved-sub-category-images").addEventListener("click", async event=>{
@@ -679,7 +462,7 @@
                     // data to send
                     let send_data = {
                         img_id: setBannerBTN.dataset.img_id,
-                        category_id: document.getElementById("category-id").value
+                        sub_category_id: sub_category_id
                     };
 
                     // fetch request option
@@ -727,6 +510,213 @@
 
                 }
             });
+
+            // function to set the category ID variable value
+            function set_category_id(){
+                let select_element = document.getElementById("select-sub-category");
+
+                let selected_option = select_element.options[select_element.selectedIndex];
+                return selected_option.dataset.id;
+            }
+
+            async function load_sub_category_list(category_id=""){
+
+                let sub_category_element = document.getElementById('select-sub-category');
+
+                sub_category_element.innerHTML = '<option value="">Loading...</option>';
+
+                /*
+                const request_data = {
+                    result_count: result_count
+                };
+                const params = new URLSearchParams(request_data);
+                */
+                
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = '/admin/get-sub-category-list/'+category_id;
+
+                try{
+                    let response = await fetch(url, request_options);
+                    // console.log(response);
+                    let response_data = await response.json();
+                    //console.log(response_data);
+                    //return response_data;
+
+                    sub_category_element.innerHTML = '<option value="">Select Sub Category</option>';
+
+                    let sub_category_list = response_data.sub_category_list;
+                    sub_category_list.forEach((element, index)=>{
+                        let selected = (sub_category_element.dataset.value === element.sub_category_slug) ? "selected" : "";
+
+                        let opt_str = `<option value="${element.sub_category_slug}" ${selected} data-id=${element.id}>
+                                ${element.sub_category_name}
+                            </option>`;
+                        sub_category_element.innerHTML += opt_str;
+                    });
+
+                    sub_category_id = set_category_id();
+                    load_sub_category_images();
+                    
+
+                }
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+            
+            // function to load ADDED category images
+            async function load_sub_category_images(){
+
+                document.getElementById("saved-sub-category-images").innerHTML = `
+                    <div class="col-md-6">
+                        <h5 class="card-title"> Loading Images... ${LOADER_MEDIUM} </h5> <br />
+                    </div>
+                `; 
+
+                
+                
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = `/admin/get-sub-category-images/${sub_category_id}`;
+                // console.log(url);
+
+                try{
+                    let response = await fetch(url, request_options);
+                    //console.log(response);
+                    let response_data = await response.json();
+                    // console.log(response_data);
+                    //return response_data;
+                    
+                    if(response_data.requested_action_performed){
+                        let inner_HTML = '';
+                        
+                        response_data.subCategoryImages.forEach((element, index)=>{
+                            let image_id = element.sub_category_img_id;
+                            let image_URL = element.image_location;
+                            let prime_image = element.prime_image;
+
+                            let highlighter_selector = "", checked = "";
+                            if(prime_image){
+                                highlighter_selector = "highlighter"; checked = "checked";
+                            }
+
+                        inner_HTML += `
+                            <div class="col-md-3 img-block ${highlighter_selector}">
+                                <div class="card card bg-dark text-white" style="" data-img_id="${image_id}">
+                                    <img src="${PUBLIC_PATH}/${image_URL}" class="card-img-top" />
+
+                                    <div class="card-body">
+                                        <button type="button" class="btn btn-danger delete-image" data-img_id="${image_id}" title="Delete Image">
+                                            <span class="remove-img" data-img_id="${image_id}"> 
+                                                <i class="fas fa-trash-alt"></i>
+                                            </span>
+                                        </button>
+                                        
+                                        <label class="btn btn-success radio-wrapper" title="Change Banner Image">
+                                            <input type="radio" class="change_primary" name="select-image" id="" data-img_id="${image_id}" ${checked}>
+                                            Set Banner
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
+
+
+                        document.getElementById("saved-sub-category-images").innerHTML = inner_HTML;
+                    }
+
+                    else{
+                        document.getElementById("saved-sub-category-images").innerHTML = `
+                            <div class="col-md-12">
+                                <h3 class="text-danger"> No Images added for this sub category.</h3>
+                            </div>`;
+                    }
+                }
+
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+
+            // Create IMAGE PREVIEW
+            async function create_image_preview(image_file){
+
+                // async function cause it took an oath to deal with a promise BITCH !!!
+
+                let image_preview = document.getElementById('image-preview');
+                // preview_div.innerHTML = '';
+
+                // image_file.name
+                // image_file.size
+                // image_file.type
+
+                let img_id = Math.floor(Math.random() * 100);
+                let IMG_URI = await generate_URI(image_file);
+
+                image_arr.push({
+                    img_id : img_id,
+                    img_uri: IMG_URI,
+                });
+                
+                let div_ele = document.createElement('div');
+                div_ele.dataset.img_id = img_id;
+                div_ele.classList = "card mr-2 ";
+
+                div_ele.innerHTML = `
+                    <div class="card-body p-0" data-img_id="${img_id}">
+                        <div class="image-wrapper">
+                            <img 
+                                src="${IMG_URI}" 
+                                alt="Sample image" 
+                                class="selected-image"
+                                id="${img_id}"
+                            />
+                            
+                            <button type="button" class="remove-btn" data-img_id="${img_id}">
+                                <span class="remove-icon remove-img" data-img_id="${img_id}">&times;</span>
+                            </button>
+                            
+                            <label class="btn btn-success mb-0 radio-wrapper">
+                                <input type="radio" class="set_primary" name="select-image" id="" data-img_id="${img_id}">
+                                Set Primary
+                            </label>
+                        </div>
+                    </div>`;
+
+                
+                // console.log(div_ele);
+                // console.log(image_arr);
+
+                image_preview.appendChild(div_ele); 
+            }
+
+            // Generate Image URI
+            function generate_URI(media_file){
+                return new Promise((resolve, reject) =>{
+
+                    const reader = new FileReader();
+                    // const baseURI = '';
+                    reader.onload = event =>{
+                        // baseURI = event.target.result;
+                        resolve(event.target.result);
+                    }
+                    reader.onerror = event =>{
+                        reject(event.target.error);
+                    }
+
+                    reader.readAsDataURL(media_file);
+                });
+
+            }
         }
 
     </script>

@@ -398,7 +398,88 @@ class SubCategoryController extends Controller{
     }
 
 
+    public function REMOVE_SUB_CATEGORY_IMAGE(Request $request){
+        
+        $img_id = $request->img_id;
+
+        try {
+            $category_image = SubCategoryImage::select("image_location", "prime_image")->where("id", $img_id)->get();
+            $image_path = $category_image[0]["image_location"];
+            $prime_image = $category_image[0]["prime_image"];
+
+            $filePath = public_path($image_path);
+
+            $delete_opr = SubCategoryImage::where("id", $img_id)->update([
+                "status" => 0
+            ]);
+
+            if ($delete_opr) {
+                
+                // To delete the file files and update its status 
+                if (file_exists($filePath) && unlink($filePath)) {
+
+                    SubCategoryImage::where("id", $img_id)->update([
+                        "deleted" => 1  // This means File has been deleted and the DB record is now free for removal
+                    ]);
+                }
+
+                return [
+                    "type" => "Success",
+                    "message" => "Selected Image has been deleted",
+                    "requested_action_performed" => true,
+                    "reload" => false
+                ];
+                
+            }
+
+            else {
+                return [
+                    "type" => "Failed",
+                    "message" => "Unable to delete the selected Image.",
+                    "requested_action_performed" => false,
+                    "reload" => false
+                ];
+            }
+
+        } 
+        catch (QueryException $e) {
+            
+            return [
+                "type" => "Failed",
+                "message" => "An error occurred: " . $e->getMessage(),
+                "requested_action_performed" => false,
+                "reload" => false
+            ];
+        }
+    }
     
+    public function UPDATE_BANNER_IMAGE(Request $request){
+        
+        $img_id = $request->img_id;
+        $sub_category_id = $request->sub_category_id;
+
+        try {
+            SubCategoryImage::where("sub_category_id", $sub_category_id)->update([ "prime_image" => 0 ]);
+            SubCategoryImage::where("id", $img_id)->update([ "prime_image" => 1 ]);
+
+            return [
+                "type" => "Success",
+                "message" => "Banner image update",
+                "requested_action_performed" => true,
+                "reload" => false
+            ];
+        
+        } 
+        catch (QueryException $e) {
+            
+            return [
+                "type" => "Failed",
+                "message" => "An error occurred: " . $e->getMessage(),
+                "requested_action_performed" => false,
+                "reload" => false
+            ];
+        }
+    }
     
     // DEALS With Front-End API requests
     public function get_sub_category_list($categoryID=null){
