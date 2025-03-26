@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Attribute extends Model
+class AttributeMapper extends Model
 {
     use HasFactory;
 
-    protected $table = 'attributes';
+    protected $table = 'attribute_mappers';
 
     protected $fillable = [
-        'name'
+        'attribute_value_id',
+        'variant_id'
     ];
-
-
 }

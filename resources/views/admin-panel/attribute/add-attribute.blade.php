@@ -19,81 +19,158 @@
 
         <div class="row">
             
-            <div class="col-md-6">
-                <div class="card card-purple">
-                    <div class="card-header">
-                        <h3 class="card-title">Add Attribute</h3>
+            @if($form_type == "add-attribute")
+                
+                {{-- Add Attribute FORM --}}
+                <div class="col-md-6">
+                    <div class="card card-purple">
+                        <div class="card-header">
+                            <h3 class="card-title">Add Attribute</h3>
+                        </div>
+                        
+                        <form action="{{ route('add-attribute') }}" method="POST" role="form">
+                            @csrf
+
+                            <div class="card-body">
+                                
+                                {{-- Attribute Name --}}
+                                <div class="form-group">
+                                    <label for="">Attribute Name</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        name="attributeName" 
+                                        id="attributeName" 
+                                        value="{{ old('attributeName') }}" 
+                                        placeholder="Size, Color" 
+                                        required
+                                    />
+                                </div>
+                                
+                                @error('attributeName')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+
+                                {{-- Operation Error Message --}}
+                                @if(session('error'))
+                                    <div class="form-group">
+                                        <span class="text-danger">
+                                            {{ session('error') }}
+                                        </span>
+                                    </div>
+                                @elseif(session('success'))
+                                    <div class="form-group">
+                                        <span class="text-success">
+                                            {{ session('success') }}
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Add Attribute</button>
+                            </div>
+                        </form>
                     </div>
-                    
-                    <form action="{{ route('add-attribute') }}" method="POST" role="form">
-                        @csrf
-
-                        <div class="card-body">
-                            
-                            {{-- Type --}}
-                            <div class="form-group">
-                                <select name="attributeType" id="attributeType" class="form-control" required>
-                                    <option value="0">Select Type</option>
-                                    @foreach($attr_type as $key => $type)
-                                        <option value="{{$key}}">{{ $type }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('attributeType')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-
-                            {{-- Attribute Value --}}
-                            <div class="form-group">
-                                <label for="">Attribute Value</label>
-                                <input type="text" class="form-control" name="attributeValue" id="attributeValue" value="{{ old('attributeValue') }}" placeholder="XS,Red" required>
-                                <input type="hidden" class="" name="attributeValue" id="attributeValueColor" value="{{ old('attributeValue') }}" placeholder="XS,Red" required>
-                            </div>
-                            
-                            @error('attributeValue')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-
-                            {{-- Attribute Label --}}
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Label</label>
-                                <input type="text" class="form-control" name="attributeLabel" id="attributeLabel" value="{{ old('attributeLabel') }}" placeholder="Name of attribute" required>
-                            </div>
-                            @error('attributeLabel')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-
-                            
-                            {{-- Operation Error Message --}}
-                            @if(session('error'))
-                                <div class="form-group">
-                                    <span class="text-danger">
-                                        {{ session('error') }}
-                                    </span>
-                                </div>
-                            @elseif(session('success'))
-                                <div class="form-group">
-                                    <span class="text-success">
-                                        {{ session('success') }}
-                                    </span>
-                                </div>
-                            @endif
-
-                            
-
-                            {{-- <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                            </div> --}}
-                        </div>
-                        <!-- /.card-body -->
-
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
                 </div>
-            </div>
+
+            @elseif($form_type == "add-attribute-value")
+                
+                {{-- ATTRIBUTE VALUE FORM --}}
+                <div class="col-md-6">
+                    <div class="card card-purple">
+                        <div class="card-header">
+                            <h3 class="card-title">Add Attribute</h3>
+                        </div>
+                        
+                        <form action="{{ route('add-attribute-value') }}" method="POST" role="form">
+                            @csrf
+
+                            <div class="card-body">
+
+                                {{-- Type --}}
+                                <div class="form-group">
+                                    <select name="attribute_id" id="attribute_id" class="form-control" required>
+                                        <option value="">Select Type</option>
+                                        @foreach($attribute_list as $obj)
+                                            <option value="{{$obj->id}}">{{$obj->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('attribute_id')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+
+                                {{-- Attribute Value --}}
+                                <div class="form-group">
+                                    <label>Attribute Value</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        name="attributeValue" 
+                                        id="attributeValue" 
+                                        value="{{ old('attributeValue') }}" 
+                                        placeholder="XS,Red" required
+                                    />
+                                    {{-- <input type="hidden" class="" name="attributeValue" id="attributeValueColor" value="{{ old('attributeValue') }}" placeholder="XS,Red" required> --}}
+                                </div>
+                                
+                                @error('attributeValue')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+
+                                {{-- Attribute Label --}}
+                                <div class="form-group">
+                                    <label>Label</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        name="attributeLabel" 
+                                        id="attributeLabel" 
+                                        value="{{ old('attributeLabel') }}" 
+                                        placeholder="Name of attribute" 
+                                        required
+                                    />
+                                </div>
+                                @error('attributeLabel')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+
+                                
+                                {{-- Operation Error Message --}}
+                                @if(session('error'))
+                                    <div class="form-group">
+                                        <span class="text-danger">
+                                            {{ session('error') }}
+                                        </span>
+                                    </div>
+                                @elseif(session('success'))
+                                    <div class="form-group">
+                                        <span class="text-success">
+                                            {{ session('success') }}
+                                        </span>
+                                    </div>
+                                @endif
+
+                                
+
+                                {{-- <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                </div> --}}
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Add Attribute Value</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            @endif
+
+
 
         </div>
         
@@ -116,7 +193,9 @@
             })
 
 
+            // Does Nothing for now
             document.addEventListener('change', event=>{
+                return false;
                 let element = event.target;
                 
                 if(element.id == "attributeType"){

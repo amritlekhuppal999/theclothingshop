@@ -13,8 +13,8 @@ const EXCLAMATION_DANGER = '<i class="fas fa-exclamation-triangle" style="color:
 
 const CHECK_SUCCESS = '<i class="fas fa-check"></i>';
 
-// Get the current URL of the page
-const CURRENT_URL = window.location.href; 
+// Get the current URL of the page along with query parameters
+const FULL_URL = window.location.href; 
 
 // Get the hostname of the current URL
 const HOSTNAME = window.location.hostname; 
@@ -27,6 +27,9 @@ const PROTOCOL = window.location.protocol;
 
 // Get the port number of the current URL
 const PORT = window.location.port; 
+
+
+const CURRENT_URL = `${PROTOCOL}//${HOSTNAME}:${PORT}${PATHNAME}`; 
 
 const PUBLIC_PATH = document.querySelector('meta[name="public-path"]').getAttribute('content');
 
@@ -52,9 +55,9 @@ const PUBLIC_PATH = document.querySelector('meta[name="public-path"]').getAttrib
         const existingParams = new URLSearchParams(urlParts[1] || "");
     
         if (existingParams.has(parameter)) {
-        existingParams.set(parameter, value);
+            existingParams.set(parameter, value);
         } else {
-        existingParams.append(parameter, value);
+            existingParams.append(parameter, value);
         }
     
         return baseUrl + (existingParams.toString() ? "?" + existingParams.toString() : "");

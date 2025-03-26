@@ -157,13 +157,22 @@
                 </a>
               </li>
 
-              {{-- Color --}}
+              {{--  --}}
               <li class="nav-item">
                 <a href="/admin/attribute-add" class="nav-link {{ (request()->is('admin/attribute-add*')) ? "active" : ""}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Attributes</p>
                 </a>
               </li>
+
+              {{--  --}}
+              <li class="nav-item">
+                <a href="/admin/attribute-value-add" class="nav-link {{ (request()->is('admin/attribute-value*')) ? "active" : ""}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Attribute Values</p>
+                </a>
+              </li>
+
             </ul>
           </li>
 

@@ -23,22 +23,21 @@ Route::prefix('admin')->group(function () {
     
     
     // PRODUCT Routes
-        Route::get('/products', [ProductsController::class, 'showProductsView'])->name('products');
-        
-        
         // Route::get('/products-add', function(){
         //     return view('admin-panel/products/add-products');
         // });
-        Route::get('/products-add', [ProductsController::class, 'selectCategoryView']);
-        Route::post('/products-add', [ProductsController::class, 'addProduct'])->name('add-product');
-
-        Route::get('/products-add/{subCategorySlug}', [ProductsController::class, 'addProductForm']);
         
-        Route::get('/products-add-images', [ProductsController::class, 'addProductImageForm']);
-        Route::get('/products-add-images/{productSlug}', [ProductsController::class, 'addProductImageForm']);
+        Route::get('/products', [ProductsController::class, 'INDEX'])->name('products');
+        Route::get('/products-add', [ProductsController::class, 'CREATE']);
+        Route::post('/products-add', [ProductsController::class, 'STORE'])->name('add-product');
 
-        Route::get('/products-add-variants', [ProductsController::class, 'addProductVariantForm']);
-        Route::get('/products-add-variants/{productSlug}', [ProductsController::class, 'addProductVariantForm']);
+        // Route::get('/products-add/{subCategorySlug}', [ProductsController::class, 'addProductForm']);
+        
+        Route::get('/products-add-images/{productSlug?}', [ProductsController::class, 'CREATE_IMAGE']);
+
+        Route::get('/products-add-variants/{productSlug?}', [ProductsController::class, 'CREATE_VARIANT']);
+        
+        Route::get('/get-product-list', [ProductsController::class, 'GET_PRODUCT_LIST']);     // API CALL
 
 
     // PRODUCT Routes END
@@ -98,10 +97,15 @@ Route::prefix('admin')->group(function () {
     
     // Attribute Routes
 
-        Route::get('/attribute', [AttributeController::class, 'showAttributeView']);
+        Route::get('/attribute', [AttributeController::class, 'INDEX']);
         
-        Route::get('/attribute-add', [AttributeController::class, 'showAddAttributeForm']);
-        Route::post('/attribute-add', [AttributeController::class, 'storeCategory'])->name('add-attribute');
+        Route::get('/attribute-add', [AttributeController::class, 'CREATE']);
+        Route::post('/attribute-add', [AttributeController::class, 'STORE'])->name('add-attribute');
+        
+        Route::get('/attribute-value-add', [AttributeController::class, 'CREATE_VAL']);
+        Route::post('/attribute-value-add', [AttributeController::class, 'STORE_VAL'])->name('add-attribute-value');
+        Route::get('/get-attribute-list', [AttributeController::class, 'get_attribute_list']);  // API CALL
+
 
         Route::get('/attribute/{attributeId}/edit/', [AttributeController::class, 'edit']);
         Route::post('/attribute-update/', [AttributeController::class, 'update'])->name('update-attribute');

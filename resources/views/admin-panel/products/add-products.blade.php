@@ -24,129 +24,53 @@
     @endphp
     
     <div class="content">
-      <div class="container-fluid">
+        <div class="container-fluid">
 
-        {{-- Margin Div --}}
-        <div class="row">
-            <div class="col-md-12 mb-3"></div>
-        </div>
+            {{-- Margin Div --}}
+            <div class="row">
+                <div class="col-md-12 mb-3"></div>
+            </div>
 
-        {{-- <h3> {{ request()->path() }} </h3> --}}
-        {{-- <h3> @dump(explode("/", request()->path()) ) </h3> --}}
+            {{-- <h3> {{ request()->path() }} </h3> --}}
+            {{-- <h3> @dump(explode("/", request()->path()) ) </h3> --}}
 
-        @if(in_array("products-add", $page_url))
-            
-            {{-- Set Category --}}
-            <div class="card card-purple ">
-                <div class="card-header">
-                    <h3 class="card-title">Category</h3>
-
-                    {{-- collapse-expand BTN --}}
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
+            {{-- SELECT Category --}}
+            <div class="row">
                 
                 {{-- Select Category --}}
-                <div class="card-body">
-                    <div class="row">
-
-                        {{-- Category --}}
-                        <div class="col-md-4">
-                            <label>Category</label>
-                            <select class="form-control select2bs4" name="select-category" id="select-category" style="width: 100%;">
-                                <option value="0">Select</option>
-                                <option value="category-1" {{ (isset($categorySlug) && $categorySlug=="category-1") ? "selected" : "" }}>Category 1</option>
-                                <option value="category-2" {{ (isset($categorySlug) && $categorySlug=="category-2") ? "selected" : "" }}>Category 2</option>
-                                <option value="category-3" {{ (isset($categorySlug) && $categorySlug=="category-3") ? "selected" : "" }}>Category 3</option>
-                            </select>
-                        </div>
-
-                        {{-- Sub Category --}}
-                        <div class="col-md-4">
-                            <label>Sub Category</label>
-                            <select class="form-control select2bs4" name="select-sub-category" id="select-sub-category" style="width: 100%;">
-                                <option value="0">Select</option>
-                                <option value="sub-category-1" {{ (isset($subCategorySlug) && $subCategorySlug=="sub-category-1") ? "selected" : "" }}>Sub Category 1</option>
-                                <option value="sub-category-2" {{ (isset($subCategorySlug) && $subCategorySlug=="sub-category-2") ? "selected" : "" }}>Sub Category 2</option>
-                                <option value="sub-category-3" {{ (isset($subCategorySlug) && $subCategorySlug=="sub-category-3") ? "selected" : "" }}>Sub Category 3</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 d-flex flex-column-reverse">
-                            {{-- <label class=""></label> --}}
-                            <button type="button" class=" btn btn-secondary " id="save-category" name="save-category"> Next </button>
-                        </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <select 
+                            name="select-category" 
+                            id="select-category" 
+                            class="form-control" 
+                            data-value="{{ $category_slug }}">
+                            <option value="">Loading...</option>
+                        </select>
                     </div>
+                </div>
 
+                {{-- Select Sub-Category --}}
+                <div class="col-4">
+                    <div class="form-group">
+                        <select 
+                            name="select-sub-category" 
+                            id="select-sub-category" 
+                            class="form-control" 
+                            data-value="{{ $sub_category_slug }}">
+                            <option value="">Select Sub Category</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-        @elseif(in_array("products-add-images", $page_url) || in_array("products-add-variants", $page_url) )
-            
-            {{-- Change Product --}}
-            <div class="row">
-                <div class="col-md-7">
-                    <div class="card card-purple card-outline ">
-                        <div class="card-body">
-                            
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h3> Current Product Name </h3>
-                                </div>
-                            </div>
-
-                            <div class="row justify-content-between">
-                                {{-- Product --}}
-                                <div class="col-md-8">
-                                    {{-- <label>Product</label> --}}
-                                    <select class="form-control select2bs4" name="change-product" id="change-product" style="width: 100%;" title="change-product">
-                                        <option value="0">Select</option>
-                                        <option value="product-1" {{ (isset($productSlug) && $productSlug == "product-1") ? "selected" : "" }}>Product 1</option>
-                                        <option value="product-2" {{ (isset($productSlug) && $productSlug == "product-2") ? "selected" : "" }}>Product 2</option>
-                                        <option value="product-3" {{ (isset($productSlug) && $productSlug == "product-3") ? "selected" : "" }}>Product 3</option>
-                                    </select>
-                                
-                                </div>
-
-                                {{-- Change product BTN --}}
-                                <div class="col-md-4 d-flex flex-column-reverse">
-                                    {{-- <label class=""></label> --}}
-                                    <button 
-                                        type="button" 
-                                        class=" btn btn-secondary " 
-                                        id="change-product-btn" 
-                                        name="change-product-btn"
-                                        data-url="{{ in_array("products-add-images", $page_url) ? 'products-add-images' : 'products-add-variants' }}"> 
-                                        Change Product 
-                                    </button>
-                                </div>
-                            
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                
-                
-            </div>
-
-        @endif
-
-        {{-- @elseif( in_array("products-add-images", explode("/", request()->path())) ) --}}
-        
-        
-        {{-- Products and varients --}}
-        <div class="row" >
-            
             {{-- Add Product Form --}}
-            @if(in_array("products-add", $page_url) && isset($show_product_form) && $show_product_form)
-                
+            <div class="row">
                 <div class="col-md-12">
 
-                    <div class="card card-purple {{ (!$show_product_form) ? "collapsed-card" : "" }} ">
+                    {{-- card --}}
+                    <div class="card card-purple ">
+                        {{-- card header --}}
                         <div class="card-header">
                             <h3 class="card-title">Add Product</h3>
 
@@ -158,72 +82,162 @@
                             </div>
                         </div>
                         
-
+                        {{-- card body --}}
                         <div class="card-body">
                             <!-- form start -->
-                            <form role="form" action="{{ route('add-product') }}" >
+                            <form role="form" action="{{ route('add-product') }}" method="POST">
+                                @csrf
+
+                                {{-- Operation Error/Success Message --}}
+                                @if(session('error'))
+                                    <div class="form-group">
+                                        <span class="text-danger">
+                                            {{ session('error') }}
+                                        </span>
+                                    </div>
+                                @elseif(session('success'))
+                                    <div class="form-group">
+                                        <span class="text-success">
+                                            {{ session('success') }}
+                                        </span>
+                                    </div>
+                                @endif
+
+                                {{-- Category ID --}}
+                                <input type="hidden" id="category_id" name="category_id" value="{{ old('category_id') }}"/>
+
+                                {{-- Sub Category ID --}}
+                                <input type="hidden" id="sub_category_id" name="sub_category_id" value="{{ old('sub_category_id') }}"/>
+
+                                @error('category_id')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                @error('sub_category_id')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
 
                                 {{-- Gender --}}
                                 <div class="form-group clearfix">
                                     <label class="mr-2">Target Group</label>
-                                    <div class="icheck-primary d-inline">
-                                        <input type="radio" id="radioPrimary1" name="r1" >
-                                        <label for="radio"> Male </label>
-                                    </div>
+                                    
+                                    <label class="mr-2"> 
+                                        <input type="radio" id="radioPrimary1" name="targetGroup"  value="1">
+                                        Male
+                                    </label>
 
-                                    <div class="icheck-primary d-inline">
-                                        <input type="radio" id="radioPrimary2" name="r1">
-                                        <label for="radio"> Female </label>
-                                    </div>
-
-                                    <div class="icheck-primary d-inline">
-                                        <input type="radio" id="radioPrimary3" name="r1" >
-                                        <label for="radio"> Unisex </label>
-                                    </div>
+                                    <label class="mr-2"> 
+                                        <input type="radio" id="radioPrimary2" name="targetGroup" value="2">
+                                        Female
+                                    </label>
+                                    
+                                    <label class="mr-2"> 
+                                        <input type="radio" id="radioPrimary3" name="targetGroup"  value="3">
+                                        Unisex
+                                    </label>
                                 </div>
+                                @error('targetGroup')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
 
                                 {{-- Product Name --}}
                                 <div class="form-group">
                                     <label for="">Product Name</label>
-                                    <input type="text" class="form-control" id="" placeholder="Product Name">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="product_name" name="product_name" 
+                                        placeholder="Product Name"
+                                        value="{{ old('product_name') }}"
+                                        required
+                                    />
                                 </div>
+                                @error('product_name')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
 
                                 {{-- Product Slug --}}
                                 <div class="form-group">
                                     <label for="">Product Slug</label>
-                                    <input type="text" class="form-control" id="product-slug" name="product-slug" placeholder="Product slug">
-                                    <span id="slug-alert-msg"></span>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="product_slug" name="product_slug" 
+                                        placeholder="Product slug"
+                                        value="{{ old('product_slug') }}"
+                                        required
+                                    />
+                                    {{-- <span id="slug-alert-msg"></span> --}}
                                 </div>
+                                @error('product_slug')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
 
                                 {{-- Cost Price --}}
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label for="">Cost Price</label>
                                     <input type="text" class="form-control" id="cost-price" name="cost-price" placeholder="Cost Price">
-                                </div>
+                                </div> --}}
 
-                                {{-- Selling Price --}}
+                                {{-- Base Price --}}
                                 <div class="form-group">
-                                    <label for="">Selling Price</label>
-                                    <input type="text" class="form-control" id="selling-price" name="selling-price" placeholder="Selling Price">
+                                    <label for="">Base Price (₹)</label>
+                                    <input 
+                                        type="number" 
+                                        min="1"  
+                                        class="form-control" 
+                                        id="base-price" name="base_price" 
+                                        placeholder="Base Price"
+                                        value="{{ old('base_price') }}"
+                                        required
+                                    />
                                 </div>
+                                @error('base_price')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
 
                                 {{-- Discount --}}
                                 <div class="form-group">
-                                    <label for="">Discount Percentage</label>
-                                    <input type="text" class="form-control" id="discount-percentage" name="discount-percentage" placeholder="Discount">
+                                    <label for="">Discount Available %</label>
+                                    <input 
+                                        type="number" 
+                                        max="100.00" min="0" 
+                                        class="form-control" 
+                                        id="discount-percentage" name="discount_percentage"
+                                        placeholder="Discount"
+                                        value="{{ old('discount_percentage') }}"
+                                        required
+                                    />
                                 </div>
+                                @error('discount_percentage')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
 
                                 {{-- Short Description --}}
                                 <div class="form-group">
                                     <label for="">Short Description</label>
-                                    <textarea class="form-control" name="short-description" id="short-description"  rows="5"></textarea>
+                                    <textarea 
+                                        class="form-control" 
+                                        name="short_description" id="short-description"  
+                                        rows="5"></textarea>
                                 </div>
+                                @error('short_description')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
 
                                 {{-- Long Description --}}
                                 <div class="form-group">
                                     <label for="">Long Description</label>
-                                    <textarea class="form-control" name="long-description" id="long-description"  rows="10"></textarea>
+                                    <textarea 
+                                        class="form-control" 
+                                        name="long_description" id="long-description"  
+                                        rows="10"></textarea>
                                 </div>
+                                @error('long_description')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+
+
+                                
                                 
                                 {{-- <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -245,233 +259,10 @@
                         </div>
                     </div>
                 </div>
-            
-            {{-- Add Images for the product --}}
-            @elseif(in_array("products-add-images", $page_url) && isset($productSlug) )
-                
-                <div class="col-md-12">
-
-                    <div class="card card-purple">
-                        <div class="card-header">
-                            <h3 class="card-title">Add Images</h3>
-
-                            {{-- collapse-expand BTN --}}
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-
-                        <div class="card-body">
-                            <!-- form start -->
-                            <form role="form">
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h4>Show added images here</h4>
-                                        <p>
-                                            The added images will be local and will only be saved once save BTN is clicked.
-                                            We will have option to set main image for the product here.
-                                            We can mess around with UI more later.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input 
-                                                type="file" 
-                                                class="form-control"
-                                                name="add-product-images"
-                                                id="add-product-images"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12 d-flex justify-content-between">
-                                        <button type="button" class="btn btn-secondary">Save</button>
-                                        
-                                        <button type="submit" class="btn btn-primary">Add Variants</button>
-                                    </div>
-                                </div>
-                            
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-            {{-- Add Product Variants --}}
-            @elseif(in_array("products-add-variants", $page_url) && isset($productSlug) )
-                
-                <div class="col-md-12">
-                    <div class="card card-secondary "> {{-- collapsed-card --}}
-                        <div class="card-header">
-                            <h3 class="card-title">Add Product Variants</h3>
-
-                            {{-- collapse-expand BTN --}}
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                            <div class="card-body">
-                                <form role="form">
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            {{-- Variant Name --}}
-                                            <div class="form-group">
-                                                <label for="">Variant Name</label>
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control" 
-                                                    id="variant-name" name="variant-name" 
-                                                    placeholder="Variant Name"
-                                                    required
-                                                />
-                                            </div>
-                                        
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            {{-- Variant Name --}}
-                                            <div class="form-group">
-                                                <label for="">Variant Slug</label>
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control" 
-                                                    id="variant-slug" name="variant-slug" 
-                                                    placeholder="Variant Slug"
-                                                    required
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {{-- Added Variants (Not saved in DB) --}}
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <table class="table table-bordered table-hover">
-                                                <caption>List of Added Variants</caption>
-                                                <thead class="">
-                                                    <tr>
-                                                        <th>Sno</th>
-                                                        <th>Size</th>
-                                                        <th>Color</th>
-                                                        <th>Quantity</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="added-variant-list">
-                                                    <tr>
-                                                        <th>1</th>
-                                                        <td>XL</td>
-                                                        <td>Red</td>
-                                                        <td>100</td>
-                                                        <td>
-                                                            <a href="#" class="text-danger">
-                                                                Remove Variant
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <td colspan="5" class="text-right">
-                                                            <button 
-                                                                type="button" 
-                                                                class="btn btn-danger" 
-                                                                id="clear-variant-list">
-                                                                Clear List
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    
-
-                                    {{-- Variant Details (size, color, qty) --}}
-                                    <div class="row">
-
-                                        {{-- Select Size --}}
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="">Select Size</label>
-                                                <select class="form-control select2bs4" name="select-variant-size" id="select-variant-size">
-                                                    <option value="0">Select</option>
-                                                    <option value="1">XS</option>
-                                                    <option value="2">S</option>
-                                                    <option value="3">M</option>
-                                                    <option value="4" selected>L</option>
-                                                    <option value="5">XL</option>
-                                                    <option value="6">XXL</option>
-                                                    <option value="7">XXXL</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        {{-- Select Color --}}
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="">Select Color</label>
-                                                <select class="form-control select2bs4" name="select-variant-color" id="select-variant-color">
-                                                    <option value="0">Select</option>
-                                                    <option value="1">Red</option>
-                                                    <option value="2">Green</option>
-                                                    <option value="3">Blue</option>
-                                                    <option value="4">Orange</option>
-                                                    <option value="5" selected>Purple</option>
-                                                    <option value="6">Indigo</option>
-                                                    <option value="7">Cyan</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        {{-- Enter Quantity --}}
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="">Enter Quantity</label>
-                                                <input 
-                                                    type="number" min="0" 
-                                                    name="variant-quantity" id="variant-quantity" 
-                                                    placeholder="Total no of items"
-                                                    class="form-control"
-                                                    required
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12 d-flex justify-content-between">
-                                            {{-- Add Another Variant BTN --}}
-                                            <button type="button" class="btn btn-secondary">Add Another Variant</button>
-
-                                            {{-- Proceed Next --}}
-                                            <button type="submit" class="btn btn-primary">Next</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                    </div>
-
-                </div>
-
-            @endif
-
-        </div>
+            </div>
         
-      </div>
+        
+        </div>
     </div>
 
     
@@ -490,9 +281,192 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
+
+            const current_url = CURRENT_URL;
+
+            const CATEGORY_ID_PRODUCT_FORM = document.getElementById('category_id');
+            const SUB_CATEGORY_ID_PRODUCT_FORM = document.getElementById('sub_category_id');
+
+            load_category_list();
+            //load_sub_category_list();
+
+            // load category list
+            async function load_category_list(){
+                let category_element = document.getElementById('select-category');
+
+                category_element.innerHTML = '<option value="">Loading...</option>';
+                /*
+                const request_data = {
+                    result_count: result_count
+                };
+                const params = new URLSearchParams(request_data);
+                */
+                
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = '/admin/get-category-list';
+
+                try{
+                    let response = await fetch(url, request_options);
+                    // console.log(response);
+                    let response_data = await response.json();
+                    //console.log(response_data);
+                    //return response_data;
+
+                    category_element.innerHTML = '<option value="">Select Category</option>';
+
+                    let cat_id_set_FLAG = false;    // to check if the category id is set?
+
+                    let category_list = response_data.category_list;
+                    category_list.forEach((element, index)=>{
+                        let selected = (category_element.dataset.value === element.category_slug) ? "selected" : "";
+                        
+                        // FOR setting values via query parameters (?cat=xyz&sub_cat=abc)
+                        if(!cat_id_set_FLAG){
+                            if(selected == "selected"){
+                                CATEGORY_ID_PRODUCT_FORM.value = element.id;
+                                load_sub_category_list(element.id);
+                                cat_id_set_FLAG = true;
+                            }
+                            else CATEGORY_ID_PRODUCT_FORM.value = 0;
+                        }
+
+                        let opt_str = `<option value="${element.category_slug}" ${selected} data-id=${element.id}>${element.category_name}</option>`;
+                        category_element.innerHTML += opt_str;
+                    });
+                    
+
+                }
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+
+            // Load the sub category list 
+            async function load_sub_category_list(category_id=0){
+
+                let sub_category_element = document.getElementById('select-sub-category');
+
+                sub_category_element.innerHTML = '<option value="">Loading...</option>';
+
+                if(!category_id){
+                    sub_category_element.innerHTML = '<option value="">Select Sub-Category</option>';
+                    return false;
+                }
+
+                /*
+                const request_data = {
+                    result_count: result_count
+                };
+                const params = new URLSearchParams(request_data);
+                */
+                
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = '/admin/get-sub-category-list/'+category_id;
+
+                try{
+                    let response = await fetch(url, request_options);
+                    // console.log(response);
+                    let response_data = await response.json();
+                    //console.log(response_data);
+                    //return response_data;
+
+                    sub_category_element.innerHTML = '<option value="">Select Sub Category</option>';
+
+                    let sub_cat_id_set_FLAG = false;    // to check if the sub_category id is set?
+
+                    let sub_category_list = response_data.sub_category_list;
+
+                    sub_category_list.forEach((element, index)=>{
+                        let selected = (sub_category_element.dataset.value === element.sub_category_slug) ? "selected" : "";
+
+                        // FOR setting values via query parameters (?cat=xyz&sub_cat=abc)
+                        if(!sub_cat_id_set_FLAG){
+                            if(selected == "selected"){
+                                SUB_CATEGORY_ID_PRODUCT_FORM.value = element.id;
+                                sub_cat_id_set_FLAG = true;
+                            }
+                            else SUB_CATEGORY_ID_PRODUCT_FORM.value = 0;
+                        }
+                        
+                        let opt_str = `<option value="${element.sub_category_slug}" ${selected} data-id=${element.id}>${element.sub_category_name}</option>`;
+                        sub_category_element.innerHTML += opt_str;
+                    });
+                    
+                    
+
+                }
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
         
+            // get category id from the select category element AND passing the category slug in the URL
+            document.getElementById("select-category").addEventListener('change', event=>{
+                let select_element = event.target;
+
+                let selected_option = select_element.options[select_element.selectedIndex];
+                let category_id = (selected_option.dataset.id) ? selected_option.dataset.id : 0;
+                let category_slug = selected_option.value;
+
+                SUB_CATEGORY_ID_PRODUCT_FORM.value = 0;
+                CATEGORY_ID_PRODUCT_FORM.value = category_id;
+                
+                load_sub_category_list(category_id);
+                if(category_id){
+                    let new_url = appendQueryString(current_url, 'cat', category_slug);
+                    history.pushState(null, null, new_url);
+                }
+                else {
+                    history.pushState(null, null, current_url);
+                }
+            });
+
+            // passing the sub category slug in the URL
+            document.getElementById("select-sub-category").addEventListener('change', event=>{
+                let select_element = event.target;
+
+                let selected_option = select_element.options[select_element.selectedIndex];
+                let sub_category_slug = selected_option.value;
+                let sub_category_id = (selected_option.dataset.id) ? selected_option.dataset.id : 0;
+                // load_sub_category_images(selected_option.dataset.id);
+                let category_slug;
+                let category_ele = document.getElementById("select-category");
+                if(category_ele.value){
+                    category_slug = category_ele.value;
+                }
+                
+                SUB_CATEGORY_ID_PRODUCT_FORM.value = sub_category_id;
+
+
+                let new_url = appendQueryString(current_url, 'cat', category_slug);
+                new_url = appendQueryString(new_url, 'sub_cat', sub_category_slug);
+                history.pushState(null, null, new_url);
+            });
+
+
+            // Set product slug
+            document.getElementById("product_name").addEventListener('keyup', event=>{
+                let element = event.target;
+                let product_name = element.value;
+                product_name = remove_whitespace(product_name);
+                document.getElementById('product_slug').value = generate_slug(product_name);
+            });
+            
+            
             document.addEventListener('click', (event)=>{
                 let element = event.target;
+
+                return false;
 
                 if(element.id == "save-category"){
                     event.preventDefault();
@@ -526,40 +500,6 @@
             
         };
 
-
-
-        /*
-        document.getElementById("change-product").addEventListener('change', (event)=>{
-            let product_slug = document.getElementById("change-product").value;
-
-            if(product_slug !== "0"){
-                alert("product changed");
-                location.href = `${ADMIN_URL}/products-add-images/${product_slug}`;
-            }
-
-            else location.href = `${ADMIN_URL}/products-add-images/`;
-        });
-        */
-
-        /*
-            document.addEventListener('change', (event)=>{
-                let element = event.target;
-                alert("noogers");
-                if(element.id == "change-product"){
-                    //event.preventDefault();
-                    
-                    let product_slug = element.value;
-
-                    if(product_slug !== "0"){
-                        alert("product changed");
-                        location.href = `${ADMIN_URL}/products-add-images/${product_slug}`;
-                    }
-
-                    else location.href = `${ADMIN_URL}/products-add-images/`;
-
-                }
-                else alert("noogers");
-            });
-        */
+        
     </script>
 @endsection

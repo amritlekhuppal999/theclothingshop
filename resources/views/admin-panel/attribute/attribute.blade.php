@@ -53,21 +53,24 @@
                                 <thead>
                                     <tr>
                                         <th>Sno</th>
-                                        <th>Attribute</th>
-                                        <th>Name</th>
                                         <th>Type</th>
+                                        <th>Value</th>
+                                        <th>Label</th>
                                         {{-- <th>Status</th> --}}
                                         <th>Action</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
+                                    @php
+                                        $counter = 0;
+                                    @endphp
                                     @foreach($attributes as $attribute)
                                         <tr>
-                                            <td>{{ $attribute->id }}</td>
-                                            <td>{{ $attribute->attribute }}</td>
+                                            <td>{{ ++$counter }}</td>
+                                            <td>{{ $attribute->name }}</td>
+                                            <td>{{ $attribute->value }}</td>
                                             <td>{{ $attribute->label }}</td>
-                                            <td>{{ $attribute->type }}</td>
                                             <td>
                                                 <a 
                                                     href="attribute/{{$attribute->id}}/edit" 

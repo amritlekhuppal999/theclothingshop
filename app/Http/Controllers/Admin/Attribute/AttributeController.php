@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
 use App\Models\Attribute;
+use App\Models\AttributeValue;
+use App\Models\AttributeMapper;
 
 class AttributeController extends Controller
 {
@@ -54,26 +56,64 @@ class AttributeController extends Controller
         }
     // attribute type value END
 
-    
     // VIEW RECORDS
-    public function showAttributeView()
+    public function INDEX()
     {
-        $attributes = Attribute::paginate(5);
-        // var_dump($attributes->items);
-        // var_dump($attributes);
-        foreach ($attributes as $attribute) {
-            $attribute->type = $this->attribute_type_value($attribute->type);
-        }
+        $attributes = Attribute::join('attribute_values as AV', 'attributes.id', '=', 'AV.attribute_id')
+                                ->select('AV.value', 'AV.label', 'name')
+                                ->paginate(5);
+        
         return view($this->attribute_route.'attribute', ['attributes' => $attributes]);
     }
 
     
     // ADD ATTRIBUTE FORM
-    public function showAddAttributeForm()
+    public function CREATE()
     {
         $attr_type = $this->attribute_type_list();
-        return view($this->attribute_route.'add-attribute', ["attr_type"=> $attr_type]);
+        return view($this->attribute_route.'add-attribute', ["attr_type"=> $attr_type, "form_type" => "add-attribute"]);
     }
+
+    
+    // INSERT attribute 
+    public function STORE(Request $request){
+        // Validate the incoming data
+        $request->validate([
+            'attributeName' => 'required|string|max:255|unique:attributes,name'
+        ]);
+
+        try{
+
+            // Save the data in the database
+            $attribute = Attribute::create([
+                'name' => $request->attributeName
+            ]);
+
+            return redirect()->back()->with('success', 'Attribute added successfully!');
+
+            // if($attribute){
+            //     // Redirect with a success message
+            //     return redirect()->back()->with('success', 'Attribute added successfully!');
+            // }
+            // else {
+            //     return back()->withErrors([ "error" => "Failed to add the attribute." ]);
+            //     // return redirect()->back()->with('error', 'Failed to add the attribute.');
+            // }
+        }
+        catch(QueryException $e){   // Database Error 
+            return redirect()->back()->with('error', 'Failed to add the attribute. ' . $e->getMessage());
+            // return redirect()->back()->with('error', 'An error occurred: ');
+        }
+        catch(Exception $e){   // General Error
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+            // return redirect()->back()->with('error', 'An error occurred: ');
+        }
+        
+
+        // Redirect with a success message
+        // return redirect()->back()->with('success', 'Data has been saved successfully!');
+    }
+    
 
     // EDIT ATTRIBUTE FORM
     public function edit($attributeId)
@@ -84,6 +124,7 @@ class AttributeController extends Controller
         return view($this->attribute_route.'update-attribute', ["attributeId" => $attributeId, "attribute" => $attribute, "attr_type"=> $attr_type] );
     }
 
+    
     // Update attribute
     public function update(Request $request){
         // Validate the incoming data
@@ -116,44 +157,6 @@ class AttributeController extends Controller
             // return redirect()->back()->with('error', 'An error occurred: ');
         }
     }
-
-    // Add attribute data in database
-    public function store(Request $request){
-        // Validate the incoming data
-        $request->validate([
-            'attributeValue' => 'required|string|max:255',
-            'attributeLabel' => 'required|string',
-            'attributeType' => 'required|integer'
-        ]);
-
-        try{
-
-            // Save the data in the database
-            $attribute = Attribute::create([
-                'attribute' => $request->attributeValue,
-                'label' => $request->attributeLabel,
-                'type' => $request->attributeType
-            ]);
-
-            if($attribute){
-                // Redirect with a success message
-                return redirect()->back()->with('success', 'Attribute added successfully!');
-            }
-            else {
-                return back()->withErrors([ "error" => "Failed to add the attribute." ]);
-                // return redirect()->back()->with('error', 'Failed to add the attribute.');
-            }
-        }
-        catch(QueryException $e){
-            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
-            // return redirect()->back()->with('error', 'An error occurred: ');
-        }
-        
-
-        // Redirect with a success message
-        // return redirect()->back()->with('success', 'Data has been saved successfully!');
-    }
-
 
     // DELETE attribute
     public function delete(Request $request){
@@ -196,4 +199,55 @@ class AttributeController extends Controller
             ];
         }
     }
+
+    
+    
+    // ADD ATTRIBUTE VALUE FORM
+    public function CREATE_VAL(){
+
+        $attr_list = $this->get_attribute_list();
+        
+        $return_data = [
+            "form_type" => "add-attribute-value",
+            "attribute_list" => $attr_list["attribute_list"]
+        ];
+        return view($this->attribute_route.'add-attribute', $return_data);
+    }
+    
+    // Add attribute data in database
+    public function STORE_VAL(Request $request){
+        // Validate the incoming data
+        $request->validate([
+            'attribute_id' => 'required|integer',
+            'attributeValue' => 'required|string|unique:attribute_values,value|max:255',
+            'attributeLabel' => 'required|string|max:255'
+        ]);
+
+        try{
+
+            // Save the data in the database
+            $attribute = AttributeValue::create([
+                'attribute_id' => $request->attribute_id,
+                'value' => $request->attributeValue,
+                'label' => $request->attributeLabel
+            ]);
+
+            return redirect()->back()->with('success', 'Attribute Value added successfully!');
+        }
+        catch(QueryException $e){   // Database Error 
+            return redirect()->back()->with('error', 'Failed to add the Value. ' . $e->getMessage());
+        }
+        catch(Exception $e){   // General Error
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+
+
+    
+    public function get_attribute_list(){
+        $attributes = Attribute::get();
+        return ["attribute_list" => $attributes];
+    }
+
+    
 }
