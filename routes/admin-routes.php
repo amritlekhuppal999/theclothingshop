@@ -32,10 +32,15 @@ Route::prefix('admin')->group(function () {
         Route::post('/products-add', [ProductsController::class, 'STORE'])->name('add-product');
 
         // Route::get('/products-add/{subCategorySlug}', [ProductsController::class, 'addProductForm']);
+        Route::get('/get-product-images/{productID}', [ProductsController::class, 'PRODUCT_IMAGE_GALLERY']); // API CALL
         
         Route::get('/products-add-images/{productSlug?}', [ProductsController::class, 'CREATE_IMAGE']);
+        Route::post('/product-images-update', [ProductsController::class, 'STORE_IMAGE'])->name('update-product-images');
+        Route::post('/product-images-remove', [ProductsController::class, 'REMOVE_PRODUCT_IMAGE'])->name('remove-product-images');
+        Route::post('/product-images-banner', [ProductsController::class, 'UPDATE_BANNER_IMAGE'])->name('update-product-primary-image');
 
         Route::get('/products-add-variants/{productSlug?}', [ProductsController::class, 'CREATE_VARIANT']);
+        Route::post('/products-add-variants', [ProductsController::class, 'STORE_VARIANT'])->name('add-product-variant');
         
         Route::get('/get-product-list', [ProductsController::class, 'GET_PRODUCT_LIST']);     // API CALL
 
@@ -105,6 +110,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/attribute-value-add', [AttributeController::class, 'CREATE_VAL']);
         Route::post('/attribute-value-add', [AttributeController::class, 'STORE_VAL'])->name('add-attribute-value');
         Route::get('/get-attribute-list', [AttributeController::class, 'get_attribute_list']);  // API CALL
+        Route::get('/get-attribute-values/{attribute_id?}', [AttributeController::class, 'get_attribute_values']);  // API CALL
 
 
         Route::get('/attribute/{attributeId}/edit/', [AttributeController::class, 'edit']);

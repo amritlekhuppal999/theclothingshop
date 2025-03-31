@@ -249,5 +249,15 @@ class AttributeController extends Controller
         return ["attribute_list" => $attributes];
     }
 
+    public function get_attribute_values($attribute_id=null){
+        
+        if($attribute_id){
+            $attribute_values = AttributeValue::where('attribute_id', $attribute_id)->get();
+        }
+        else $attribute_values = AttributeValue::get();
+        
+        return ["attribute_values" => $attribute_values];
+    }
+
     
 }

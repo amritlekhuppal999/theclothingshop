@@ -2,12 +2,11 @@
 
 @section('content-css')
 
-    <!-- Select2 JS -->
-    <link rel="stylesheet" href="{{ asset("plugins/select2/css/select2.min.css") }}">
-    <link rel="stylesheet" href="{{ asset("plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css") }}">
-
-    <!-- iCheck for checkboxes and radio inputs -->
-    <link rel="stylesheet" href="{{ asset("plugins/icheck-bootstrap/icheck-bootstrap.min.css") }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <meta name="img-product-url" content="{{ route('update-product-images') }}">
+    <meta name="remove-img-url" content="{{ route('remove-product-images') }}">
+    <meta name="update-banner-img" content="{{ route('update-product-primary-image') }}">
 
 
     <style>
@@ -93,13 +92,6 @@
             </div>
 
 
-            {{-- Margin Div --}}
-            <div class="row">
-                <h3 class="text-danger">
-                    Image Store Operation Pending
-                </h3>
-            </div>
-
             {{-- PRODUCT Image FORM --}}
             <div class="row">
                 <div class="col-8 offset-md-2">
@@ -128,7 +120,7 @@
                                         name="select-product" 
                                         id="select-product" 
                                         class="form-control" 
-                                        data-value="{{-- $subCategorySlug --}}"
+                                        data-value="{{ $productSlug }}"
                                         required>
                                         <option value="">Loading...</option>
                                     </select>
@@ -176,7 +168,7 @@
             </div>
 
             {{-- Load added/saved category images --}}
-            <div class="row" id="saved-product-images">
+            <div class="row" id="stored-product-images">
 
                 <!--
                 <div class="col-md-3">
@@ -226,7 +218,7 @@
             const MAX_FILE_UPLOAD_LIMIT = 5;
 
             load_product_list();
-            load_product_images();
+            
 
             document.getElementById("select-product").addEventListener('change', event=>{
                 // let select_element = event.target;
@@ -330,7 +322,7 @@
                 submit_btn.disabled = true;
                 
                 let form_data = {
-                    category_id: category_id,
+                    product_id: product_id,
                     image_arr: image_arr,
                     primary_img_id: primary_img,
                 };
@@ -347,7 +339,7 @@
                     body: JSON.stringify(form_data)
                 };
 
-                let url = document.querySelector('meta[name="img-category-url"]').getAttribute('content');
+                let url = document.querySelector('meta[name="img-product-url"]').getAttribute('content');
 
                 try{
                     let response = await fetch(url, request_options);     
@@ -386,7 +378,7 @@
 
 
             // Event Listener for LOADED IMAGES SECTION
-            document.getElementById("saved-product-images").addEventListener("click", async event=>{
+            document.getElementById("stored-product-images").addEventListener("click", async event=>{
                 let element = event.target;
 
                 // DELETE saved Images
@@ -476,7 +468,7 @@
                     // data to send
                     let send_data = {
                         img_id: setBannerBTN.dataset.img_id,
-                        category_id: document.getElementById("category-id").value
+                        product_id: product_id
                     };
 
                     // fetch request option
@@ -569,12 +561,13 @@
                     let product_list = response_data.product_list;
                     product_list.forEach((element, index)=>{
                         let selected = (product_element.dataset.value === element.product_slug) ? "selected" : "";
-                        
+
                         let opt_str = `<option value="${element.product_slug}" ${selected} data-id=${element.id}>${element.product_name}</option>`;
                         product_element.innerHTML += opt_str;
                     });
                     
-
+                    product_id = set_product_id();
+                    load_product_images();
                 }
                 catch(error){
                     console.error('Error:', error);
@@ -656,7 +649,7 @@
             // function to load ADDED product images
             async function load_product_images(){
 
-                document.getElementById("saved-product-images").innerHTML = `
+                document.getElementById("stored-product-images").innerHTML = `
                     <div class="col-md-6">
                         <h5 class="card-title"> Loading Images... ${LOADER_MEDIUM} </h5> <br />
                     </div>
@@ -670,7 +663,7 @@
                     // body: JSON.stringify(request_data)
                 };
 
-                let url = `/admin/get-product-images/${document.getElementById("category-id").value}`;
+                let url = `/admin/get-product-images/${product_id}`;
                 // console.log(url);
 
                 try{
@@ -684,7 +677,7 @@
                         let inner_HTML = '';
                         
                         response_data.productImages.forEach((element, index)=>{
-                            let image_id = element.category_img_id;
+                            let image_id = element.product_img_id;
                             let image_URL = element.image_location;
                             let prime_image = element.prime_image;
 
@@ -715,11 +708,11 @@
                         });
 
 
-                        document.getElementById("saved-product-images").innerHTML = inner_HTML;
+                        document.getElementById("stored-product-images").innerHTML = inner_HTML;
                     }
 
                     else{
-                        document.getElementById("saved-product-images").innerHTML = `
+                        document.getElementById("stored-product-images").innerHTML = `
                             <div class="col-md-12">
                                 <h3 class="text-danger"> No Images added for this category.</h3>
                             </div>`;

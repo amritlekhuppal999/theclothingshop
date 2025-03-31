@@ -34,6 +34,16 @@ const CURRENT_URL = `${PROTOCOL}//${HOSTNAME}:${PORT}${PATHNAME}`;
 const PUBLIC_PATH = document.querySelector('meta[name="public-path"]').getAttribute('content');
 
 
+// ERROR CODES
+    const REQUEST_SUCCESSFUL = 200;     // Request successfully received
+    const VALIDATION_ERROR = 422;       // Data sent do not obey the rules. (Form Validation, etc)
+    const NOT_FOUND_ERROR = 402;        // Link/URL/URI/ROUTE NOT FOUND
+    const BAD_REQUEST_ERROR = 400;      // User Sent incorrect/corrupt data
+    const INTERNAL_SERVER_ERROR = 500;  // Dev/System/Backend messed up
+
+// ERROR CODES END
+
+
 // FUNCTION TO REMOVE WHITESPACES FROM a STRING
     function remove_whitespace(str){
         return str.trim().replace(/\s+/g, " ");
@@ -182,3 +192,8 @@ const PUBLIC_PATH = document.querySelector('meta[name="public-path"]').getAttrib
         }
     }
 // Example of FETCH POST FUNCTION END
+
+
+// Set it to false so we can customise toastr methods
+    //toastr.options.escapeHtml = false;
+// Set it to false so we can customise toastr methods END

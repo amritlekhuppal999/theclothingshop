@@ -40,10 +40,6 @@
         <div class="row">
             <div class="col-lg-12">
                 <x-admin.tables.table-component />
-
-                <x-admin.tables.data-table-1 />
-
-                <x-admin.tables.data-table-2 />
             </div>
 
         </div>

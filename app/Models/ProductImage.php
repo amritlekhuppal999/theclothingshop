@@ -5,19 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SubProduct extends Model
+class ProductImage extends Model
 {
     use HasFactory;
 
-    protected $table = 'sub_products';
+    protected $table = 'product_images';
 
     protected $fillable = [
         'product_id',
-        'variant_name',
-        'variant_slug',
-        'stock',
-        'sku',
-        'price',
+        'image_location',
+        'prime_image',
         'status'
     ];
 }
