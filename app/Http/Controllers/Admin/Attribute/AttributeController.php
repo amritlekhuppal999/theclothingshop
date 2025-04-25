@@ -18,52 +18,31 @@ class AttributeController extends Controller
     private $attribute_route = 'admin-panel/attribute/';
     private $VIEW_NOT_FOUND = 'admin-panel/404';
 
-    // Get size attributes
-
-        public function size_list(){
-
-            return array(
-                "XS" => "Extra Small",
-                "S" => "Small",
-                "M" => "Medium",
-                "L" => "Large",
-                "XL" => "Extra Large",
-                "XXL" => "Double Extra Large",
-                "XXXL"  => "Triple Extra Large"
-            );
-
-        }
-
-        public function size_value($size){
-            $size_arr = $this->size_list();
-            return $size_arr[$size];
-        }
-    // Get size attributes END
-
-    // attribute type value 
-        // return attribute type
-        function attribute_type_value($attr){
-            $attr_array = $this->attribute_type_list();
-            return $attr_array[$attr];
-        }
-        // return attribute type array
-        function attribute_type_list(){
-            return array(
-                "1" => "Size",
-                "2" => "Color",
-                "3" => "Theme"
-            );
-        }
-    // attribute type value END
+    
 
     // VIEW RECORDS
-    public function INDEX()
+    public function INDEX(Request $request)
     {
+
+        $limit = ($request->has("limit")) ? $request->query("limit") : 10 ;
+        $search_keyword = ($request->has("search_keyword")) ? $request->query("search_keyword") : "" ;
+
         $attributes = Attribute::join('attribute_values as AV', 'attributes.id', '=', 'AV.attribute_id')
                                 ->select('AV.value', 'AV.label', 'name')
-                                ->paginate(5);
+                                ->when($request->has("search_keyword"), function($query) use($request){
+                                    $search_keyword = $request->query("search_keyword");
+                                    return $query->where('name', 'like', '%'.$search_keyword.'%')
+                                                ->orWhere('AV.value', 'like', '%'.$search_keyword.'%')
+                                                ->orWhere('AV.label', 'like', '%'.$search_keyword.'%');
+                                })
+                                ->paginate($limit)->withQueryString();
+
+        $return_data = array(
+            "attributes" => $attributes,
+            "search_keyword" => $search_keyword
+        );
         
-        return view($this->attribute_route.'attribute', ['attributes' => $attributes]);
+        return view($this->attribute_route.'attribute', $return_data );
     }
 
     
@@ -259,5 +238,44 @@ class AttributeController extends Controller
         return ["attribute_values" => $attribute_values];
     }
 
+
+
+    // Get size attributes (NOT IN USE)
+
+        public function size_list(){
+
+            return array(
+                "XS" => "Extra Small",
+                "S" => "Small",
+                "M" => "Medium",
+                "L" => "Large",
+                "XL" => "Extra Large",
+                "XXL" => "Double Extra Large",
+                "XXXL"  => "Triple Extra Large"
+            );
+
+        }
+
+        public function size_value($size){
+            $size_arr = $this->size_list();
+            return $size_arr[$size];
+        }
+    // Get size attributes END
+
+    // attribute type value (NOT IN USE)
+        // return attribute type
+        function attribute_type_value($attr){
+            $attr_array = $this->attribute_type_list();
+            return $attr_array[$attr];
+        }
+        // return attribute type array
+        function attribute_type_list(){
+            return array(
+                "1" => "Size",
+                "2" => "Color",
+                "3" => "Theme"
+            );
+        }
+    // attribute type value END
     
 }

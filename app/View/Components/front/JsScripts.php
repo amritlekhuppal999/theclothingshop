@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\front;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -21,6 +21,6 @@ class JsScripts extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.js-scripts');
+        return view('components.front.js-scripts');
     }
 }

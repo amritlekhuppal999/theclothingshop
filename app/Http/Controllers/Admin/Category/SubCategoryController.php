@@ -14,41 +14,38 @@ class SubCategoryController extends Controller{
     private $VIEW_NOT_FOUND = 'admin-panel/404';
 
     // Sub Category View
-    public function INDEX($categorySlug = null){
+    public function INDEX(Request $request, $categorySlug=null){
         // do the thing with the slug
         
-        // if (strtolower($categorySlug) == "all") {
-        //     $subCategories = SubCategory::orderBy('sub_category.status', 'desc')->paginate(10);   
-        // }
+        $limit = ($request->has("limit")) ? $request->query("limit") : 10 ;
+        $search_keyword = ($request->has("search_keyword")) ? $request->query("search_keyword") : "" ;
+        $status = ($request->has("status")) ? $request->query("status") : null ;
 
-        // $status = request('status') !== null ? request('status') : null;
-        $status = null;
-        $status = (strtolower(request('status')) == "deleted") ? 0 : 1;
+        $subCategories = SubCategory::when(!empty($categorySlug), function($query) use($categorySlug){
+                                        return $query->join('category as C', 'sub_category.category_id', '=', 'C.id')
+                                                    ->where('C.category_slug', $categorySlug);
+                                    })
+                                    ->when($request->has("status"), function($query) use($request){
+                                        $status = ($request->query("status") == "active") ? 1 : 0 ;
+                                        return $query->where('sub_category.status', $status);
+                                    })
+                                    ->when($request->has("search_keyword"), function($query) use($request){
+                                        $search_keyword = $request->query("search_keyword");
+                                        
+                                        return $query->where('sub_category_name', 'like', '%'.$search_keyword.'%')
+                                                    ->orWhere('sub_category_slug', 'like', '%'.$search_keyword.'%');
+                                    })
+                                    ->orderBy('sub_category.status', 'desc')
+                                    ->paginate($limit)->withQueryString();
 
-        $search_value = request('search_value') !== null ? request('search_value') : null;
+        $return_data = [
+            "categorySlug" => $categorySlug, 
+            "subCategories" => $subCategories,
+            "search_keyword" => $search_keyword,
+            "status" => $status
+        ];
 
-        if (!empty($categorySlug)) {
-
-
-            $subCategories = SubCategory::join('category as C', 'sub_category.category_id', '=', 'C.id')
-                                        ->where('C.category_slug', $categorySlug)
-                                        ->select('sub_category.*')
-                                        ->orderBy('sub_category.status', 'desc')
-                                        ->when(isset($status), function($query) use($status){
-                                            return $query->where('sub_category.status', $status);
-                                        })
-                                        ->paginate(10)->withQueryString(); // queryString works together/after paginate is called.
-        }
-
-        else {
-            $subCategories = SubCategory::orderBy('sub_category.status', 'desc')
-                            ->when(isset($status), function($query) use($status){
-                                return $query->where('sub_category.status', $status);
-                            })
-                            ->paginate(10)->withQueryString();  // queryString works together/after paginate is called.
-        }
-
-        return view($this->category_route.'sub-category', ["categorySlug" => $categorySlug, "subCategories" => $subCategories]);
+        return view($this->category_route.'sub-category', $return_data);
     }
 
     // Add Category Form
@@ -172,7 +169,7 @@ class SubCategoryController extends Controller{
 
     // DELETE sub category
     public function DELETE(Request $request){
-        // Validate the incoming data
+        // Validate the incoming data?
         
         try{
              // Find the existing attribute by its ID

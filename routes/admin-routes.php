@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Admin\Products\ProductsController;
+use App\Http\Controllers\Admin\Products\SubProductsController;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Category\SubCategoryController;
 use App\Http\Controllers\Admin\Attribute\AttributeController;
@@ -19,7 +20,7 @@ Route::prefix('admin')->group(function () {
     */
     
     // Dashboard Routes
-    Route::get('/dashboard', [AdminDashboardController::class, 'showDashboard'])->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'INDEX'])->name('dashboard');
     
     
     // PRODUCT Routes
@@ -28,21 +29,39 @@ Route::prefix('admin')->group(function () {
         // });
         
         Route::get('/products', [ProductsController::class, 'INDEX'])->name('products');
-        Route::get('/products-add', [ProductsController::class, 'CREATE']);
+        Route::get('/products-add', [ProductsController::class, 'CREATE'])->name('products-add');
         Route::post('/products-add', [ProductsController::class, 'STORE'])->name('add-product');
-
-        // Route::get('/products-add/{subCategorySlug}', [ProductsController::class, 'addProductForm']);
-        Route::get('/get-product-images/{productID}', [ProductsController::class, 'PRODUCT_IMAGE_GALLERY']); // API CALL
+        Route::post('/products-update', [ProductsController::class, 'STORE_UPDATE'])->name('update-product');
         
-        Route::get('/products-add-images/{productSlug?}', [ProductsController::class, 'CREATE_IMAGE']);
-        Route::post('/product-images-update', [ProductsController::class, 'STORE_IMAGE'])->name('update-product-images');
-        Route::post('/product-images-remove', [ProductsController::class, 'REMOVE_PRODUCT_IMAGE'])->name('remove-product-images');
-        Route::post('/product-images-banner', [ProductsController::class, 'UPDATE_BANNER_IMAGE'])->name('update-product-primary-image');
+        Route::get('/products-update/{productSlug}', [ProductsController::class, 'CREATE_UPDATE'])->name('products-update');
+        Route::get('/product-restore/{productSlug}', [ProductsController::class, 'RESTORE_VIEW'])->name('restore-product');
 
-        Route::get('/products-add-variants/{productSlug?}', [ProductsController::class, 'CREATE_VARIANT']);
-        Route::post('/products-add-variants', [ProductsController::class, 'STORE_VARIANT'])->name('add-product-variant');
+        // Product Images
+            Route::get('/products-add-images/{productSlug?}', [ProductsController::class, 'CREATE_IMAGE'])->name('products-add-images');
+            Route::post('/product-images-update', [ProductsController::class, 'STORE_IMAGE'])->name('update-product-images');
+            Route::post('/product-images-remove', [ProductsController::class, 'REMOVE_PRODUCT_IMAGE'])->name('remove-product-images');
+            Route::post('/product-images-banner', [ProductsController::class, 'UPDATE_BANNER_IMAGE'])->name('update-product-primary-image');
+        // Product Images END
+
+        // VARIANTS
+            Route::get('/products-variants/{productSlug?}', [SubProductsController::class, 'VARIANT_INDEX'])->name('products-variants');
+            Route::get('/products-add-variants/{productSlug?}', [SubProductsController::class, 'CREATE_VARIANT'])->name("products-add-variants");
+            Route::post('/products-add-variants', [SubProductsController::class, 'STORE_VARIANT'])->name('add-product-variant');
+
+            Route::get('/variants-update/{subProductSlug}', [SubProductsController::class, 'UPDATE_VARIANT'])->name('variants-update');
+            Route::post('/sub-product-action', [SubProductsController::class, 'VARIANT_ACTIONS'])->name('sub-product-action');
+
+            // Variant image
+                Route::get('/variants-add-images/{subProductSlug?}', [SubProductsController::class, 'CREATE_VARIANT_IMAGE'])->name('variants-add-images');
+            // Variant image END
+        // VARIANTS END
         
-        Route::get('/get-product-list', [ProductsController::class, 'GET_PRODUCT_LIST']);     // API CALL
+        
+        // API CALLS
+            //Route::get('/search-product', [ProductsController::class, 'SEARCH_PRODUCT']);     // API CALL
+            Route::get('/get-product-list', [ProductsController::class, 'GET_PRODUCT_LIST']);     // API CALL
+            Route::get('/get-product-images/{productID}', [ProductsController::class, 'PRODUCT_IMAGE_GALLERY']); // API CALL
+        // API CALLS END
 
 
     // PRODUCT Routes END
@@ -51,7 +70,7 @@ Route::prefix('admin')->group(function () {
     // CATEGORY Routes
 
         Route::get('/category', [CategoryController::class, 'INDEX']);
-        Route::get('/category-add', [CategoryController::class, 'CREATE']);
+        Route::get('/category-add', [CategoryController::class, 'CREATE'])->name("add-category");
         Route::post('/category-add', [CategoryController::class, 'STORE'])->name('add-category');
         
         Route::get('/category-images/{categorySlug?}', [CategoryController::class, 'IMAGE_GALLERY_INDEX']);
@@ -78,14 +97,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/sub-category-images/{categorySlug?}', [SubCategoryController::class, 'IMAGE_GALLERY_INDEX']);
         Route::get('/get-sub-category-images/{subCategoryID}', [SubCategoryController::class, 'SUB_CATEGORY_IMAGE_GALLERY']); // API CALL
 
-        Route::get('/sub-category-images-update/{subCategorySlug?}', [SubCategoryController::class, 'ADD_IMAGE_INDEX']);
+        Route::get('/sub-category-images-update/{subCategorySlug?}', [SubCategoryController::class, 'ADD_IMAGE_INDEX'])->name("subcat-img-up");
         // Route::post('/sub-category-images-update', [CategoryController::class, 'ADD_IMAGE'])->name('add-sub-category-images');
         Route::post('/sub-category-images-update', [SubCategoryController::class, 'UPDATE_IMAGE'])->name('update-sub-category-images');
         Route::post('/sub-category-images-remove', [SubCategoryController::class, 'REMOVE_SUB_CATEGORY_IMAGE'])->name('remove-sub-category-images');
         Route::post('/sub-category-images-banner', [SubCategoryController::class, 'UPDATE_BANNER_IMAGE'])->name('update-sub-category-primary-image');
         
         Route::get('/sub-category/{catgorySlug?}', [SubCategoryController::class, 'INDEX']);
-        Route::get('/sub-category-add/', [SubCategoryController::class, 'CREATE']);
+        Route::get('/sub-category-add/', [SubCategoryController::class, 'CREATE'])->name("sub-category-add");
 
         // yes its CATEGORY SLUG HERE DON'T sweat it!!
         Route::get('/sub-category-add/{catgorySlug}', [SubCategoryController::class, 'CREATE']);
@@ -104,7 +123,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/attribute', [AttributeController::class, 'INDEX']);
         
-        Route::get('/attribute-add', [AttributeController::class, 'CREATE']);
+        Route::get('/attribute-add', [AttributeController::class, 'CREATE'])->name("attribute-add");
         Route::post('/attribute-add', [AttributeController::class, 'STORE'])->name('add-attribute');
         
         Route::get('/attribute-value-add', [AttributeController::class, 'CREATE_VAL']);

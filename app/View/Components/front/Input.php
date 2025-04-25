@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\Front;
+namespace App\View\Components\front;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class PageHeader extends Component
+class Input extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class PageHeader extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.front.page-header');
+        return view('components.front.input');
     }
 }

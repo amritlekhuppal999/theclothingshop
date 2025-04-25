@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\Front;
+namespace App\View\Components\front;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Footer extends Component
+class Breadcrumb extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class Footer extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.front.footer');
+        return view('components.front.breadcrumb');
     }
 }

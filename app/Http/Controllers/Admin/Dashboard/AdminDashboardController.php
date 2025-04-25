@@ -8,9 +8,11 @@ use Illuminate\Http\RedirectResponse;
 
 class AdminDashboardController extends Controller
 {
+    private $dashboard_route = 'admin-panel/admin-dashboard';
+
     //To return dashboard page view
-    public function showDashboard()
+    public function INDEX()
     {
-        return view('admin-panel/admin-dashboard');
+        return view($this->dashboard_route);
     }
 }

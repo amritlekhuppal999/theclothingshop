@@ -21,26 +21,29 @@ class CategoryController extends Controller
     private $VIEW_NOT_FOUND = 'admin-panel/404';
 
     // Category View
-    public function INDEX(){
+    public function INDEX(Request $request){
 
-        $status = null;
-        $status = (strtolower(request('status')) == "deleted") ? 0 : 1;
-        
-        
-        if(!isset($status)){
-            $categories = Category::paginate(10)->withQueryString();
-            
-        }
+        $limit = ($request->has("limit")) ? $request->query("limit") : 10 ;
+        $search_keyword = ($request->has("search_keyword")) ? $request->query("search_keyword") : "" ;
 
-        else{
 
-            $categories = Category::when(isset($status), function($query) use($status){
-                                        return $query->where('status', $status);
-                                    })
-                                    ->paginate(10)->withQueryString();
-        }
+        $categories = Category::when($request->has("status"), function($query) use($request){
+                        $status = (strtolower(request('status')) == "deleted") ? 0 : 1;
+                        return $query->where('status', $status);
+                    })
+                    ->when($request->has("search_keyword"), function($query) use($request){
+                        $search_keyword = $request->query("search_keyword");
+                        return $query->where('category_name', 'like', '%'.$search_keyword.'%')
+                                    ->orWhere('category_slug', 'like', '%'.$search_keyword.'%');
+                    })
+                    ->paginate($limit)->withQueryString();
 
-        return view($this->category_route.'category', ["categories" => $categories]);
+        $return_data = array(
+            "categories" => $categories,
+            "search_keyword" => $search_keyword
+        );
+
+        return view($this->category_route.'category', $return_data);
     }
 
     // Add Category Form

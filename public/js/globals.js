@@ -37,7 +37,7 @@ const PUBLIC_PATH = document.querySelector('meta[name="public-path"]').getAttrib
 // ERROR CODES
     const REQUEST_SUCCESSFUL = 200;     // Request successfully received
     const VALIDATION_ERROR = 422;       // Data sent do not obey the rules. (Form Validation, etc)
-    const NOT_FOUND_ERROR = 402;        // Link/URL/URI/ROUTE NOT FOUND
+    const NOT_FOUND_ERROR = 404;        // Link/URL/URI/ROUTE NOT FOUND
     const BAD_REQUEST_ERROR = 400;      // User Sent incorrect/corrupt data
     const INTERNAL_SERVER_ERROR = 500;  // Dev/System/Backend messed up
 
@@ -197,3 +197,40 @@ const PUBLIC_PATH = document.querySelector('meta[name="public-path"]').getAttrib
 // Set it to false so we can customise toastr methods
     //toastr.options.escapeHtml = false;
 // Set it to false so we can customise toastr methods END
+
+
+
+// SEARCH BOX
+/* 
+    DEVELOPER'S NOTE
+    so here we are trying to create a live search for the subjects, now we want to prevent sending
+    fetch requests after every key pressed, so we add a timeout, but we know that it only suspends the
+    current operation which means is if user presses multiple key strokes, the strokes will be registered 
+    and after the given delay all the requests will be sent. SO to avoid that from happening we need to 
+    reset the timer upon every click and thats where clearTImeout comes in.
+    
+    In the MDN docs we find that setTimeout returns a timeoutID which can be used to clear current 
+    timeout operation hence resetting our clock...
+*/
+/*
+document.getElementById("search-keyword").addEventListener('keyup', event=>{
+    let search_input = event.target;
+    // console.log(search_input.value);
+    result_options.search_keyword = search_input.value.replace(/\s/g, " ");
+    // result_options.subject_id = document.getElementById('subject_id').value;
+
+    if(result_options.search_keyword.length){
+        document.getElementById("chapter-table-body").innerHTML = `<tr><td colspan="3">Loading...</td></tr>`;
+
+        if(timeoutID)
+            clearTimeout(timeoutID);
+
+        timeoutID = setTimeout(() => {
+            load_chapters(result_options);
+        }, 700);
+    }
+
+    // 1000ms = 1sec
+
+});
+*/

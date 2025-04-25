@@ -19,9 +19,7 @@
 
 @section('content')
 
-    @php
-        $page_url = explode("/", request()->path());
-    @endphp
+    {{-- @php $page_url = explode("/", request()->path()); @endphp --}}
     
     <div class="content">
         <div class="container-fluid">
@@ -36,32 +34,14 @@
 
             {{-- SELECT Category --}}
             <div class="row">
-                
-                {{-- Select Category --}}
-                <div class="col-4">
+                {{-- Select Product --}}
+                <div class="col-md-4">
                     <div class="form-group">
-                        <select 
-                            name="select-category" 
-                            id="select-category" 
-                            class="form-control" 
-                            data-value="{{ $category_slug }}">
-                            <option value="">Loading...</option>
-                        </select>
+                        <h3>{{ $product["product_name"] }}</h3>
                     </div>
                 </div>
 
-                {{-- Select Sub-Category --}}
-                <div class="col-4">
-                    <div class="form-group">
-                        <select 
-                            name="select-sub-category" 
-                            id="select-sub-category" 
-                            class="form-control" 
-                            data-value="{{ $sub_category_slug }}">
-                            <option value="">Select Sub Category</option>
-                        </select>
-                    </div>
-                </div>
+                
             </div>
 
             {{-- Add Product Form --}}
@@ -72,7 +52,7 @@
                     <div class="card card-purple ">
                         {{-- card header --}}
                         <div class="card-header">
-                            <h3 class="card-title">Add Product</h3>
+                            <h3 class="card-title">UPDATE PRODUCT {{-- $product["product_name"] --}} </h3>
 
                             {{-- collapse-expand BTN --}}
                             <div class="card-tools">
@@ -85,7 +65,7 @@
                         {{-- card body --}}
                         <div class="card-body">
                             <!-- form start -->
-                            <form role="form" action="{{ route('add-product') }}" method="POST">
+                            <form role="form" action="{{ route('update-product') }}" method="POST">
                                 @csrf
 
                                 {{-- Operation Error/Success Message --}}
@@ -103,11 +83,15 @@
                                     </div>
                                 @endif
 
+
+                                {{-- Product ID --}}
+                                <input type="hidden" id="product_id" name="product_id" value="{{ $product["id"] }}"/>
+
                                 {{-- Category ID --}}
-                                <input type="hidden" id="category_id" name="category_id" value="{{ old('category_id') }}"/>
+                                <input type="hidden" id="category_id" name="category_id" value="{{ $product["category_id"] }}"/>
 
                                 {{-- Sub Category ID --}}
-                                <input type="hidden" id="sub_category_id" name="sub_category_id" value="{{ old('sub_category_id') }}"/>
+                                <input type="hidden" id="sub_category_id" name="sub_category_id" value="{{ $product["sub_category_id"] }}"/>
 
                                 @error('category_id')
                                     <div class="alert alert-danger">{{ $message }}</div>
@@ -116,28 +100,76 @@
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
 
+                                
                                 {{-- Gender --}}
                                 <div class="form-group clearfix">
                                     <label class="mr-2">Target Group</label>
                                     
                                     <label class="mr-2"> 
-                                        <input type="radio" id="radioPrimary1" name="targetGroup"  value="1">
+                                        <input 
+                                            type="radio" 
+                                            id="radioPrimary1" 
+                                            name="targetGroup"  
+                                            value="1" 
+                                            {{ ($product["target_group"] == 1 ) ? 'checked' : '' }} 
+                                        />
                                         Male
                                     </label>
 
                                     <label class="mr-2"> 
-                                        <input type="radio" id="radioPrimary2" name="targetGroup" value="2">
+                                        <input 
+                                            type="radio" 
+                                            id="radioPrimary2" 
+                                            name="targetGroup" 
+                                            value="2"
+                                            {{ ($product["target_group"] == 2 ) ? 'checked' : '' }}
+                                        />
                                         Female
                                     </label>
                                     
                                     <label class="mr-2"> 
-                                        <input type="radio" id="radioPrimary3" name="targetGroup"  value="3">
+                                        <input 
+                                            type="radio" 
+                                            id="radioPrimary3" 
+                                            name="targetGroup"  
+                                            value="3"
+                                            {{ ($product["target_group"] == 3 ) ? 'checked' : '' }}
+                                        />
                                         Unisex
                                     </label>
                                 </div>
                                 @error('targetGroup')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
+
+                                {{-- Select Category/Sub-Cat --}}
+                                <div class="row">
+                                    {{-- Select Category --}}
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <select 
+                                                name="select-category" 
+                                                id="select-category" 
+                                                class="form-control" 
+                                                data-value="{{ isset($product["category_id"]) ? $product["category_id"] : '' }}">
+                                                <option value="">Loading...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    {{-- Select Sub-Category --}}
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <select 
+                                                name="select-sub-category" 
+                                                id="select-sub-category" 
+                                                class="form-control" 
+                                                data-value="{{ isset($product["sub_category_id"]) ? $product["sub_category_id"] : '' }}">
+                                                <option value="">Select Sub Category</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 {{-- Product Name --}}
                                 <div class="form-group">
@@ -147,7 +179,7 @@
                                         class="form-control" 
                                         id="product_name" name="product_name" 
                                         placeholder="Product Name"
-                                        value="{{ old('product_name') }}"
+                                        value="{{ $product["product_name"] }}"
                                         required
                                     />
                                 </div>
@@ -163,31 +195,29 @@
                                         class="form-control" 
                                         id="product_slug" name="product_slug" 
                                         placeholder="Product slug"
-                                        value="{{ old('product_slug') }}"
+                                        value="{{ $product["product_slug"] }}"
                                         required
                                     />
-                                    {{-- <span id="slug-alert-msg"></span> --}}
+                                    
+
+                                    {{-- Product Slug Backup to check if the value is changed after edit --}}
+                                    <input type="hidden" name="product_slug_backup" id="product_slug_backup" value="{{ $product["product_slug"] }}" />
                                 </div>
                                 @error('product_slug')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
 
-                                {{-- Cost Price --}}
-                                {{-- <div class="form-group">
-                                    <label for="">Cost Price</label>
-                                    <input type="text" class="form-control" id="cost-price" name="cost-price" placeholder="Cost Price">
-                                </div> --}}
-
+                                
                                 {{-- Base Price --}}
                                 <div class="form-group">
                                     <label for="">Base Price (₹)</label>
                                     <input 
                                         type="number" 
-                                        min="1.00"  
+                                        min="1"  
                                         class="form-control" 
                                         id="base-price" name="base_price" 
                                         placeholder="Base Price"
-                                        value="{{ old('base_price') }}"
+                                        value="{{ $product["base_price"] }}"
                                         step="0.01"
                                         required
                                     />
@@ -201,11 +231,11 @@
                                     <label for="">Discount Available %</label>
                                     <input 
                                         type="number" 
-                                        max="100.00" min="0.00" 
+                                        max="99.99" min="0.00" 
                                         class="form-control" 
                                         id="discount-percentage" name="discount_percentage"
                                         placeholder="Discount"
-                                        value="{{ old('discount_percentage') }}"
+                                        value="{{ $product["discount_percentage"] }}"
                                         step="0.01"
                                         required
                                     />
@@ -217,10 +247,18 @@
                                 {{-- Short Description --}}
                                 <div class="form-group">
                                     <label for="">Short Description</label>
-                                    <textarea 
-                                        class="form-control" 
-                                        name="short_description" id="short-description"  
-                                        rows="5"></textarea>
+                                    @if(!empty($product["short_description"]))
+                                        <textarea 
+                                            class="form-control" 
+                                            name="short_description" id="short-description"  
+                                            rows="5">{{ $product["short_description"] }}</textarea>
+                                        
+                                    @else
+                                        <textarea 
+                                            class="form-control" 
+                                            name="short_description" id="short-description"  
+                                            rows="5"></textarea>
+                                    @endif
                                 </div>
                                 @error('short_description')
                                     <div class="alert alert-danger">{{ $message }}</div>
@@ -229,10 +267,19 @@
                                 {{-- Long Description --}}
                                 <div class="form-group">
                                     <label for="">Long Description</label>
-                                    <textarea 
-                                        class="form-control" 
-                                        name="long_description" id="long-description"  
-                                        rows="10"></textarea>
+                                    @if(!empty($product["long_description"]))
+                                        <textarea 
+                                            class="form-control" 
+                                            name="long_description" id="long-description"  
+                                            rows="5">{{ $product["long_description"] }}</textarea>
+                                        
+                                    @else
+                                        <textarea 
+                                            class="form-control" 
+                                            name="long_description" id="long-description"  
+                                            rows="10"></textarea>
+                                    @endif
+                                    
                                 </div>
                                 @error('long_description')
                                     <div class="alert alert-danger">{{ $message }}</div>
@@ -251,9 +298,9 @@
                                     <button 
                                         type="submit" 
                                         class="btn btn-secondary" 
-                                        name="save-product" 
-                                        id="save-product">
-                                        Save Product
+                                        name="update-product" 
+                                        id="update-product">
+                                        Update Product
                                     </button>
                                 </div>
                             
@@ -288,9 +335,59 @@
 
             const CATEGORY_ID_PRODUCT_FORM = document.getElementById('category_id');
             const SUB_CATEGORY_ID_PRODUCT_FORM = document.getElementById('sub_category_id');
+            
+            const SELECT_PRODUCT_ELEMENT = document.getElementById('select-product');
 
             load_category_list();
             //load_sub_category_list();
+
+            //load_product_list();
+            
+            // load product list
+            async function load_product_list(){
+                //let product_element = document.getElementById('select-product');
+
+                SELECT_PRODUCT_ELEMENT.innerHTML = '<option value="">Loading...</option>';
+                /*
+                const request_data = {
+                    result_count: result_count
+                };
+                const params = new URLSearchParams(request_data);
+                */
+                
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = '/admin/get-product-list';
+
+                try{
+                    let response = await fetch(url, request_options);
+                    // console.log(response);
+                    let response_data = await response.json();
+                    //console.log(response_data);
+                    //return response_data;
+
+                    SELECT_PRODUCT_ELEMENT.innerHTML = '<option value="">Select Product</option>';
+
+                    let prod_id_set_FLAG = false;    // to check if the product id is set?
+
+                    let product_list = response_data.product_list;
+                    product_list.forEach((element, index)=>{
+                        let selected = (SELECT_PRODUCT_ELEMENT.dataset.value === element.product_slug) ? "selected" : "";
+
+                        let opt_str = `<option value="${element.product_slug}" ${selected} data-id=${element.id}>${element.product_name}</option>`;
+                        SELECT_PRODUCT_ELEMENT.innerHTML += opt_str;
+                    });
+                    
+                    product_id = set_product_id();
+                }
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
 
             // load category list
             async function load_category_list(){
@@ -325,7 +422,8 @@
 
                     let category_list = response_data.category_list;
                     category_list.forEach((element, index)=>{
-                        let selected = (category_element.dataset.value === element.category_slug) ? "selected" : "";
+                        let selected = (category_element.dataset.value == element.id) ? "selected" : "";
+                        //console.log(category_element.dataset.value, element.id, selected);
                         
                         // FOR setting values via query parameters (?cat=xyz&sub_cat=abc)
                         if(!cat_id_set_FLAG){
@@ -389,7 +487,7 @@
                     let sub_category_list = response_data.sub_category_list;
 
                     sub_category_list.forEach((element, index)=>{
-                        let selected = (sub_category_element.dataset.value === element.sub_category_slug) ? "selected" : "";
+                        let selected = (sub_category_element.dataset.value == element.id) ? "selected" : "";
 
                         // FOR setting values via query parameters (?cat=xyz&sub_cat=abc)
                         if(!sub_cat_id_set_FLAG){
@@ -424,6 +522,7 @@
                 CATEGORY_ID_PRODUCT_FORM.value = category_id;
                 
                 load_sub_category_list(category_id);
+                /*
                 if(category_id){
                     let new_url = appendQueryString(current_url, 'cat', category_slug);
                     history.pushState(null, null, new_url);
@@ -431,6 +530,7 @@
                 else {
                     history.pushState(null, null, current_url);
                 }
+                */
             });
 
             // passing the sub category slug in the URL
@@ -449,10 +549,11 @@
                 
                 SUB_CATEGORY_ID_PRODUCT_FORM.value = sub_category_id;
 
-
+                /*
                 let new_url = appendQueryString(current_url, 'cat', category_slug);
                 new_url = appendQueryString(new_url, 'sub_cat', sub_category_slug);
                 history.pushState(null, null, new_url);
+                */
             });
 
 

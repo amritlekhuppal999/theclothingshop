@@ -1,17 +1,20 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\admin\SearchResult;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Forms.Input extends Component
+class ProductSearchResult extends Component
 {
+    
+    private $SEARCH_RESULT_PATH = 'components.admin.search-result.ProductSearchResult';
+
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct( )
     {
         //
     }
@@ -21,6 +24,6 @@ class Forms.Input extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.forms.-input');
+        return view($SEARCH_RESULT_PATH);
     }
 }

@@ -34,9 +34,9 @@
             </div>
 
 
-            <div class="col-md-6 mb-2 offset-md-3 d-flex justify-content-end">
+            {{-- <div class="col-md-6 mb-2 offset-md-3 d-flex justify-content-end">
                 <a href="/admin/category-add" class="btn btn-secondary">Add New Category</a>
-            </div>
+            </div> --}}
 
         </div>
         
@@ -47,19 +47,35 @@
 
                 <div class="card">
         
-                    <div class="card-header border-transparent">
-                        <h3 class="card-title">Categories</h3>
+                    <div class="card-header border-transparent     d-flex align-items-center justify-content-between flex-wrap">
+                        <h3 class="card-title  mb-2 mb-md-0">Categories</h3>
+
+
+                        <div class="mx-auto mb-2 mb-md-0   d-flex align-items-center justify-content-between" style="min-width: 300px; flex-grow: 1; max-width: 600px;">
+                            <x-admin.searchbar.search-bar 
+                                page="category" 
+                                divClass="w-100 mr-1"
+                                placeholder="Search by name, category, group, price and discount"
+                                id="category-search-bar"
+                                value="{{ $search_keyword }}"
+                            />
+                            <button type="button" class="btn btn-sm btn-info w-50" id="advance-search-btn">
+                                Advance Filter
+                            </button>
+                        </div>
 
                         
 
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <div class="card-tools   mb-2 mb-md-0">
+                            {{-- <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
-                            </button>
+                            </button> --}}
                             
                             {{-- <button type="button" class="btn btn-tool" data-card-widget="remove">
                                 <i class="fas fa-times"></i>
                             </button> --}}
+
+                            <a href="{{ route("add-category") }}" class="btn btn-sm btn-secondary ">Add New Category</a>
                         </div>
                     </div>
 
@@ -77,66 +93,74 @@
                                 </thead>
 
                                 <tbody>
-                                    @php $counter = 0; @endphp
-                                    @foreach($categories as $category)
+
+                                    @if($categories->total())
+                                        
+                                        @php $counter = 0; @endphp
+
+                                        @foreach($categories as $category)
+                                            <tr>
+                                                <td rowspan="">
+                                                    <a href="#">{{ ++$counter }}</a>
+                                                </td>
+
+                                                <td rowspan="">{{ $category["category_name"] }}</td> <!-- Spans vertically across subcategories -->
+                                                
+                                                <td>
+                                                    <span class="badge badge-{{ ($category["status"]) ? "success" : "danger" }}">
+                                                        {{ getGeneralStatus($category["status"]) }}
+                                                    </span>
+                                                </td>
+
+                                                <td>
+
+                                                    @if($category["status"])
+                                                        {{-- Add Images --}}
+                                                        <a 
+                                                            href="/admin/category-images-update/{{ $category["category_slug"] }}"
+                                                            class="btn btn-sm btn-info">
+                                                            Images
+                                                        </a>
+
+                                                        {{-- Edit Category --}}
+                                                        <a 
+                                                            href="/admin/category-edit/{{ $category["category_slug"] }}"
+                                                            class="btn btn-sm btn-secondary">
+                                                            Edit
+                                                        </a>
+
+                                                        {{-- Delete BTN --}}
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-sm btn-danger delete-category"
+                                                            data-category_name="{{$category["category_name"]}}"
+                                                            data-category_id="{{ $category["id"] }}">
+                                                            Delete
+                                                        </button>
+                                                    @else
+                                                        {{-- Restore --}}
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-sm btn-success restore-category"
+                                                            data-category_name="{{$category["category_name"]}}"
+                                                            data-category_id="{{ $category["id"] }}">
+                                                            Restore
+                                                        </button>
+                                                    @endif
+
+                                                </td>
+                                            </tr>    
+                                        @endforeach
+                                        
+                                    @else
                                         <tr>
-                                            <td rowspan="">
-                                                <a href="#">{{ ++$counter }}</a>
+                                            <td colspan="4" class="text-center">
+                                                No Category Found </span>
                                             </td>
+                                        </tr>
+                                    @endif
+                                
 
-                                            <td rowspan="">{{ $category["category_name"] }}</td> <!-- Spans vertically across subcategories -->
-                                            
-                                            <td>
-                                                @if($category["status"])
-                                                    <span class="badge badge-success">Active</span>
-                                                @else
-                                                    <span class="badge badge-danger">Deleted</span>
-                                                @endif
-                                            </td>
-
-                                            <td>
-
-                                                @if($category["status"])
-                                                    {{-- Add Images --}}
-                                                    <a 
-                                                        href="/admin/category-images-update/{{ $category["category_slug"] }}"
-                                                        class="btn btn-sm btn-info">
-                                                        Images
-                                                    </a>
-
-                                                    {{-- Edit Category --}}
-                                                    <a 
-                                                        href="/admin/category-edit/{{ $category["category_slug"] }}"
-                                                        class="btn btn-sm btn-secondary">
-                                                        Edit
-                                                    </a>
-
-                                                    {{-- Delete BTN --}}
-                                                    <button 
-                                                        type="button" 
-                                                        class="btn btn-sm btn-danger delete-category"
-                                                        data-category_name="{{$category["category_name"]}}"
-                                                        data-category_id="{{ $category["id"] }}">
-                                                        Delete
-                                                    </button>
-                                                @else
-                                                    {{-- Restore --}}
-                                                    <button 
-                                                        type="button" 
-                                                        class="btn btn-sm btn-success restore-category"
-                                                        data-category_name="{{$category["category_name"]}}"
-                                                        data-category_id="{{ $category["id"] }}">
-                                                        Restore
-                                                    </button>
-                                                @endif
-
-                                            </td>
-                                        </tr>    
-                                    @endforeach
-
-                                    
-
-                                    
                                     
                                 </tbody>
 
@@ -261,6 +285,42 @@
                 }
             }
 
+
+
+            // SEARCH ACTION
+                let result_options = {
+                    search_keyword: '',
+                    limit: 10,
+                    //start: 0
+                };
+
+                const SEARCH_BAR = document.getElementById("category-search-bar");
+                const SEARCH_BTN = document.getElementById("search-btn");
+                // const PRODUCT_RESULT_SECTION = document.getElementById("load-product-list");
+
+                SEARCH_BAR.addEventListener('keypress', event=>{
+                    if(event.key === "Enter"){
+                        search_action(SEARCH_BAR);
+                    }
+                });
+
+                SEARCH_BTN.addEventListener('click', event=>{
+                    search_action(SEARCH_BAR);
+                });
+
+
+                function search_action(target_ele){
+                    result_options.search_keyword = target_ele.value.replace(/\s/g, " ");
+
+                    if(result_options.search_keyword.length){
+                        const queryParams = new URLSearchParams(result_options);
+                        let new_url = CURRENT_URL+'?'+queryParams;
+                        location.href = new_url;
+                        //history.pushState(null, null, new_url);
+                        //load_products(result_options);
+                    }
+                }
+            // SEARCH ACTION END
         };
 
     </script>

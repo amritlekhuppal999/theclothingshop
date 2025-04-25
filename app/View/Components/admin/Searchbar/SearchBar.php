@@ -1,16 +1,19 @@
 <?php
 
-namespace App\View\Components\Front;
+namespace App\View\Components\admin\Searchbar;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class searchbar extends Component
+class SearchBar extends Component
 {
     /**
      * Create a new component instance.
      */
+
+    private $SEARCH_BAR_PATH = 'components.admin.searchbar.search-bar';
+
     public function __construct()
     {
         //
@@ -21,6 +24,6 @@ class searchbar extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.front.searchbar');
+        return view($this->SEARCH_BAR_PATH);
     }
 }

@@ -71,6 +71,14 @@
                 </a>
               </li>
 
+              {{-- Manage Variants --}}
+              <li class="nav-item">
+                <a href="{{ route("products-variants") }}" class="nav-link {{ (request()->is('admin/products-variants') || request()->is('admin/products-variants/*')) ? "active" : ""}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Variants</p>
+                </a>
+              </li>
+
               {{-- Add Variants --}}
               <li class="nav-item">
                 <a href="/admin/products-add-variants" class="nav-link {{ (request()->is('admin/products-add-variants') || request()->is('admin/products-add-variants/*')) ? "active" : ""}}">

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\Front;
+namespace App\View\Components\front;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Carousel extends Component
+class PageHeader extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class Carousel extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.front.carousel');
+        return view('components.front.page-header');
     }
 }
