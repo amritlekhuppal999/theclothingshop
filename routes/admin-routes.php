@@ -7,7 +7,7 @@ use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Category\SubCategoryController;
 use App\Http\Controllers\Admin\Attribute\AttributeController;
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
 
 
     /*
@@ -35,6 +35,8 @@ Route::prefix('admin')->group(function () {
         
         Route::get('/products-update/{productSlug}', [ProductsController::class, 'CREATE_UPDATE'])->name('products-update');
         Route::get('/product-restore/{productSlug}', [ProductsController::class, 'RESTORE_VIEW'])->name('restore-product');
+        
+        Route::get('/products-stock/', [ProductsController::class, 'MANAGE_STOCK']);
 
         // Product Images
             Route::get('/products-add-images/{productSlug?}', [ProductsController::class, 'CREATE_IMAGE'])->name('products-add-images');
@@ -48,8 +50,11 @@ Route::prefix('admin')->group(function () {
             Route::get('/products-add-variants/{productSlug?}', [SubProductsController::class, 'CREATE_VARIANT'])->name("products-add-variants");
             Route::post('/products-add-variants', [SubProductsController::class, 'STORE_VARIANT'])->name('add-product-variant');
 
-            Route::get('/variants-update/{subProductSlug}', [SubProductsController::class, 'UPDATE_VARIANT'])->name('variants-update');
+            Route::get('/variants-update/{subProductSlug}', [SubProductsController::class, 'CREATE_VARIANT_UPDATE'])->name('variants-update');
+            Route::post('/variants-update/', [SubProductsController::class, 'STORE_VARIANT_UPDATE'])->name('update-variant');
             Route::post('/sub-product-action', [SubProductsController::class, 'VARIANT_ACTIONS'])->name('sub-product-action');
+            
+            Route::post('/variant-stock-update', [SubProductsController::class, 'UPDATE_VARIANT_STOCK'])->name('update-variant-stock');
 
             // Variant image
                 Route::get('/variants-add-images/{subProductSlug?}', [SubProductsController::class, 'CREATE_VARIANT_IMAGE'])->name('variants-add-images');
@@ -60,6 +65,8 @@ Route::prefix('admin')->group(function () {
         // API CALLS
             //Route::get('/search-product', [ProductsController::class, 'SEARCH_PRODUCT']);     // API CALL
             Route::get('/get-product-list', [ProductsController::class, 'GET_PRODUCT_LIST']);     // API CALL
+            Route::get('/get-variant-list', [SubProductsController::class, 'GET_VARIANT_LIST']);     // API CALL
+            Route::get('/get-variant-stock', [SubProductsController::class, 'GET_VARIANT_STOCK']);     // API CALL
             Route::get('/get-product-images/{productID}', [ProductsController::class, 'PRODUCT_IMAGE_GALLERY']); // API CALL
         // API CALLS END
 

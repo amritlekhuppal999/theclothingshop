@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\SubCategory;
 use App\Models\SubCategoryImage;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 class SubCategoryController extends Controller{
     //
     private $category_route = 'admin-panel/category/';

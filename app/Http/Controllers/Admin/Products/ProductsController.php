@@ -16,6 +16,8 @@ use App\Models\AttributeMapper;
 use Illuminate\Support\Facades\DB;      // to use transactions
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 class ProductsController extends Controller
 {
 
@@ -522,6 +524,15 @@ class ProductsController extends Controller
 
     
     
+    // Manage Product STOCK
+        public function MANAGE_STOCK(Request $request){
+                
+            return view($this->products_route.'manage-stocks-copy');
+
+        }
+    // Manage Product STOCK END
+    
+    
     // GENRAL PURPOSE FUNCTIONS
         // function to get gender
         public function return_gender($gender_code){
@@ -553,6 +564,7 @@ class ProductsController extends Controller
         }
     // GENRAL PURPOSE FUNCTIONS END
 
+    
     
     
     

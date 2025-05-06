@@ -63,6 +63,8 @@ const PUBLIC_PATH = document.querySelector('meta[name="public-path"]').getAttrib
         const urlParts = url.split("?");
         const baseUrl = urlParts[0];
         const existingParams = new URLSearchParams(urlParts[1] || "");
+
+        console.log(url, urlParts)
     
         if (existingParams.has(parameter)) {
             existingParams.set(parameter, value);

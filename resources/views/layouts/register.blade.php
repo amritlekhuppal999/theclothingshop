@@ -61,6 +61,28 @@
                             <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
 
+                        <!-- Phone No -->
+                        <div class="input-group mb-3">
+                            <input 
+                                type="number"
+                                max="9999999999"
+                                min="1000000000"
+                                name="phone_no" 
+                                class="form-control" 
+                                placeholder="Phone No." 
+                                value="{{ old('phone_no') }}" 
+                                required
+                            />
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-phone"></span>
+                                </div>
+                            </div>
+                        </div>
+                        @error('phone_no')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+
                         <!-- Password -->
                         <div class="input-group mb-3">
                             <input type="password" name="password" class="form-control" placeholder="Password" required>
@@ -75,14 +97,14 @@
                         @enderror
 
                         <!-- Retype Password -->
-                        <div class="input-group mb-3">
+                        {{-- <div class="input-group mb-3">
                             <input type="password" name="password_confirmation" class="form-control" placeholder="Retype password" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="row">
                             <!-- Terms & Conditions -->

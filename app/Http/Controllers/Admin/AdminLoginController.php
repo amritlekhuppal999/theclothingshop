@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class AdminLoginController extends Controller
 {
     //To return login page view
-    public function showAdminLoginForm()
+    public function LOGIN_PAGE()
     {
         return view('layouts/login');
         // return view(FRONT_END.'/layouts/login');
@@ -29,7 +29,7 @@ class LoginController extends Controller
         if(Auth::guard('admin')->attempt($credentials)){
             $request->session()->regenerate();
 
-            return redirect()->intended('admin.home');
+            return redirect()->intended('admin.dashboard');
         }
 
         return back()->withErrors([

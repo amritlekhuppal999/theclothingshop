@@ -16,6 +16,8 @@ use App\Models\AttributeMapper;
 use Illuminate\Support\Facades\DB;      // to use transactions
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 class SubProductsController extends Controller
 {
 
@@ -171,12 +173,185 @@ class SubProductsController extends Controller
         // TAGS: xhrRequest, ASYNC, Handling validation, USE THIS
 
 
-        public function UPDATE_VARIANT($subProductSlug){
+        // Update variant view
+        public function CREATE_VARIANT_UPDATE($subProductSlug){
             
-            // return view($this->products_route.'udpate-products', ["productSlug" => $productSlug]);
-            return view($this->VIEW_NOT_FOUND);
+            if (!empty($subProductSlug)) {
+                
+                try {
+                    
+                    $variant = SubProduct::where('variant_slug', $subProductSlug)->firstOrFail();
+                    $variant = SubProduct::where('variant_slug', $subProductSlug)->get();
+
+                    // USING MULTI JOIN 
+                    $variant_attr = AttributeMapper::join("attribute_values as ATV", "attribute_value_id", "=", "ATV.id")
+                                                    ->join("attributes as ATR", "ATV.attribute_id", "=", "ATR.id")
+                                                    ->where('variant_id', $variant[0]["id"])
+                                                    ->select("ATR.id as AID", "ATV.id as AVID", "ATR.name as ATTRIBUTE_NAME", "ATV.value as ATTRIBUTE_VALUE", "ATV.label as ATTRIBUTE_LABEL")
+                                                    ->get();
+                    
+                    $return_data = array(
+                        "variant_selected" => true,
+                        "variant" => $variant[0],
+                        "variant_attr" => $variant_attr
+                    );
+                } 
+                catch (ModelNotFoundException $e) {
+                    $return_data = [
+                        "variant_selected" => false,
+                        "variant" => [],
+                        "message" => "No variant present for the given variant slug: " . $e->getMessage(),
+                    ];
+                }
+                catch (\Throwable $th) {
+                    $return_data = [
+                        "variant_selected" => false,
+                        "variant" => [],
+                        "message" => "Something went wrong " . $e->getMessage(),
+                    ];
+                }
+
+                return view($this->products_route.'update-variants', $return_data);
+
+            } 
+            else {
+                $return_data = array(
+                    "variant_selected" => false,
+                    "message" => "Variant not selected."
+                );
+                
+                return view($this->VIEW_NOT_FOUND, $return_data);
+            }
         }
 
+        // store the updated details of variant
+        public function STORE_VARIANT_UPDATE(Request $request){
+
+            $validation_arr = [
+                'variant_name' => 'required|string|max:255',
+                // 'variant_slug' => 'required|string|max:255|unique:sub_products,variant_slug',
+                // 'sku' => 'required|string|max:255|unique:sub_products,sku',
+                'price' => 'required|numeric|min:1|max:100000',
+                'quantity' => 'required|integer|min:0'
+            ];
+
+            if($request->variant_slug !== $request->variant_slug_backup){
+                $validation_arr['variant_slug'] = 'required|string|max:255|unique:sub_products,variant_slug';
+            }
+            if($request->sku !== $request->sku_backup){
+                $validation_arr['sku'] = 'required|string|max:255|unique:sub_products,sku';
+            }
+
+            // validate input
+            $validator = Validator::make($request->all(), $validation_arr);
+
+            if($validator->fails()){
+                // This makes it more structured
+                return response()->json([
+                    "type" => "Failed",
+                    "message" => "Unable to add this variant",
+                    "errors" => $validator->errors()->all(),
+                    "requested_action_performed" => false,
+                    "reload" => false
+                ], 422);
+            }
+
+            // check for attribute values
+            if(count($request->attribute_pair) === 0 || !isset($request->attribute_pair)){
+                return response()->json([
+                    "type" => "Failed",
+                    "message" => "Attributes field must not be empty!!",
+                    "errors" => null,
+                    "requested_action_performed" => false,
+                    "reload" => false
+                ], 400);
+            }
+
+            DB::beginTransaction();
+
+            // DB operation to add the image file locations to the database
+            try{
+                $attr_mapper_arr = [];
+
+                $variant_id = $request->variant_id;
+
+                $variant = SubProduct::findOrFail($variant_id);
+
+                $variant->Update([
+                    "variant_name" => $request->variant_name,
+                    "variant_slug" => $request->variant_slug,
+                    "sku" => $request->sku,
+                    "price" => $request->price,
+                    "stock" => $request->quantity,
+                    "status" => 1
+                ]);
+
+                foreach ($request->attribute_pair as $att_obj) {
+                    
+                    $att_data_arr = [];
+
+                    $att_data_arr = array(
+                        "attribute_value_id" => $att_obj["attribute_value_id"],
+                        "variant_id" => $variant_id
+                    );
+                    
+                    array_push($attr_mapper_arr, $att_data_arr);                                                
+                }
+                
+                if(count($attr_mapper_arr)){
+                    AttributeMapper::where('variant_id', $variant_id)->delete();
+                    $insertAttrMapper = AttributeMapper::insert($attr_mapper_arr);
+                }
+
+
+                // Commit the transaction if everything is successful
+                DB::commit();
+                
+                // This makes it more structured
+                return response()->json([
+                    "type" => "Success",
+                    "message" => "Variant updated successfully!",
+                    "requested_action_performed" => true,
+                    "reload" => false
+                ], 200);
+
+                // Laravel automatically converts arrays to JSON, but it does not allow setting custom HTTP status codes.
+            }
+            catch (ModelNotFoundException $e) {
+                return response()->json([
+                    "type" => "Failed",
+                    "message" => "No variant present for the given id",
+                    "errors" => $e->getMessage(),
+                    "requested_action_performed" => false,
+                    "reload" => false
+                ], 500);
+            }
+            catch(\Exception $e){   // General Error
+                DB::rollBack(); 
+
+                // This makes it more structured
+                return response()->json([
+                    "type" => "Failed",
+                    "message" => "Not your fault, we messed up. Try again in sometime.",
+                    "errors" => $e->getMessage(),
+                    "requested_action_performed" => false,
+                    "reload" => false
+                ], 500);
+            }
+            catch(\Error $e){
+
+                DB::rollBack(); 
+                return response()->json([
+                    "type" => "Failed",
+                    "message" => "Unable to update Variant!",
+                    "errors" => $e->getMessage(),
+                    "requested_action_performed" => false,
+                    "reload" => false
+                ], 500);
+            }
+
+        }
+        // TAGS: xhrRequest, ASYNC, Handling validation, USE THIS
 
         // DELETE or RESTORE variants
         public function VARIANT_ACTIONS(Request $request){
@@ -255,27 +430,70 @@ class SubProductsController extends Controller
         }
 
     // PRODUCT VARIANT END
+    
+    // STOCK
+        public function GET_VARIANT_STOCK(Request $request){
+            
+            $variant_id = $request->query("variant_id");
 
+            $variant_stock = SubProduct::select('stock', 'price')->where('id', $variant_id)->where('status', 1)->get();
+            
+            return ["variant_stock" => $variant_stock[0]];
+        }
+
+        public function UPDATE_VARIANT_STOCK(Request $request){
+
+            $validation_arr = [
+                'price' => 'required|numeric|min:1|max:100000',
+                'quantity' => 'required|integer|min:0'
+            ];
+
+            // DB operation to add the image file locations to the database
+            try{
+                $variant_id = $request->variant_id;
+
+                $variant = SubProduct::findOrFail($variant_id);
+
+                $variant->Update([
+                    "price" => $request->price,
+                    "stock" => $request->quantity,
+                ]);
+
+                return redirect()->back()->with('success', 'Stock updated successfully!');
+            }
+            catch (ModelNotFoundException $e) {
+                return redirect()->back()->with('error', 'Failed to update stock. Invalid product.');
+            }
+            catch(QueryException $e){
+                return redirect()->back()->with('error', 'Failed to update stock: ' . $e->getMessage());
+            }
+            catch(Exception $e){   // General Error
+                return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+            }
+            catch(\Error $e){
+                return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+            }
+
+        }
+    // STOCK END
 
     
     // GENRAL PURPOSE FUNCTIONS
                 
-        // function to get product list 
-        public function GET_PRODUCT_LIST($options=null){
-            /* // Allowed options for query products
-            $options = array(
-                "product_id" => '',
-                "product_slug" => '',
-                "category_id" => '',
-                "sub_category_id" => '',
-                "status" => "",
-                "fields" => ["all"]
-            );
-            */
+        // function to get variant list 
+        public function GET_VARIANT_LIST(Request $request){
+            
+            $variant_list = SubProduct::when($request->has("product_id"), function($query) use($request){
+                                $product_id = $request->query("product_id");
+                                return $query->where('product_id', $product_id);
+                            })
+                            ->select('id', 'variant_name', 'variant_slug')->where('status', 1)->get();
 
-            $product_list = Product::select('id', 'product_name', 'product_slug')->where('status', 1)->get();
-            return ["product_list" => $product_list];
+
+            return ["variant_list" => $variant_list];
         }
+
+        
     // GENRAL PURPOSE FUNCTIONS END
 
 

@@ -52,11 +52,11 @@
                 <h3 class="text-success">MANAGE VARIANTS</h3>
                 <h3 class="text-success">SEARCH-BAR Component</h3>
                 <h3 class="text-danger">Advance Filter</h3>
-                <h3 class="text-danger">SKU GENERATOR</h3>
-                <h3 class="text-danger">EDIT PRODUCT</h3>
-                <h3 class="text-danger">EDIT VARIANTS</h3>
-                <h3 class="text-danger">VARIANT IMAGES</h3>
-                <h3 class="text-danger">MANAGE STOCK</h3>
+                <h3 class="text-secondary">SKU GENERATOR</h3>
+                <h3 class="text-success">EDIT PRODUCT</h3>
+                <h3 class="text-success">EDIT VARIANTS</h3>
+                <h3 class="text-secondary">VARIANT IMAGES</h3>
+                <h3 class="text-success">MANAGE STOCK</h3>
             </div>
 
             <div class="col-md-6 mb-2">

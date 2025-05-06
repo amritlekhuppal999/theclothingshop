@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\CategoryImage;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 
 // Category class
 class CategoryController extends Controller

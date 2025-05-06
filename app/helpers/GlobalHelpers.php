@@ -77,5 +77,20 @@ use App\Services\CategoryService;
         }
     }
 
+
+    if(!function_exists('getUserRole')){
+        function getUserRole($role_id){
+            $role_arr = array(
+                "1" => "Customer",
+                "2" => "Seller",
+                "3" => "Super Admin",
+                "4" => "Regional Admin",
+                "5" => "Inventory",
+            );
+
+            return $role_arr[$role_id];
+        }
+    }
+
     
 
