@@ -12,11 +12,10 @@
         <div class="login-box">
             <div class="login-logo">
                 
-                <a href="/"> 
-                    @if(Request::is('admin/*'))
-                        <small class="text-danger">AdminLogin</small>
-                    @endif
-
+                @if(Request::is('admin/*'))
+                    <small class="text-danger">AdminLogin</small>
+                @endif
+                <a href="/" class="text-purple"> 
                     <b> {{config('app.name')}} </b> 
                 </a>
             </div>
@@ -24,13 +23,13 @@
             <div class="card ">
                 <div class="card-body login-card-body">
                     <p class="login-box-msg" id="login-box-msg">
-                        @if ($errors->any())
-                            @error('Auth')
+                        {{-- @if ($errors->any())
+                            @error('error')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         @else
+                        @endif --}}
                             Manage your store
-                        @endif
                     </p>
 
                     <!-- Login Form -->
@@ -101,11 +100,21 @@
                     </p>
                     <!-- New Member -->
                     <p class="mb-0">
-                        <a href="/register" class="text-center text-muted">Register a new membership</a>
+                        <a href="{{ Request::is('admin/*') ? route('admin-register') : route('resgister') }}" class="text-center text-muted">Register a new membership</a>
                     </p>
                 </div>
-                
             </div>
+
+            {{-- ERRORS --}}
+            @if ($errors->any())
+                @error('error')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
+                @error('exception_msg')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            @endif
 
         </div>
 

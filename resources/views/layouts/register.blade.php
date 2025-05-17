@@ -11,28 +11,33 @@
 
         <div class="register-box">
             <div class="register-logo">
-                <a href="/"><b>{{config('app.name')}}</b></a>
+                @if(Request::is('admin/*'))
+                    <small class="text-danger">AdminRegistration</small>
+                @endif
+
+                {{-- <a href="/"><b>{{config('app.name')}}</b></a> --}}
+                <b> {{config('app.name')}} </b> 
             </div>
 
             <div class="card">
                 <div class="card-body register-card-body">
-                    <p class="login-box-msg" id="login-box-msg">
+                    {{-- <p class="login-box-msg" id="login-box-msg">
                         
                         @if ($errors->any())
-                            @error('Failed')
+                            @error('error')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         @else
                             Register a new membership
                         @endif
-                    </p>
+                    </p> --}}
 
-                    <!-- @error('Failed')
+                    {{-- @error('error')
                         <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror -->
+                    @enderror --}}
 
                     <!-- Register Form -->
-                    <form action="{{ route('register-user') }}" method="post">
+                    <form action="{{ Request::is('admin/*') ? route('register-admin') : route('register-user') }}" method="post">
                         @csrf
 
                         <!-- Full Name -->
@@ -97,14 +102,14 @@
                         @enderror
 
                         <!-- Retype Password -->
-                        {{-- <div class="input-group mb-3">
+                        <div class="input-group mb-3">
                             <input type="password" name="password_confirmation" class="form-control" placeholder="Retype password" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="row">
                             <!-- Terms & Conditions -->
@@ -140,9 +145,21 @@
                         </div>
                     --}}
 
-                    <a href="/login" class="text-center text-muted">I already have a membership</a>
+                    <a href="{{ Request::is('admin/*') ? route('admin-login') : route('login') }}" class="text-center text-muted">I already have a membership</a>
                 </div>
             </div>
+
+
+            {{-- ERRORS --}}
+            @if ($errors->any())
+                @error('error')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
+                @error('exception_msg')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            @endif
         </div>
 
 

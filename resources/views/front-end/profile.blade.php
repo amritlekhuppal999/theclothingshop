@@ -104,7 +104,13 @@
                                                 <!-- full name -->
                                                 <div class="form-group">
                                                     <label class="text-muted">Full Name</label>
-                                                    <input type="text" class="form-control" id="full-name" placeholder="First name">
+                                                    <input 
+                                                        type="text" 
+                                                        class="form-control" 
+                                                        id="full-name" 
+                                                        placeholder="First name"
+                                                        value="{{ session('web.name') }}"
+                                                    />
                                                 </div>
                                                 
                                                 <!-- last name -->

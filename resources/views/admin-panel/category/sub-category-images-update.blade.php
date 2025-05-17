@@ -154,7 +154,7 @@
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="submit" id="upload-images" class="btn btn-primary">Upload Images</button>
+                                <button type="submit" id="upload-images" class="btn bg-purple">Upload Images</button>
                             </div>
                         </form>
 
@@ -636,7 +636,7 @@
 
                     else{
                         document.getElementById("saved-sub-category-images").innerHTML = `
-                            <div class="col-md-12">
+                            <div class="col-md-8 offset-2">
                                 <h3 class="text-danger"> No Images added for this sub category.</h3>
                             </div>`;
                     }

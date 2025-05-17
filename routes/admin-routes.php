@@ -6,6 +6,9 @@ use App\Http\Controllers\Admin\Products\SubProductsController;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Category\SubCategoryController;
 use App\Http\Controllers\Admin\Attribute\AttributeController;
+use App\Http\Controllers\Admin\Banner\BannerController;
+
+use App\Http\Controllers\Admin\AdminLoginController;
 
 Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
 
@@ -20,7 +23,8 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     */
     
     // Dashboard Routes
-    Route::get('/dashboard', [AdminDashboardController::class, 'INDEX'])->name('dashboard');
+    Route::get('/', [AdminDashboardController::class, 'INDEX'])->name('dashboard');
+    Route::get('dashboard', [AdminDashboardController::class, 'INDEX'])->name('dashboard');
     
     
     // PRODUCT Routes
@@ -98,6 +102,15 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
         Route::get('/get-category-list', [CategoryController::class, 'get_category_list']); //API CALL
     
     // CATEGORY Routes END
+
+
+    // Banner Image
+        Route::get('/get-banner-images', [BannerController::class, 'GET_BANNER_IMAGES']); 
+        Route::get('/update-banner-images', [BannerController::class, 'CREATE_BANNER_IMAGES']); 
+        Route::post('/update-banner-images', [BannerController::class, 'UPDATE_BANNER_IMAGES'])->name('update-banner-images');
+        Route::post('/set-banner-image', [BannerController::class, 'SET_BANNER_IMAGE'])->name('set-banner-image');
+        Route::post('/remove-banner-image', [BannerController::class, 'REMOVE_BANNER_IMAGE'])->name('remove-banner-image');
+    // Banner Image END
         
         
     // SUB-CATEGORY Routes
@@ -145,8 +158,8 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
         
     // Attribute Routes END
 
-
-
+    // LOGOUT ADMIN
+    Route::get('/logout', [AdminLoginController::class, 'LOGOUT'])->name('logout-admin');
 
 
 

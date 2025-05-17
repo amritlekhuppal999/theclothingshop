@@ -20,16 +20,20 @@
                     <span class="btn btn-sm btn-secondary">{{ getCategoryName($products["category_id"]) }}</span> 
                     @if($products["sub_category_id"] > 0)
                         -> 
-                        <span class="btn btn-sm btn-primary">{{ getSubCategoryName($products["sub_category_id"]) }}</span>
+                        <span class="btn btn-sm bg-purple">{{ getSubCategoryName($products["sub_category_id"]) }}</span>
                     @endif
                 </td>
 
-                <td>₹ {{ $products["base_price"] }} /-</td>
+                <td> 
+                    <b>
+                        ₹ {{ $products["base_price"] }} /-
+                    </b> 
+                </td>
 
                 <td>
-                    <span class="text-success">
+                    <b class="text-success">
                         {{ $products["discount_percentage"] }}%
-                    </span>
+                    </b>
                 </td>
 
                 <td>
@@ -39,7 +43,7 @@
                 @if($products["status"] == 1)
                     <td>
                         {{-- {{ $products["id"] }} --}}
-                        <a class="btn btn-sm btn-primary " style="position:static; margin-bottom:2px!important;" 
+                        <a class="btn btn-sm bg-purple " style="position:static; margin-bottom:2px!important;" 
                             href="{{ route("products-variants", ["productSlug" => $products["product_slug"] ]) }}">
                             Variants
                         </a> 

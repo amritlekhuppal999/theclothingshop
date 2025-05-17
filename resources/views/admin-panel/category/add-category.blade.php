@@ -39,6 +39,7 @@
                                     id="categoryName" 
                                     placeholder="Topwear"
                                     value="{{ old('categoryName') }}"
+                                    required
                                 />
                             </div>
                             @error('categoryName')
@@ -54,6 +55,7 @@
                                     id="categorySlug" 
                                     placeholder="topwear"
                                     value="{{ old('categorySlug') }}"
+                                    required
                                 />
                             </div>
                             @error('categorySlug')
@@ -78,7 +80,7 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn bg-purple">Submit</button>
                         </div>
                     </form>
                 </div>

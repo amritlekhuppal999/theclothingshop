@@ -3,9 +3,9 @@
 @section('content-css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <meta name="img-category-url" content="{{ route('update-category-images') }}">
-    <meta name="remove-img-url" content="{{ route('remove-category-images') }}">
-    <meta name="update-banner-img" content="{{ route('update-category-primary-image') }}">
+    <meta name="remove-img-url" content="{{ route('remove-banner-image') }}"> 
+    <meta name="set-banner-image" content="{{ route('set-banner-image') }}">
+    <meta name="update-banner-img" content="{{ route('update-banner-images') }}"> 
 
     <link rel="stylesheet" href="{{asset("css/animation.css")}}">
 
@@ -101,19 +101,16 @@
                     
                     <div class="card card-purple">
                         <div class="card-header">
-                            <h4 class="card-title"> Update {{$category["category_name"]}} Images</h4>
+                            <h4 class="card-title"> ADD BANNER{{-- $category["category_name"] --}} IMAGES </h4>
                         </div>
                         
                         <form 
                             action="{{-- route('add-category-image') --}}" 
                             method="POST" 
                             role="form" 
-                            id="category-image-form" 
+                            id="banner-image-form" 
                             enctype="multipart/form-data" >
                             @csrf
-
-                            {{-- category ID --}}
-                            <input type="hidden" name="category-id" id="category-id" value="{{$category["id"]}}">
 
                             <div class="card-body">
 
@@ -123,13 +120,13 @@
                                     <input 
                                         type="file" 
                                         class="form-control pl-0 pt-1" 
-                                        name="categoryImages" 
-                                        id="categoryImages" 
+                                        name="bannerImages" 
+                                        id="bannerImages" 
                                         accept="image/*"
                                         multiple
                                     />
                                 </div>
-                                @error('categoryName')
+                                @error('bannerImage')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
 
@@ -159,7 +156,7 @@
             </div>
 
             {{-- Load added/saved category images --}}
-            <div class="row" id="saved-category-images">
+            <div class="row" id="saved-banner-images">
 
                 <!--
                 <div class="col-md-3">
@@ -198,12 +195,12 @@
 
         window.onload = ()=>{
             let image_arr = [];
-            let primary_img = 0;
-            let category_id = document.getElementById("category-id").value;
+            let active_in_banner = 0;
+            // let category_id = document.getElementById("category-id").value;
             const MAX_FILE_UPLOAD_LIMIT = 5;
 
 
-            document.getElementById('categoryImages').addEventListener('change', (event)=>{
+            document.getElementById('bannerImages').addEventListener('change', (event)=>{
 
                 let img_input_field = event.target;
                 //console.log(img_input_field.files);
@@ -234,44 +231,6 @@
                 }
             });
 
-            // IMAGE PREVIEW CLICK EVENT
-            document.getElementById("image-preview").addEventListener('click', event=>{
-                let element = event.target;
-                
-                // SET PRIMARY
-                if(element.className.includes("set_primary")){
-                    //alert(element.dataset.img_id+" Set Primary");
-
-                    // the highlighter class highlights the element as primary
-                    if(document.querySelector(".highlighter")){
-                        let previous_primary = document.querySelector(".highlighter");
-                        previous_primary.classList.remove("highlighter");
-
-                    }
-
-                    element.closest(".card").classList.add("highlighter");
-                    primary_img = element.dataset.img_id;
-                }
-
-                // REMOVE ADDED IMAGE
-                else if(element.className.includes("remove-img")){
-                    if(confirm("Delete Image?")){
-                        if(primary_img == element.dataset.img_id){
-                            primary_img = 0;
-                        }
-
-                        // remove from the image_array
-                        const index = image_arr.findIndex(obj => obj.img_id == element.dataset.img_id);
-                        if (index !== -1) {
-                            image_arr.splice(index, 1);
-                        }
-
-                        element.closest(".card").remove();
-                        // console.log(image_arr);
-                    }
-                }
-            });
-
 
             // Create IMAGE PREVIEW
             async function create_image_preview(image_file){
@@ -291,6 +250,7 @@
                 image_arr.push({
                     img_id : img_id,
                     img_uri: IMG_URI,
+                    active_in_banner: 0
                 });
                 
                 let div_ele = document.createElement('div');
@@ -312,8 +272,8 @@
                             </button>
                             
                             <label class="btn btn-success mb-0 radio-wrapper">
-                                <input type="radio" class="set_primary" name="select-image" id="" data-img_id="${img_id}">
-                                Set Primary
+                                <input type="checkbox" class="set_in_banner" name="select-image" id="" data-img_id="${img_id}">
+                                In Banner
                             </label>
                         </div>
                     </div>`;
@@ -324,6 +284,41 @@
 
                 image_preview.appendChild(div_ele); 
             }
+
+            // IMAGE PREVIEW CLICK EVENT
+            document.getElementById("image-preview").addEventListener('click', event=>{
+                let element = event.target;
+                
+                // SET IN BANNER (if it is active in banner)
+                if(element.className.includes("set_in_banner")){
+                    //alert(element.dataset.img_id+" Set Primary");
+
+                    const index = image_arr.findIndex(obj => obj.img_id == element.dataset.img_id);
+                    if (index !== -1 ) {
+                        //image_arr.splice(index, 1);
+                        image_arr[index].active_in_banner = (element.checked) ? 1 : 0;
+                    }
+                    //console.log(image_arr);
+                }
+
+                // REMOVE ADDED IMAGE
+                else if(element.className.includes("remove-img")){
+                    if(confirm("Delete Image?")){
+                        
+                        // remove from the image_array
+                        const index = image_arr.findIndex(obj => obj.img_id == element.dataset.img_id);
+                        if (index !== -1) {
+                            image_arr.splice(index, 1);
+                        }
+
+                        element.closest(".card").remove();
+                        // console.log(image_arr);
+                    }
+                }
+            });
+
+
+            
 
             // Generate Image URI
             function generate_URI(media_file){
@@ -345,7 +340,7 @@
             }
 
             // FORM SUBMIT (UPDATE operations)
-            document.getElementById("category-image-form").addEventListener('submit', async event=>{
+            document.getElementById("banner-image-form").addEventListener('submit', async event=>{
                 event.preventDefault();
 
                 if(!image_arr.length){
@@ -365,9 +360,7 @@
                 submit_btn.disabled = true;
                 
                 let form_data = {
-                    category_id: category_id,
-                    image_arr: image_arr,
-                    primary_img_id: primary_img,
+                    image_arr: image_arr
                 };
 
                 //console.log(image_arr);
@@ -382,7 +375,7 @@
                     body: JSON.stringify(form_data)
                 };
 
-                let url = document.querySelector('meta[name="img-category-url"]').getAttribute('content');
+                let url = document.querySelector('meta[name="update-banner-img"]').getAttribute('content');
 
                 try{
                     let response = await fetch(url, request_options);     
@@ -420,11 +413,11 @@
             })
 
 
-            load_category_images();
-            // function to load ADDED category images
-            async function load_category_images(){
+            load_banner_images();
+            // function to load ADDED banner images
+            async function load_banner_images(){
 
-                document.getElementById("saved-category-images").innerHTML = `
+                document.getElementById("saved-banner-images").innerHTML = `
                     <div class="col-md-6">
                         <h5 class="card-title"> Loading Images... ${LOADER_MEDIUM} </h5> <br />
                     </div>
@@ -438,7 +431,7 @@
                     // body: JSON.stringify(request_data)
                 };
 
-                let url = `/admin/get-category-images/${document.getElementById("category-id").value}`;
+                let url = `/admin/get-banner-images/`;
                 // console.log(url);
 
                 try{
@@ -451,20 +444,21 @@
                     if(response_data.requested_action_performed){
                         let inner_HTML = '';
                         
-                        response_data.categoryImages.forEach((element, index)=>{
-                            let image_id = element.category_img_id;
+                        response_data.bannerImages.forEach((element, index)=>{
+                            let image_id = element.id;
                             let image_URL = element.image_location;
-                            let prime_image = element.prime_image;
+                            let active_in_banner = element.active_in_banner;
 
-                            let highlighter_selector = "", checked = "";
-                            if(prime_image){
-                                highlighter_selector = "highlighter"; checked = "checked";
-                            }
+                            //let highlighter_selector = "", checked = "";
+                            
+                            // if(active_in_banner){}
+
+                            let checked = (active_in_banner) ? "checked" : "";
 
                         inner_HTML += `
-                            <div class="col-md-3 img-block ${highlighter_selector}">
+                            <div class="col-md-3 img-block ">
                                 <div class="card card bg-dark text-white" style="" data-img_id="${image_id}">
-                                    <img src="${PUBLIC_PATH}/${image_URL}" class="card-img-top" />
+                                    <img src="${PUBLIC_PATH}${image_URL}" class="card-img-top" />
 
                                     <div class="card-body">
                                         <button type="button" class="btn btn-danger delete-image" data-img_id="${image_id}" title="Delete Image">
@@ -474,7 +468,7 @@
                                         </button>
                                         
                                         <label class="btn btn-success radio-wrapper" title="Change Banner Image">
-                                            <input type="radio" class="change_primary" name="select-image" id="" data-img_id="${image_id}" ${checked}>
+                                            <input type="checkbox" class="set_in_banner" name="select-image" id="" data-img_id="${image_id}" ${checked}>
                                             Set Banner
                                         </label>
                                     </div>
@@ -483,12 +477,12 @@
                         });
 
 
-                        document.getElementById("saved-category-images").innerHTML = inner_HTML;
+                        document.getElementById("saved-banner-images").innerHTML = inner_HTML;
                     }
 
                     else{
-                        document.getElementById("saved-category-images").innerHTML = `
-                            <div class="col-md-12">
+                        document.getElementById("saved-banner-images").innerHTML = `
+                            <div class="col-md-8 offset-md-2">
                                 <h3 class="text-danger"> No Images added for this category.</h3>
                             </div>`;
                     }
@@ -500,8 +494,8 @@
             }
 
 
-            // Event Listener for LOADED IMAGES SECTION
-            document.getElementById("saved-category-images").addEventListener("click", async event=>{
+            // Event Listener for LOADED IMAGES SECTION (FROM DB)
+            document.getElementById("saved-banner-images").addEventListener("click", async event=>{
                 let element = event.target;
 
                 // DELETE saved Images
@@ -573,12 +567,16 @@
                 }
 
                 // UPDATE banner IMAGE
-                if(element.className.includes("change_primary")){
+                if(element.className.includes("set_in_banner")){
                     
                     // check for action confirmation
-                    if(!confirm("Set selected image as primary?")){
+                    /*
+                    if(!confirm("Set image active in banner?")){
                         return false;
                     }
+                    */
+
+                    let action = (element.checked) ? 'set' : 'unset';
 
                     //assign BTN
                     let setBannerBTN = element;
@@ -591,7 +589,7 @@
                     // data to send
                     let send_data = {
                         img_id: setBannerBTN.dataset.img_id,
-                        category_id: document.getElementById("category-id").value
+                        action: element.checked
                     };
 
                     // fetch request option
@@ -604,7 +602,7 @@
                         body: JSON.stringify(send_data)
                     };
 
-                    let url = document.querySelector('meta[name="update-banner-img"]').getAttribute('content');
+                    let url = document.querySelector('meta[name="set-banner-image"]').getAttribute('content');
                     // update-category-primary-image
 
                     try{
@@ -616,6 +614,7 @@
 
                         if(response_data.requested_action_performed){
                             toastr.success(response_data.message);
+                            /*
                             setTimeout(()=>{
                                 let img_block = document.querySelectorAll(".img-block");
                                 img_block.forEach(element => {
@@ -623,6 +622,7 @@
                                 });
                                 parent_DIV.classList.add("highlighter");
                             }, 1000);
+                            */
                         }
                         else {
                             

@@ -157,7 +157,7 @@
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="submit" id="upload-images" class="btn btn-primary">Upload Images</button>
+                                <button type="submit" id="upload-images" class="btn bg-purple">Upload Images</button>
                             </div>
                         </form>
 
@@ -713,7 +713,7 @@
 
                     else{
                         document.getElementById("stored-product-images").innerHTML = `
-                            <div class="col-md-12">
+                            <div class="col-md-8 offset-md-2">
                                 <h3 class="text-danger"> No Images added for this category.</h3>
                             </div>`;
                     }

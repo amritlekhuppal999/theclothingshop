@@ -69,7 +69,7 @@
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Add Attribute</button>
+                                <button type="submit" class="btn bg-purple">Add Attribute</button>
                             </div>
                         </form>
                     </div>
@@ -163,7 +163,7 @@
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Add Attribute Value</button>
+                                <button type="submit" class="btn bg-purple">Add Attribute Value</button>
                             </div>
                         </form>
                     </div>

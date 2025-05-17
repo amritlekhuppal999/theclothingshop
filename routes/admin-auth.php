@@ -9,7 +9,8 @@ use App\Http\Controllers\Admin\AdminLoginController;
         Route::get('/login', [AdminLoginController::class, 'LOGIN_PAGE'])->name('admin-login');
         Route::post('/login', [AdminLoginController::class, 'authenticateAdmin'])->name('login-admin');
         
-        // Route::get('/register', [AdminRegisterController::class, 'REGISTER_PAGE'])->name('admin-register');
+        Route::get('/register', [AdminRegisterController::class, 'REGISTER_PAGE'])->name('admin-register');
+        Route::post('/register', [AdminRegisterController::class, 'REGISTER_ADMIN'])->name('register-admin');
 
         Route::get('/forgot-password', function () {
             return view(FRONT_END.'/layouts/forgot-password');

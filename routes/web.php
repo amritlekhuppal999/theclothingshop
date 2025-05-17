@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\View;
 
 use Illuminate\Http\Request;    //to have the current HTTP request automatically injected into your route callback
 
+use App\Http\Controllers\FrontEnd\home\HomeController;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -21,58 +23,75 @@ define('ADMIN_LTE', "XAdminLTE");
 
 // FRONT-END END
 
-    // HOME
-    Route::get('/', function () {
-        return view(FRONT_END.'/home');
-    });
+    // Route::get('/', function () {
+    //     return view(FRONT_END.'/home');
+    // });
     // Route::get('home', function (Request $request) {
     //     // return view(FRONT_END.'/home');
     //     return View::make(FRONT_END.'/home');
     // });
-    Route::view('home', FRONT_END.'/home')->name('home');
+    // Route::view('home', FRONT_END.'/home')->name('home');
+    
+    // HOME
+        Route::get('/', [HomeController::class, 'CREATE']);
+        Route::get('home', [HomeController::class, 'CREATE'])->name('home');
+    // HOME END
 
     // CATEGORY
-    Route::get('/category', function (Request $request) {
-        return view(FRONT_END.'/category');
-    });
-    Route::get('/category/{category_slug}', function (string $category_slug) {
-        return view(FRONT_END.'/category', ['category_slug' => $category_slug]);
-    });
+        Route::get('/category', function (Request $request) {
+            return view(FRONT_END.'/category');
+        });
+        Route::get('/category/{category_slug}', function (string $category_slug) {
+            return view(FRONT_END.'/category', ['category_slug' => $category_slug]);
+        });
+    // CATEGORY END
 
     // PRODUCT
-    Route::get('/product/{product_slug}', function (string $product_slug) {
-        return view(FRONT_END.'/product', ['product_slug' => $product_slug]);
-    });
+        Route::get('/product/{product_slug}', function (string $product_slug) {
+            return view(FRONT_END.'/product', ['product_slug' => $product_slug]);
+        });
+    // PRODUCT END
 
-    Route::middleware(['auth'])->group(function(){
-        // PROFILE
-        Route::get('/profile', function () {
-            return view(FRONT_END.'/profile');
-        });
-        Route::get('/account/{profile}', function () {
-            return view(FRONT_END.'/account');
-        });
+    
+    // AUTH MIDDLEWARE
+        Route::middleware(['auth'])->group(function(){
+            // PROFILE
+                Route::get('/profile', function () {
+                    return view(FRONT_END.'/profile');
+                });
+            // PROFILE END
 
-        // WISHLIST
-        Route::get('/wishlist', function () {
-            return view(FRONT_END.'/Wishlist');
+            // ACCOUNT
+                Route::get('/account/{profile}', function () {
+                    return view(FRONT_END.'/account');
+                });
+            // ACCOUNT END
+
+            // WISHLIST
+                Route::get('/wishlist', function () {
+                    return view(FRONT_END.'/Wishlist');
+                });
+            // WISHLIST END
         });
-    });
+    // AUTH MIDDLEWARE END
 
     // ORDERS
-    Route::get('/orders', function () {
-        return view(FRONT_END.'/orders');
-    });
+        Route::get('/orders', function () {
+            return view(FRONT_END.'/orders');
+        });
+    // ORDERS END
 
     // CART
-    Route::get('/cart', function () {
-        return view(FRONT_END.'/cart');
-    });
+        Route::get('/cart', function () {
+            return view(FRONT_END.'/cart');
+        });
+    // CART END
 
     // CHECKOUT
-    Route::get('/checkout', function () {
-        return view(FRONT_END.'/checkout');
-    });
+        Route::get('/checkout', function () {
+            return view(FRONT_END.'/checkout');
+        });
+    // CHECKOUT END
 
     
     // FRONT-END   END

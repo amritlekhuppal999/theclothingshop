@@ -15,7 +15,7 @@
             <h1>Welcome to Our Store</h1>
             <p>Find the best products here!</p>
         </div> -->
-        <x-front.carousel />
+        <x-front.carousel :bannerImages="$bannerImages" />
     </div>
 
     <div class="content"> 

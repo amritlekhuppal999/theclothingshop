@@ -44,7 +44,7 @@ return [
         'admin' => [    // new guard for admin
             'driver' => 'session',
             'provider' => 'users',
-            'cookie' => 'admin_session',
+            // 'cookie' => 'admin_session', // This is No.1 BS and does not work.
         ],
     ],
 

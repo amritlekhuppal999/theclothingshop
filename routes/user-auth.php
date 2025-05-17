@@ -6,17 +6,20 @@ use App\Http\Controllers\LoginController;
 // echo "WTF MAN";
 // exit();
 
+// Route::middleware(['set_session'])->group(function (){});
+
 // LOGIN REGISTER FORGOT PASSWORD
     // Route::get('/login', function () {
     //     return view(FRONT_END.'/layouts/login');
     // });
+    
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate'])->name('login-user');
     
     // Route::get('/register', function () {
     //     return view(FRONT_END.'/layouts/register');
     // });
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm']);
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('resgister');
     Route::post('/register', [RegisterController::class, 'register'])->name('register-user');
 
     Route::get('/forgot-password', function () {
@@ -28,5 +31,6 @@ use App\Http\Controllers\LoginController;
 // LOGOUT ROUTE
     Route::get('/logout', [LoginController::class, 'logout']);
 // LOGOUT ROUTE
+
 
 
