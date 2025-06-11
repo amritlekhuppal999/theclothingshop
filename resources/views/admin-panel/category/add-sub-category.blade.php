@@ -25,7 +25,7 @@
                         <h3 class="card-title">Add Sub Category</h3>
                     </div>
                     
-                    <form action="{{ route('add-sub-category') }}" method="POST" role="form">
+                    <form action="{{ safe_route('add-sub-category') }}" method="POST" role="form">
                         @csrf
 
                         <div class="card-body">

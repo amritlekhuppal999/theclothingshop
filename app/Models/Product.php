@@ -16,7 +16,7 @@ class Product extends Model
         'product_slug',
         'target_group',
         'category_id',
-        'sub_category_id',
+        //'sub_category_id',
         'base_price',
         'discount_percentage',
         'short_description',

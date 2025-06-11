@@ -35,21 +35,35 @@ define('ADMIN_LTE', "XAdminLTE");
     // HOME
         Route::get('/', [HomeController::class, 'CREATE']);
         Route::get('home', [HomeController::class, 'CREATE'])->name('home');
+
+        // CAROUSEL
+            Route::get('get-banner-carousel', [HomeController::class, 'GET_BANNER_CAROUSEL'])->name('get-banner-carousel');
+        // CAROUSEL END
+
+        // GET FEATURED CATEGORIES
+            Route::get('get-featured-category', [HomeController::class, 'GET_FEATURED_CATEGORIES'])->name('get-featured-category');
+            Route::get('get-remaining-featured-category', [HomeController::class, 'GET_REMAINING_FEATURED_CATEGORIES']);
+        // GET FEATURED CATEGORIES END
+
+        // GET FEATURED CATEGORIES
+            Route::get('get-featured-products', [HomeController::class, 'GET_FEATURED_PRODUCTS']);
+        // GET FEATURED CATEGORIES END
+
     // HOME END
 
     // CATEGORY
-        Route::get('/category', function (Request $request) {
-            return view(FRONT_END.'/category');
-        });
-        Route::get('/category/{category_slug}', function (string $category_slug) {
-            return view(FRONT_END.'/category', ['category_slug' => $category_slug]);
-        });
+        // Route::get('/category', function (Request $request) {
+        //     return view(FRONT_END.'/category');
+        // });
+        Route::get('/category/{sub_category_slug}', function (string $category_slug) {
+            return view(FRONT_END.'/category', ['sub_category_slug' => $category_slug]);
+        })->name("category");
     // CATEGORY END
 
     // PRODUCT
         Route::get('/product/{product_slug}', function (string $product_slug) {
             return view(FRONT_END.'/product', ['product_slug' => $product_slug]);
-        });
+        })->name('product');
     // PRODUCT END
 
     

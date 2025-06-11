@@ -58,6 +58,7 @@
                 <h3 class="text-secondary">VARIANT IMAGES</h3>
                 <h3 class="text-success">MANAGE STOCK</h3>
                 <h3 class="text-red">Database Records Deleter</h3>
+                <h3 class="text-red">BANNER IMAGES add link, page, etc fields in db</h3>
             </div>
 
             <div class="col-md-6 mb-2">

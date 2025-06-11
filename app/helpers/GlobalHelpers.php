@@ -2,6 +2,7 @@
 <?php
 
 use App\Services\CategoryService;
+use App\Services\ProductService;
 
     if (!function_exists('base64_to_file')) {
         
@@ -31,6 +32,11 @@ use App\Services\CategoryService;
                 'fileName' => $fileName
             );
         }
+    }
+
+    // function to create safe routes for blade binding
+    function safe_route(string $name, array $params = [], string $fallback = '#') {
+        return Route::has($name) ? route($name, $params) : $fallback;
     }
 
 
@@ -77,6 +83,22 @@ use App\Services\CategoryService;
         }
     }
 
+    if(!function_exists('get_sub_category_list')){
+        function get_sub_category_list($product_id){
+            return app(CategoryService::class)->get_sub_category_list($product_id);
+        }
+    }
+
+
+
+    if(!function_exists('get_target_group')){
+        function get_target_group($gender_code){
+            return app(ProductService::class)->get_target_group($gender_code);
+        }
+    }
+
+
+
 
     if(!function_exists('getUserRole')){
         function getUserRole($role_id){
@@ -93,4 +115,17 @@ use App\Services\CategoryService;
     }
 
     
-
+    // function get_featured_group(){
+    //     $feature_array = array(
+    //         "1" =>  "New Arrivals",
+    //         "2" =>  "Best Sellers",
+    //         "3" =>  "Supima",
+    //         "4" =>  "Pop Culture",
+    //         "4" =>  "Top 10 This Week",
+    //         "4" =>  "Styles in Spotlight",
+    //         "4" =>  "Trendy Fits",
+    //         "4" =>  "Summer Collection",
+    //         "4" =>  "Winter Collection",
+    //         "4" =>  "Shop's Special",
+    //     );
+    // }

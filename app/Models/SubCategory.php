@@ -15,6 +15,9 @@ class SubCategory extends Model
         'sub_category_name',
         'sub_category_slug',
         'category_id',
+        'featured',
+        'featured_size',
+        'featured_in_page',
         'status'
     ];
 }

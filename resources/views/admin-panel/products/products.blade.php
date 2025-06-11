@@ -1,7 +1,39 @@
 @extends('layouts.dashboard')
 
 @section('content-css')
-
+    <style>
+        .treeview ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        
+        .treeview ul ul {
+            padding-left: 20px;
+        }
+        
+        .treeview li {
+            margin: 2px 0;
+            font-size: 14px;
+        }
+        
+        .treeview li::before {
+            content: "├─ ";
+            color: #6c757d;
+        }
+        
+        .treeview li:last-child::before {
+            content: "└─ ";
+        }
+        
+        .treeview ul ul li::before {
+            content: "├─ ";
+        }
+        
+        .treeview ul ul li:last-child::before {
+            content: "└─ ";
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -84,8 +116,8 @@
                                         <th>S.no</th>
                                         <th >Product Name</th>
                                         <th>Group</th>
-                                        <th style="width:25%">Category</th>
-                                        <th>Base Price (₹)</th>
+                                        <th style="width:20%">Category</th>
+                                        <th style="width:12%">Base Price (₹)</th>
                                         <th>Discount (%)</th>
                                         <th>Status</th>
                                         <th >Action</th>

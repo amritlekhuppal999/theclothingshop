@@ -28,6 +28,9 @@
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 
+    {{-- SELECTPICKER --}}
+    <link rel="stylesheet" href="{{ asset('plugins/selectpicker/css/bootstrap-select.min.css') }}">
+
     {{-- <link rel="stylesheet" href="{{ asset("plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css")}}"> --}}
 
 

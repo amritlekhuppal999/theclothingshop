@@ -66,15 +66,14 @@ class SubCategoryController extends Controller{
     // save sub category
     public function STORE(Request $request){
         // Validate the incoming data
-        $request->validate([
-            'subCategoryName' => 'required|string|max:255',
-            'subCategorySlug' => 'required|string|unique:sub_category,sub_category_slug',
-            'select_category' => 'required|integer'
-        ]);
-
-        // create validation for checking if the slug is unique
-
+        
+        
         try{
+            $request->validate([
+                'subCategoryName' => 'required|string|max:255',
+                'subCategorySlug' => 'required|string|unique:sub_category,sub_category_slug',
+                'select_category' => 'required|integer'
+            ]);
 
             // Save the data in the database
             $subCategory = SubCategory::create([
@@ -84,17 +83,27 @@ class SubCategoryController extends Controller{
                 'status' => 1
             ]);
 
-            if($subCategory){
-                // Redirect with a success message
-                return redirect()->back()->with('success', 'Sub-Category added successfully!');
-            }
-            else {
-                return back()->withErrors([ "error" => "Failed to add the sub-category." ]);
-                // return redirect()->back()->with('error', 'Failed to add the attribute.');
-            }
+            return redirect()->back()->with('success', 'Sub-Category added successfully!');
+
+            // if($subCategory){
+            //     // Redirect with a success message
+            //     return redirect()->back()->with('success', 'Sub-Category added successfully!');
+            // }
+            // else {
+            //     return back()->withErrors([ "error" => "Failed to add the sub-category." ]);
+            //     // return redirect()->back()->with('error', 'Failed to add the attribute.');
+            // }
         }
         catch(QueryException $e){
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+            // return redirect()->back()->with('error', 'An error occurred: ');
+        }
+        catch(Exception $e){   // General Error
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+            // return redirect()->back()->with('error', 'An error occurred: ');
+        }
+        catch(\Throwable $th){
+            return redirect()->back()->with('error', 'An error occurred: ' . $th->getMessage());
             // return redirect()->back()->with('error', 'An error occurred: ');
         }
         
@@ -494,5 +503,22 @@ class SubCategoryController extends Controller{
                                   ->get();
 
         return ["sub_category_list" => $sub_category_list];
+    }
+
+
+    // DEALS With Front-End API requests
+    public function GET_COLLECTIONS(){
+
+        $collection_list = SubCategory::where('status', 1)
+                                ->where("category_id", function($query){
+                                    return $query->select('id')
+                                        ->from('category')
+                                        ->where('category_slug', 'collection')
+                                        ->limit(1);
+                                })
+                                ->select('id', 'sub_category_name', 'sub_category_slug')
+                                ->get();
+
+        return ["collection_list" => $collection_list];
     }
 }

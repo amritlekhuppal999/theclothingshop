@@ -3,23 +3,20 @@
     <head>
         <!-- headers -->
         <x-front.page-header />
+        
+        <link rel="stylesheet" href="{{ asset("css/animation.js") }}">
 
         @yield('content-css')
+
     </head>
     
     <body class="hold-transition layout-top-nav">
         <!-- <h1>Welcome to the {{config('app.name')}}</h1> -->
 
-        {{-- 
-        @php 
-            var_dump(session()->all());
-        @endphp
-        --}}
-        
-
         <div class="wrapper">
+            
             <!-- Navbar -->
-            @include('components.front.navbar')
+            <x-front.navbar.nav-bar />
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -36,7 +33,8 @@
                 <!-- <div class="content">
                     <div class="container"></div>
                 </div> -->
-                
+                {{-- <x-test-component /> --}}
+
                 @yield('content')
 
             </div>
@@ -48,6 +46,8 @@
 
         <!-- ADMIN LTE JS -->
         <x-front.adminlte-scripts />
+
+        <script src="{{ asset("js/text-animation.js") }}"></script>
 
         @yield('content-scripts')
     </body>

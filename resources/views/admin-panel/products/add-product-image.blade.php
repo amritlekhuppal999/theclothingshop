@@ -8,7 +8,7 @@
     <meta name="remove-img-url" content="{{ route('remove-product-images') }}">
     <meta name="update-banner-img" content="{{ route('update-product-primary-image') }}">
 
-
+    
     <style>
         .image-container {
             position: relative;
@@ -102,7 +102,7 @@
                         </div>
                         
                         <form 
-                            action="{{-- route('add-category-image') --}}" 
+                            action="{{-- safe_route('add-category-image') --}}" 
                             method="POST" 
                             role="form" 
                             id="product-image-form" 
@@ -119,11 +119,14 @@
                                     <select 
                                         name="select-product" 
                                         id="select-product" 
-                                        class="form-control" 
+                                        class="form-control selectpicker" 
                                         data-value="{{ $productSlug }}"
+                                        data-live-search="true"
                                         required>
                                         <option value="">Loading...</option>
                                     </select>
+
+                                    {{-- <x-admin.product.product-picker :productSlug="$productSlug" /> --}}
                                 </div>
 
                                 {{-- Select Image --}}
@@ -207,9 +210,6 @@
 
 @section('content-scripts')
     
-    <!-- Select2 JS -->
-    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-
     <script>
         window.onload = ()=>{
             let image_arr = [];
@@ -217,20 +217,185 @@
             let product_id = 0;
             const MAX_FILE_UPLOAD_LIMIT = 5;
 
-            load_product_list();
-            
+            const FETCHED_IMAGE_SECTION = document.getElementById("stored-product-images");
+            const SELECT_PRODUCT_ELE = document.getElementById("select-product");
 
-            document.getElementById("select-product").addEventListener('change', event=>{
-                // let select_element = event.target;
-                // let selected_option = select_element.options[select_element.selectedIndex];
-                // sub_category_id = selected_option.dataset.id;
-                product_id = set_product_id();
-                load_product_images();
+            //INITIALIZE Selectpicker
+            $('.selectpicker').selectpicker();
+
+            load_product_list();
+
+            // load product list
+            async function load_product_list(request_data={}){
+                let product_element = document.getElementById('select-product');
+
+                product_element.innerHTML = '<option value="">Loading...</option>';
+
+                if(SELECT_PRODUCT_ELE.dataset.value){
+                    request_data.product_slug = SELECT_PRODUCT_ELE.dataset.value;
+                }
+                /*
+                const request_data = {
+                    result_count: result_count
+                };
+                */
+                const params = new URLSearchParams(request_data);
                 
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = '/admin/get-product-list?'+params;
+
+                try{
+                    let response = await fetch(url, request_options);
+                    // console.log(response);
+                    let response_data = await response.json();
+                    //console.log(response_data);
+                    //return response_data;
+
+                    product_element.innerHTML = '<option value="">SELECT PRODUCT</option>';
+
+                    let prod_id_set_FLAG = false;    // to check if the product id is set?
+
+                    let product_list = response_data.product_list;
+                    product_list.forEach((element, index)=>{
+                        let selected = (product_element.dataset.value === element.product_slug) ? "selected" : "";
+
+                        let opt_str = `<option value="${element.product_slug}" ${selected} data-id=${element.id}>
+                            ${element.category_name} | ${element.product_name}
+                        </option>`;
+                        product_element.innerHTML += opt_str;
+                    });
+
+                    $('.selectpicker').selectpicker('refresh');
+                    
+                    product_id = get_product_id();
+                    load_product_images();
+                }
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+
+            // function to load ADDED product images
+            async function load_product_images(){
+                //FETCHED_IMAGE_SECTION = document.getElementById("stored-product-images");
+
+                FETCHED_IMAGE_SECTION.innerHTML = `
+                    <div class="col-md-6">
+                        <h5 class="card-title"> Loading Images... ${LOADER_MEDIUM} </h5> <br />
+                    </div>`; 
+
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = `/admin/get-product-images/${product_id}`;
+                console.log(url);
+
+                try{
+                    let response = await fetch(url, request_options);
+                    //console.log(response);
+                    let response_data = await response.json();
+                    // console.log(response_data);
+                    //return response_data;
+                    
+                    if(response_data.requested_action_performed){
+                        let inner_HTML = '';
+                        
+                        response_data.productImages.forEach((element, index)=>{
+                            let image_id = element.product_img_id;
+                            let image_URL = element.image_location;
+                            let prime_image = element.prime_image;
+
+                            let highlighter_selector = "", checked = "";
+                            if(prime_image){
+                                highlighter_selector = "highlighter"; checked = "checked";
+                            }
+
+                        inner_HTML += `
+                            <div class="col-md-3 img-block ${highlighter_selector}">
+                                <div class="card card bg-dark text-white" style="" data-img_id="${image_id}">
+                                    <img src="${PUBLIC_PATH}/${image_URL}" class="card-img-top" />
+
+                                    <div class="card-body">
+                                        <button type="button" class="btn btn-danger delete-image" data-img_id="${image_id}" title="Delete Image">
+                                            <span class="remove-img" data-img_id="${image_id}"> 
+                                                <i class="fas fa-trash-alt"></i>
+                                            </span>
+                                        </button>
+                                        
+                                        <label class="btn btn-success radio-wrapper" title="Change Banner Image">
+                                            <input type="radio" class="change_primary" name="select-image" id="" data-img_id="${image_id}" ${checked}>
+                                            Set Banner
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
+
+
+                        FETCHED_IMAGE_SECTION.innerHTML = inner_HTML;
+                    }
+
+                    else{
+                        FETCHED_IMAGE_SECTION.innerHTML = `
+                            <div class="col-md-8 offset-md-2">
+                                <h3 class="text-danger"> No Images added for this product.</h3>
+                            </div>`;
+                    }
+                }
+
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+
+        
+            // function to set the product ID variable value (NOT IN USE)
+            function get_product_id(){
+                let select_element = SELECT_PRODUCT_ELE;
+
+                let selected_option = select_element.options[select_element.selectedIndex];
+                //console.log(selected_option.dataset.id);
+                return selected_option.dataset.id;
+            }
+
+            // MAKING THE SELECTPICKER SEARCH DYNAMIC
+            $('#select-product').on('loaded.bs.select', function () {
+                $(this).parent().find('.bs-searchbox input').on('keyup', function(event) {
+                    if(event.keyCode >= 37 && event.keyCode <= 40){
+                        return false;
+                    }
+                    
+                    var searchTerm = $(this).val();
+                    
+                    // Debounce the search to avoid too many calls
+                    clearTimeout(window.searchTimeout);
+                    window.searchTimeout = setTimeout(function() {
+                        //console.log('Searching for:', searchTerm);
+                        let request_data = {
+                            "searchTerm": searchTerm,
+                        };
+                        load_product_list(request_data);
+                    }, 300); // 300ms delay
+                });
             });
 
 
-            //image input field
+            // Selecting Product Event
+            SELECT_PRODUCT_ELE.addEventListener('change', event=>{
+                product_id = get_product_id();
+                load_product_images(FETCHED_IMAGE_SECTION);                
+            });
+
+
+            //image input field EVENT
             document.getElementById('productImages').addEventListener('change', (event)=>{
 
                 let img_input_field = event.target;
@@ -262,7 +427,7 @@
                 }
             });
 
-            // IMAGE PREVIEW CLICK EVENT
+            // Added IMAGE PREVIEW CLICK EVENT
             document.getElementById("image-preview").addEventListener('click', event=>{
                 let element = event.target;
                 
@@ -377,8 +542,8 @@
             })
 
 
-            // Event Listener for LOADED IMAGES SECTION
-            document.getElementById("stored-product-images").addEventListener("click", async event=>{
+            // Event Listener for FETCHED DB STORED IMAGES SECTION
+            FETCHED_IMAGE_SECTION.addEventListener("click", async event=>{
                 let element = event.target;
 
                 // DELETE saved Images
@@ -518,63 +683,6 @@
             });
 
 
-            // function to set the product ID variable value
-            function set_product_id(){
-                let select_element = document.getElementById("select-product");
-
-                let selected_option = select_element.options[select_element.selectedIndex];
-                return selected_option.dataset.id;
-            }
-
-
-            // load product list
-            async function load_product_list(){
-                let product_element = document.getElementById('select-product');
-
-                product_element.innerHTML = '<option value="">Loading...</option>';
-                /*
-                const request_data = {
-                    result_count: result_count
-                };
-                const params = new URLSearchParams(request_data);
-                */
-                
-                const request_options = {
-                    method: 'GET',
-                    // headers: {},
-                    // body: JSON.stringify(request_data)
-                };
-
-                let url = '/admin/get-product-list';
-
-                try{
-                    let response = await fetch(url, request_options);
-                    // console.log(response);
-                    let response_data = await response.json();
-                    //console.log(response_data);
-                    //return response_data;
-
-                    product_element.innerHTML = '<option value="">Select Product</option>';
-
-                    let prod_id_set_FLAG = false;    // to check if the product id is set?
-
-                    let product_list = response_data.product_list;
-                    product_list.forEach((element, index)=>{
-                        let selected = (product_element.dataset.value === element.product_slug) ? "selected" : "";
-
-                        let opt_str = `<option value="${element.product_slug}" ${selected} data-id=${element.id}>${element.product_name}</option>`;
-                        product_element.innerHTML += opt_str;
-                    });
-                    
-                    product_id = set_product_id();
-                    load_product_images();
-                }
-                catch(error){
-                    console.error('Error:', error);
-                }
-            }
-
-
             // Create IMAGE PREVIEW
             async function create_image_preview(image_file){
 
@@ -645,89 +753,9 @@
                 });
 
             }
-
-            // function to load ADDED product images
-            async function load_product_images(){
-
-                document.getElementById("stored-product-images").innerHTML = `
-                    <div class="col-md-6">
-                        <h5 class="card-title"> Loading Images... ${LOADER_MEDIUM} </h5> <br />
-                    </div>
-                `; 
-
-                
-                
-                const request_options = {
-                    method: 'GET',
-                    // headers: {},
-                    // body: JSON.stringify(request_data)
-                };
-
-                let url = `/admin/get-product-images/${product_id}`;
-                // console.log(url);
-
-                try{
-                    let response = await fetch(url, request_options);
-                    //console.log(response);
-                    let response_data = await response.json();
-                    // console.log(response_data);
-                    //return response_data;
-                    
-                    if(response_data.requested_action_performed){
-                        let inner_HTML = '';
-                        
-                        response_data.productImages.forEach((element, index)=>{
-                            let image_id = element.product_img_id;
-                            let image_URL = element.image_location;
-                            let prime_image = element.prime_image;
-
-                            let highlighter_selector = "", checked = "";
-                            if(prime_image){
-                                highlighter_selector = "highlighter"; checked = "checked";
-                            }
-
-                        inner_HTML += `
-                            <div class="col-md-3 img-block ${highlighter_selector}">
-                                <div class="card card bg-dark text-white" style="" data-img_id="${image_id}">
-                                    <img src="${PUBLIC_PATH}/${image_URL}" class="card-img-top" />
-
-                                    <div class="card-body">
-                                        <button type="button" class="btn btn-danger delete-image" data-img_id="${image_id}" title="Delete Image">
-                                            <span class="remove-img" data-img_id="${image_id}"> 
-                                                <i class="fas fa-trash-alt"></i>
-                                            </span>
-                                        </button>
-                                        
-                                        <label class="btn btn-success radio-wrapper" title="Change Banner Image">
-                                            <input type="radio" class="change_primary" name="select-image" id="" data-img_id="${image_id}" ${checked}>
-                                            Set Banner
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>`;
-                        });
-
-
-                        document.getElementById("stored-product-images").innerHTML = inner_HTML;
-                    }
-
-                    else{
-                        document.getElementById("stored-product-images").innerHTML = `
-                            <div class="col-md-8 offset-md-2">
-                                <h3 class="text-danger"> No Images added for this category.</h3>
-                            </div>`;
-                    }
-                }
-
-                catch(error){
-                    console.error('Error:', error);
-                }
-            }
-
-
             
         }
-
-        
     </script>
+
+    @stack('product-picker-scripts')
 @endsection

@@ -9,9 +9,9 @@
 
 @section('content')
     
-    <!-- <div class="banner">
+    {{-- <div class="banner">
         @include('components.front.carousel')
-    </div> -->
+    </div>  --}}
 
     <div class="content"> 
         <div class="container-fluid">

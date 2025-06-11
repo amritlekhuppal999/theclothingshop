@@ -195,11 +195,42 @@ const PUBLIC_PATH = document.querySelector('meta[name="public-path"]').getAttrib
     }
 // Example of FETCH POST FUNCTION END
 
+// A function to run loading animation anywhere
+    function LOADING_ANIMATION(selector='animate-loading-text', action=""){
+        let LOADER_TEXT_ELE = document.getElementsByClassName(selector);
+        let loaderTextArray = Array.from(LOADER_TEXT_ELE);
+        loaderTextArray.forEach((element)=>{
+            new TextAnimator(element, 100);
+        });
+    }
+// A function to run loading animation anywhere END
 
 // Set it to false so we can customise toastr methods
     //toastr.options.escapeHtml = false;
 // Set it to false so we can customise toastr methods END
 
+
+// Convert data object to query parameter
+    /*
+    const request_data = {
+        category_id: category_id,
+        sub_category_id: sub_category_id,
+    };
+    const params = new URLSearchParams();
+    
+    for (const key in request_data) {
+        if (Object.hasOwnProperty.call(request_data, key)) {
+            const value = request_data[key];
+            // You might want to skip null or undefined values if they shouldn't be in the URL
+            if (value !== null && typeof value !== 'undefined') {
+                params.append(key, value);
+            }
+        }
+    }
+    const queryString = params.toString();
+    console.log(queryString);
+    */
+// Convert data object to query parameter END
 
 
 // SEARCH BOX

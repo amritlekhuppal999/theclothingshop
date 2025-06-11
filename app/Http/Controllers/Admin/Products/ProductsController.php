@@ -12,6 +12,8 @@ use App\Models\ProductImage;
 
 use App\Models\SubProduct;      //ProductVariant
 use App\Models\AttributeMapper;
+use App\Models\ProductCategoryMapper;
+
 
 use Illuminate\Support\Facades\DB;      // to use transactions
 use Illuminate\Support\Facades\Validator;
@@ -35,24 +37,32 @@ class ProductsController extends Controller
             $limit = ($request->has("limit")) ? $request->query("limit") : 10 ;
             $search_keyword = ($request->has("search_keyword")) ? $request->query("search_keyword") : "" ;
 
-            $product_list = Product::when($request->has("search_keyword"), function($query) use($request){
-                                $search_keyword = $request->query("search_keyword");
-                                return $query->where('product_name', 'like', '%'.$search_keyword.'%')
-                                            ->orWhere('product_slug', 'like', '%'.$search_keyword.'%')
-                                            ->orWhere('short_description', 'like', '%'.$search_keyword.'%')
-                                            ->orWhere('long_description', 'like', '%'.$search_keyword.'%');
-                            })
-                            ->paginate($limit)->withQueryString();
-
+            $product_list = Product::from('products as PRO')
+                                ->select(
+                                    'PRO.product_name', 'PRO.target_group', 'PRO.category_id', 
+                                    'PRO.base_price', 'PRO.discount_percentage', 'PRO.status', 
+                                    'PRO.id as PROD_ID', 'PRO.product_slug',
+                                    
+                                )
+                                ->when($request->has("search_keyword"), function($query) use($request){
+                                    $search_keyword = $request->query("search_keyword");
+                                    return $query->where('PRO.product_name', 'like', '%'.$search_keyword.'%')
+                                                ->orWhere('PRO.product_slug', 'like', '%'.$search_keyword.'%')
+                                                ->orWhere('PRO.short_description', 'like', '%'.$search_keyword.'%')
+                                                ->orWhere('PRO.long_description', 'like', '%'.$search_keyword.'%');
+                                })
+                                ->orderBy("PRO.id", "desc")
+                                ->paginate($limit)->withQueryString();
+            
             // foreach ($product_list as $products) {
             //     $products["target_group"] = $this->return_gender($products["target_group"]);
             // }
             
             // This does exactly what is being done in the above loop but maintaining the pagination and laravel logic.
-            $product_list->getCollection()->transform(function ($product) {
-                $product->target_group = $this->return_gender($product->target_group);
-                return $product;
-            });
+            // $product_list->getCollection()->transform(function ($product) {
+            //     $product->target_group = $this->return_gender($product->target_group);
+            //     return $product;
+            // });
 
             $return_data = array(
                 "product_list" => $product_list,
@@ -78,22 +88,35 @@ class ProductsController extends Controller
             return view($this->products_route.'add-products', $return_data);
         }
 
+        // public function STORE(Request $request){
+        //     \Log::info($request->sub_category_id);
+        // }
+
         // Save Category
         public function STORE(Request $request){
-            // Validate the incoming data
-            $request->validate([
-                'targetGroup' => 'required|integer',
-                'product_name' => 'required|string|max:255',
-                'product_slug' => 'required|string|unique:products,product_slug',
-                'category_id' => 'integer',
-                'sub_category_id' => 'integer',
-                'base_price' => 'required|numeric|min:1|max:100000',
-                'discount_percentage' => 'required|numeric|min:0.01',
-                'short_description' => 'string|max:1000',
-                'long_description' => 'string|max:65535',
-            ]);
-
+            
+            DB::beginTransaction();
+            
             try{
+                // Validate the incoming data
+                $request->validate([
+                    'targetGroup' => 'required|integer',
+                    'product_name' => 'required|string|max:255',
+                    'product_slug' => 'required|string|unique:products,product_slug',
+                    'category_id' => 'integer',
+                    // 'sub_category_id' => 'integer',
+                    'base_price' => 'required|numeric|min:1|max:100000',
+                    'discount_percentage' => 'required|numeric|min:0.01',
+                    'short_description' => 'string|max:1000',
+                    'long_description' => 'string|max:65535',
+                ]);
+
+                if(!count($request->sub_category_id)){
+                    throw ValidationException::withMessages([
+                        'sub_category_id' => ['No sub category selected.']
+                    ]);
+                    //return redirect()->back()->with('error', 'Failed to add product details: ' . $e->getMessage());
+                }
 
                 // Save the data in the database
                 $product_data = Product::create([
@@ -101,7 +124,7 @@ class ProductsController extends Controller
                     'product_slug' => $request->product_slug,
                     'target_group' => $request->targetGroup,
                     'category_id' => $request->category_id,
-                    'sub_category_id' => $request->sub_category_id,
+                    //'sub_category_id' => $request->sub_category_id,
                     'base_price' => $request->base_price,
                     'discount_percentage' => $request->discount_percentage,
                     'short_description' => $request->short_description,
@@ -109,29 +132,36 @@ class ProductsController extends Controller
                     'status' => 1
                 ]);
 
-                // if($category){
-                //     // Redirect with a success message
-                //     return redirect()->back()->with('success', 'Category added successfully!');
-                // }
-                // else {
-                //     return back()->withErrors([ "error" => "Failed to add the category." ]);
-                //     // return redirect()->back()->with('error', 'Failed to add the attribute.');
-                // }
+                $product_id = $product_data->id;
+                $prod_cat_mapper_array = array();
+                
+                foreach ($request->sub_category_id as $sub_category_id) {
+                    $mapper_array = array(
+                        "product_id" => $product_id,
+                        "sub_category_id" => $sub_category_id,
+                        "created_at" => now(),
+                        "updated_at" => now()
+                    );
+
+                    array_push($prod_cat_mapper_array, $mapper_array);
+                }
+
+                $prodCatMapper = ProductCategoryMapper::insert($prod_cat_mapper_array);
+
+                DB::commit();
 
                 return redirect()->back()->with('success', 'Product added successfully!');
             }
             catch(QueryException $e){
+                DB::rollBack();
                 return redirect()->back()->with('error', 'Failed to add product details: ' . $e->getMessage());
                 // return redirect()->back()->with('error', 'An error occurred: ');
             }
             catch(Exception $e){   // General Error
+                DB::rollBack();
                 return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
                 // return redirect()->back()->with('error', 'An error occurred: ');
             }
-            
-
-            // Redirect with a success message
-            // return redirect()->back()->with('success', 'Data has been saved successfully!');
         }
         
         // UDPATE product form view
@@ -547,24 +577,54 @@ class ProductsController extends Controller
 
         
         // function to get product list 
-        public function GET_PRODUCT_LIST($options=null){
-            /* // Allowed options for query products
-            $options = array(
-                "product_id" => '',
-                "product_slug" => '',
-                "category_id" => '',
-                "sub_category_id" => '',
-                "status" => "",
-                "fields" => ["all"]
-            );
-            */
+        public function GET_PRODUCT_LIST(Request $request){
+            /* // Allowed options for query products*/
 
-            $product_list = Product::select('id', 'product_name', 'product_slug')->where('status', 1)->get();
+            define("LOWER_RESULT_COUNT", 10);
+            define("SEMI_RESULT_COUNT", 25);
+            define("MID_RESULT_COUNT", 50);
+            define("MAX_RESULT_COUNT", 100);
+
+            $product_data = Product::when($request->has("category_id"), function($query) use($request) {
+                                        $category_id = $request->query("category_id");
+                                        return $query->orWhere('category_id', $category_id);
+                                    })
+                                ->when($request->has("searchTerm"), function($query) use($request){
+                                    $searchTerm = $request->query("searchTerm");
+                                    return $query->where('products.product_name', 'LIKE', $searchTerm.'%');
+                                })
+                                ->when($request->has("product_slug"), function($query) use($request){
+                                    $product_slug = $request->query("product_slug");
+                                    return $query->where('products.product_slug', '=', $product_slug);
+                                })
+                                ->join('category as CAT', function($join){
+                                    $join->on('CAT.id', '=', 'products.category_id');
+                                })
+                                ->select(
+                                    'products.id', 'products.product_name', 'products.product_slug',
+                                    'CAT.category_name'
+                                )
+                                ->where('products.status', 1)
+                                ->orderBy('products.product_name', 'ASC')
+                                ->limit(LOWER_RESULT_COUNT);
+
+
+            $product_list = $product_data->get();
+            $sql_query = $product_data->toSql();
+            $sql_str_binding = $product_data->getBindings();
+                                
+            // $log_data = [
+            //     // "product_list" => $product_list,
+            //     "sql_query" => $sql_query,
+            //     "sql_str_binding" => $sql_str_binding,
+            // ];
+
+            // \Log::info("Product List Data:", $log_data);
+
             return ["product_list" => $product_list];
         }
     // GENRAL PURPOSE FUNCTIONS END
 
-    
     
     
     

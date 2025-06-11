@@ -3,6 +3,7 @@
     <head>
         <!-- headers -->
         <x-admin.dashboard-header pageTitle="Dashboard" />
+        <link rel="stylesheet" href="{{ asset("css/animation.js") }}">
 
         @yield('content-css')
     </head>
@@ -22,7 +23,7 @@
             <x-admin.dashboard-navbar />
 
             <!-- Sidebar -->
-            <x-admin.dashboard-sidebar />
+            <x-admin.sidebar.dashboard-sidebar />
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper ">
@@ -38,6 +39,8 @@
 
         <!-- ADMIN LTE JS -->
         <x-admin.dashboard-adminlte-scripts />
+
+        <script src="{{ asset("js/text-animation.js") }}"></script>
 
         @yield('content-scripts')
     </body>

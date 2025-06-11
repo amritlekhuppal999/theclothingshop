@@ -8,9 +8,8 @@ use Illuminate\View\Component;
 
 class ProductCard extends Component
 {
-    /**
-     * Create a new component instance.
-     */
+    public string $itemName;
+    /*** Create a new component instance. */
     public function __construct(
         public string $displayPage,
         public string $cardType,
@@ -18,10 +17,11 @@ class ProductCard extends Component
         public string $cardTheme,
         public string $slug,
         public string $imageSlug,
-        public string $description
+        public string $description,
+        $itemName = null
     )
     {
-        //
+        $this->itemName = ($itemName) ? $itemName : "";
     }
 
     /**

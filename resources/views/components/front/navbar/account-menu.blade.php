@@ -3,14 +3,48 @@
     Account Menu, used in Navbar Right
 
 -->
-@php
-    $border_bottom = (Auth::check()) ? 'border-bottom:none;' : '';
-@endphp
 
 
-<div class="dropdown-menu dropdown-menu dropdown-menu-right">
-    {{-- <!-- Commented OUT --> <!-- dropdown-menu-lg -->
+    <div class="dropdown-menu dropdown-menu dropdown-menu-right h-100 pt-0" >
         
+        <div class="list-group">
+            <a href="/orders" 
+                class="list-group-item list-group-item-action cursor-pointer pl-4" 
+                style="border-top:none;">
+                Orders
+            </a>
+
+            {{-- <a href="#"
+                class="list-group-item list-group-item-action cursor-pointer pl-4" 
+                style="border-top:none;">
+                Second
+            </a> --}}
+
+            <a href="/profile" 
+                class="list-group-item list-group-item-action cursor-pointer pl-4" 
+                style="border-top:none;">
+                Profile
+            </a>
+
+            {{-- <a href="#"
+                class="list-group-item list-group-item-action cursor-pointer pl-4" 
+                style="border-top:none;">
+                Fourth
+            </a> --}}
+
+            @if (Auth::check())
+                <a href="/logout" 
+                    class="list-group-item list-group-item-action cursor-pointer pl-4" 
+                    style="border-top:none; border-bottom:none;">
+                    Logout
+                </a>
+            @endif
+        </div>
+    </div>
+
+
+{{-- 
+    <div class="dropdown-menu dropdown-menu dropdown-menu-right">
         <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
@@ -60,40 +94,5 @@
         </a>
         <div class="dropdown-divider"></div>
         <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-        
-    --}}
-    
-    <div class="list-group" style="">
-        <a href="/orders" 
-            class="list-group-item list-group-item-action cursor-pointer pl-4" 
-            style="border-top:none;">
-            Orders
-        </a>
-
-        <a href="#"
-            class="list-group-item list-group-item-action cursor-pointer pl-4" 
-            style="border-top:none;">
-            Second
-        </a>
-
-        <a href="/profile" 
-            class="list-group-item list-group-item-action cursor-pointer pl-4" 
-            style="border-top:none;">
-            Profile
-        </a>
-
-        <a href="#"
-            class="list-group-item list-group-item-action cursor-pointer pl-4" 
-            style="border-top:none; {{ $border_bottom }}">
-            Fourth
-        </a>
-
-        @if (Auth::check())
-            <a href="/logout" 
-                class="list-group-item list-group-item-action cursor-pointer pl-4" 
-                style="border-top:none; border-bottom:none;">
-                Logout
-            </a>
-        @endif
-    </div>
-</div>
+    </div> 
+--}}

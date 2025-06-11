@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\admin;
+namespace App\View\Components\admin\product;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class dashboardSidebar extends Component
+class ProductPicker extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class dashboardSidebar extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.admin.dashboard-sidebar');
+        return view('components.admin.product.product-picker');
     }
 }

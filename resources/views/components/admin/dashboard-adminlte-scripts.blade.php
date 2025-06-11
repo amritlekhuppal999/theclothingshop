@@ -19,3 +19,6 @@
 
     <!-- Toastr -->
     <script src="{{ asset("plugins/toastr/toastr.min.js") }}"></script>
+
+    {{-- SELECTPICKER --}}
+    <script src="{{ asset('plugins/selectpicker/js/bootstrap-select.min.js') }}"></script>

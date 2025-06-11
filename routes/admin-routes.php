@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Admin\Products\ProductsController;
+use App\Http\Controllers\Admin\Products\FeatureProductController;
 use App\Http\Controllers\Admin\Products\SubProductsController;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Category\SubCategoryController;
@@ -41,6 +42,15 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
         Route::get('/product-restore/{productSlug}', [ProductsController::class, 'RESTORE_VIEW'])->name('restore-product');
         
         Route::get('/products-stock/', [ProductsController::class, 'MANAGE_STOCK']);
+
+        // FEATURE PRODUCTS
+            Route::get('/featured-products-view', [FeatureProductController::class, 'INDEX'])->name("featured-products-view");
+
+            Route::get('/featured-products-add', [FeatureProductController::class, 'CREATE_FEATURED_PRODUCTS'])->name("feature-product-form");
+            Route::post('/add-featured-product', [FeatureProductController::class, 'STORE_FEATURED_PRODUCTS'])->name("add-featured-product");
+
+        // FEATURE PRODUCTS END
+        
 
         // Product Images
             Route::get('/products-add-images/{productSlug?}', [ProductsController::class, 'CREATE_IMAGE'])->name('products-add-images');
@@ -135,6 +145,7 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
         Route::post('/sub-category-update/', [SubCategoryController::class, 'UPDATE'])->name('update-sub-category');
 
         Route::get('/get-sub-category-list/{categoryID?}', [SubCategoryController::class, 'get_sub_category_list']); //API CALL
+        Route::get('/get-collections', [SubCategoryController::class, 'GET_COLLECTIONS']); //API CALL
 
     // SUB-CATEGORY Routes END
 

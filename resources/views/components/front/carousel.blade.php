@@ -1,33 +1,64 @@
 
+@php
+    //echo $attributes["dummy"].'<br />';
+    // var_dump($attributes); exit();
+    // $dummy = (isset($attributes["dummy"])) ? $attributes["dummy"] : "false";
+@endphp
 
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-            @foreach($bannerImages as $key => $bannerImage)
-                <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}" class="{{ ($key == 0) ? "active" : "" }}"></li>
-            @endforeach
-        </ol>
+    @if($bannerImages->isNotEmpty())
+    {{-- @if(isset($bannerImages)) --}}
 
-        <div class="carousel-inner">
-            
-            @foreach($bannerImages as $key => $bannerImage)
-                <div class="carousel-item {{ ($key == 0) ? "active" : "" }}">
-                    <img class="d-block w-100" src="{{ asset($bannerImage["image_location"]) }}" alt="First slide" style="width:100%; height:68vh;">
-                </div>
-            @endforeach
-            
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                @foreach($bannerImages as $key => $bannerImage)
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}" class="{{ ($key == 0) ? "active" : "" }}"></li>
+                @endforeach
+            </ol>
+
+            <div class="carousel-inner">
+                
+                @foreach($bannerImages as $key => $bannerImage)
+                    <div class="carousel-item {{ ($key == 0) ? "active" : "" }}">
+                        <img class="d-block w-100" src="{{ asset($bannerImage["image_location"]) }}" alt="First slide" style="width:100%; height:68vh;">
+                    </div>
+                @endforeach
+                
+            </div>
+
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
 
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
+    @else
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            </ol>
 
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" src="{{ asset('images/carousel-loader.png') }}" alt="First slide">
+                </div>
+            </div>
 
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    @endif
 
 
 

@@ -1,16 +1,12 @@
-
-
-    <li class="nav-item dropdown">
-        <a id="" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{$navItem["name"]}}</a>
-        
-        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-            @foreach($navItem["items"] as $itemName => $itemSlug)
-                <li><a href="{{ "/category/".$itemSlug }}" class="dropdown-item">{{ $itemName }}</a></li>
-            @endforeach
-                <!-- 
-                    <li><a href="#" class="dropdown-item"> {{-- $yo --}} </a></li>
-                    <li><a href="#" class="dropdown-item">Some other action</a></li>
-                -->
     
-        </ul>
-    </li>
+    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+        @foreach($sub_categories as $sub_category)
+            <li>
+                <a 
+                    href="{{ route("category", ["sub_category_slug" => $sub_category["sub_category_slug"]]) }}" 
+                    class="dropdown-item">
+                    {{ $sub_category["sub_category_name"] }}
+                </a>
+            </li>
+        @endforeach 
+    </ul>

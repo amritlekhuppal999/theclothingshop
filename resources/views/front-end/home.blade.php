@@ -8,14 +8,16 @@
 
 @section('content')
     
-    <div class="banner">
+    <div class="banner" id="load-carousel">
         {{-- @include('components.front.carousel') --}}
-        <!-- <img src="{{ asset('images/all-star.jpg') }}" alt="Banner Image"> -->
-        <!-- <div class="banner-text">
+        <!-- <img src="{{-- asset('images/all-star.jpg') --}}" alt="Banner Image"> -->
+         {{-- <div class="banner-text">
             <h1>Welcome to Our Store</h1>
             <p>Find the best products here!</p>
-        </div> -->
-        <x-front.carousel :bannerImages="$bannerImages" />
+        </div>  --}}
+        
+        <x-front.carousel />
+        {{-- <x-front.carousel :bannerImages="$bannerImages" /> --}}
     </div>
 
     <div class="content"> 
@@ -28,132 +30,29 @@
                     <h3>CATEGORIES</h3>
                 </div>
 
+                
                 <!-- BIG THREE -->
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="4"
-                        cardTheme="dark"
-                        slug="category"
-                        imageSlug="images/one-piece.webp"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                        itemName="Oversized T-shirt"
-                    />
-
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="4"
-                        cardTheme=""
-                        slug="category"
-                        imageSlug="images/op-hoodie.webp"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                        itemName="Polos"
-                    />
-
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="4"
-                        cardTheme=""
-                        slug="category"
-                        imageSlug="images/rick-n-m-tees.webp"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                        itemName="Solid T-shirts"
-                    />
-                <!-- BIG THREE END --> 
+                <div id="the-big-three">
+                    {{-- Dummy load (Actual thing is loaded using JS) --}}
+                    <x-front.home.featured-big-three />
+                </div>
 
                 <!-- Remaining Categories -->
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="3"
-                        cardTheme=""
-                        slug="category"
-                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1724912570_5870366.jpg?format=webp&w=480&dpr=1.0"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                        itemName="Polos"
-                    />
+                <div id="the-remaining-featured-category" >
+                    {{-- <x-front.home.featured-remaining-category /> --}}
+                </div>
 
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="3"
-                        cardTheme=""
-                        slug="category"
-                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1713943206_9376927.png?format=webp&w=480&dpr=1.0"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                    />
-
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="3"
-                        cardTheme=""
-                        slug="category"
-                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1723875789_8404256.jpg?format=webp&w=480&dpr=1.0"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                    />
-
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="3"
-                        cardTheme=""
-                        slug="category"
-                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1723875789_7940407.jpg?format=webp&w=480&dpr=1.0"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                    />
-
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="3"
-                        cardTheme=""
-                        slug="category"
-                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1709968005_4121325.jpg?format=webp&w=480&dpr=1.0"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                    />
-
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="3"
-                        cardTheme=""
-                        slug="category"
-                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1726122231_3508839.jpg?exp_id=41fc062fc4&group=b&format=webp&w=480&dpr=1.0"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                    />
-
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="3"
-                        cardTheme=""
-                        slug="category"
-                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1726325300_2818328.jpg?format=webp&w=480&dpr=1.0"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                    />
-
-                    <x-front.product.product-card
-                        displayPage="home"
-                        cardType="category"
-                        cardSize="3"
-                        cardTheme=""
-                        slug="category"
-                        imageSlug="https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1726325221_5236500.jpg?format=webp&w=480&dpr=1.0"
-                        description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                    />
-                <!-- Remaining Categories END -->
             </div>
 
             <!-- NEW ADDITIONS / NEW ARRIVALS -->
-            <div class="row">
+            <div class="row" id="new-additions-section" >
                 <div class="col-md-12 text-center mt-5 mb-3">
                     <h3>NEW ADDITIONS</h3>
                 </div>
 
-                <x-front.product.product-card
+                <div id="new-additions"></div>
+
+                {{-- <x-front.product.product-card
                     displayPage="home"
                     cardType="new-additions"
                     cardSize="3"
@@ -191,18 +90,20 @@
                     slug=""
                     imageSlug="images/slim-fit.webp"
                     description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                />
+                /> --}}
             </div>
 
             <!-- BEST SELLING -->
-            <div class="row">
+            <div class="row" id="best-sellers-section" >
                 <div class="col-md-12 text-center mt-5 mb-3">
                     <h3>BEST SELLING</h3>
                 </div>
 
-                <x-front.product.product-card
+                <div id="best-sellers" ></div>
+
+                {{-- <x-front.product.product-card
                     displayPage="home"
-                    cardType="best-selling"
+                    cardType="best-sellers"
                     cardSize="3"
                     cardTheme="dark"
                     slug=""
@@ -212,7 +113,7 @@
 
                 <x-front.product.product-card
                     displayPage="home"
-                    cardType="best-selling"
+                    cardType="best-sellers"
                     cardSize="3"
                     cardTheme=""
                     slug=""
@@ -222,7 +123,7 @@
 
                 <x-front.product.product-card
                     displayPage="home"
-                    cardType="best-selling"
+                    cardType="best-sellers"
                     cardSize="3"
                     cardTheme=""
                     slug=""
@@ -232,22 +133,24 @@
 
                 <x-front.product.product-card
                     displayPage="home"
-                    cardType="best-selling"
+                    cardType="best-sellers"
                     cardSize="3"
                     cardTheme=""
                     slug=""
                     imageSlug="images/bs-straight-fit.webp"
                     description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                />
+                /> --}}
             </div>
 
             <!-- POP CULTURE / SHOP BY FANDOM -->
-            <div class="row">
+            <div class="row" id="pop-culture-section" >
                 <div class="col-md-12 text-center mt-5 mb-3">
                     <h3>POP CULTURE</h3>
                 </div>
 
-                <div class="col-md-3">
+                <div id="pop-culture"></div>
+
+                {{-- <div class="col-md-3">
                     <div class="card" style=" background-color:#f4f6f9;">
                         <img src="{{ asset('images/svg/Naruto_logo.svg') }}" class="card-img-top" alt="...">
                     </div>
@@ -269,7 +172,7 @@
                     <div class="card" style=" background-color:#f4f6f9;">
                         <img src="{{ asset('images/svg/The_Office_US_logo.svg') }}" class="card-img-top" alt="...">
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -279,5 +182,214 @@
 
 
 @section('content-scripts')
+    <script>
 
+        window.onload = ()=>{
+            // Mapping divs to functions
+            const actions = {
+                "load-carousel": () => { load_banner_carousel(); },
+                "the-big-three": () => { load_featured_category(); },
+                "the-remaining-featured-category": () => { load_remaining_featured_category(); },
+                "new-additions": () => { load_featured_products("new-arrivals", "new-additions"); },
+                "best-sellers": () => { load_featured_products("best-sellers", "best-sellers"); },
+                "pop-culture": () => { load_featured_products("pop-culture", "pop-culture"); },
+            };
+
+            // array to store section ids
+            const section_array = [
+                "load-carousel", 
+                "the-big-three", 
+                "the-remaining-featured-category",
+                "new-additions",
+                "best-sellers",
+                "pop-culture",
+            ];
+
+            scrollObserve(actions, section_array);
+
+            // load_banner_carousel();
+            // function to load ADDED banner images
+            async function load_banner_carousel(){
+
+                let LOAD_CAROUSEL = document.getElementById('load-carousel');
+
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = `get-banner-carousel`;
+                // console.log(url);
+
+                try{
+                    let response = await fetch(url, request_options);
+                    //console.log(response);
+                    // let response_data = await response.json();
+                    // console.log(response_data);
+                    //return response_data;
+                    
+                    if(!response.ok){
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const html = await response.text();
+                    //console.log(html);
+                    LOAD_CAROUSEL.innerHTML = html;
+                }
+
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+
+            // load_featured_category();
+            async function load_featured_category(){
+
+                let FEATURED_THREE = document.getElementById('the-big-three');
+
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = `get-featured-category`;
+                // console.log(url);
+
+                try{
+                    let response = await fetch(url, request_options);
+                    //console.log(response);
+                    // let response_data = await response.json();
+                    // console.log(response_data);
+                    //return response_data;
+                    
+                    if(!response.ok){
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const html = await response.text();
+                    // console.log(html);
+                    FEATURED_THREE.innerHTML = html;
+                }
+
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+
+            //load_remaining_featured_category();
+            async function load_remaining_featured_category(){
+
+                let FEATURED_REMAINING = document.getElementById('the-remaining-featured-category');
+
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = `get-remaining-featured-category`;
+                // console.log(url);
+
+                try{
+                    let response = await fetch(url, request_options);
+                    //console.log(response);
+                    // let response_data = await response.json();
+                    // console.log(response_data);
+                    //return response_data;
+                    
+                    if(!response.ok){
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const html = await response.text();
+                    //console.log(html);
+                    FEATURED_REMAINING.innerHTML = html;
+                }
+
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+
+            /*
+            load_featured_products("new-arrivals", "new-additions");
+            load_featured_products("best-sellers", "best-sellers");
+            load_featured_products("pop-culture", "pop-culture");
+            */
+            async function load_featured_products(feature_group, loadout_id){
+
+                let LOADOUT_POINT = document.getElementById(loadout_id);
+
+                // let parent_element = LOADOUT_POINT.parentElement;
+                // parent_element.hidden = false;
+
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = `get-featured-products?feature_group=${feature_group}`;
+                //console.log(url);
+                (feature_group == "best-sellers") ? console.log(url) : "";
+                //return false;
+
+                try{
+                    let response = await fetch(url, request_options);
+                    //console.log(response);
+                    // let response_data = await response.json();
+                    // console.log(response_data);
+                    //return response_data;
+                    
+                    if(!response.ok){
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const html = await response.text();
+                    (feature_group == "best-sellers") ? console.log(html) : "";
+                    LOADOUT_POINT.innerHTML = html;
+                }
+
+                catch(error){
+                    console.error('Error:', error);
+                }
+            }
+
+
+            // Function to trigger any action when scrolled into view
+            function scrollObserve(actions, section_array){
+                
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const id = entry.target.id;
+                            if (actions[id]) {
+                                actions[id](); // Run the correct function
+                                observer.unobserve(entry.target); // Stop watching this element after triggering
+                            }
+                        }
+                    });
+                }, {
+                    threshold: 0.5  // Only trigger when at least 50% of the div is visible
+                });
+
+                //return observe;
+
+                section_array.forEach((div_id)=>{
+                    const ele = document.getElementById(div_id);
+                    if(ele) 
+                        observer.observe(ele);
+                });
+            }
+
+
+            let LOADER_TEXT_ELE = document.getElementsByClassName('animate-loading-text');
+            let loaderTextArray = Array.from(LOADER_TEXT_ELE);
+            loaderTextArray.forEach((element)=>{
+                new TextAnimator(element);
+            });
+        }
+    </script>
 @endsection
