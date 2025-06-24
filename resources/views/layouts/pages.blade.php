@@ -6,7 +6,9 @@
         
         <link rel="stylesheet" href="{{ asset("css/animation.js") }}">
 
+
         @yield('content-css')
+        {{-- @livewireStyles --}}
 
     </head>
     
@@ -49,6 +51,8 @@
 
         <script src="{{ asset("js/text-animation.js") }}"></script>
 
+        {{-- @livewireScripts --}}
+        @stack('scripts')
         @yield('content-scripts')
     </body>
 </html>

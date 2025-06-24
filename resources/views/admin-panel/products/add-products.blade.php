@@ -437,7 +437,7 @@ Feels like every day is the same, with nothing interesting happening. Well, say 
 
             LOADING_ANIMATION();
 
-            const current_url = CURRENT_URL;
+            const current_url = MyApp.CURRENT_URL;
 
             const CATEGORY_ID_PRODUCT_FORM = document.getElementById('category_id');
             //const SUB_CATEGORY_ID_PRODUCT_FORM = document.getElementById('sub_category_id');
@@ -579,7 +579,7 @@ Feels like every day is the same, with nothing interesting happening. Well, say 
                 
                 load_sub_category_list(category_id);
                 if(category_id){
-                    let new_url = appendQueryString(current_url, 'cat', category_slug);
+                    let new_url = MyApp.appendQueryString(current_url, 'cat', category_slug);
                     history.pushState(null, null, new_url);
                 }
                 else {
@@ -616,8 +616,8 @@ Feels like every day is the same, with nothing interesting happening. Well, say 
             document.getElementById("product_name").addEventListener('keyup', event=>{
                 let element = event.target;
                 let product_name = element.value;
-                product_name = remove_whitespace(product_name);
-                document.getElementById('product_slug').value = generate_slug(product_name);
+                product_name = MyApp.remove_whitespace(product_name);
+                document.getElementById('product_slug').value = MyApp.generate_slug(product_name);
             });
             
             

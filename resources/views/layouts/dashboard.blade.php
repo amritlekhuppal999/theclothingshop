@@ -40,6 +40,9 @@
         <!-- ADMIN LTE JS -->
         <x-admin.dashboard-adminlte-scripts />
 
+        {{-- My GLOBAL JS  --}}
+        <script src="{{ asset('js/globals.js') }} "></script>
+
         <script src="{{ asset("js/text-animation.js") }}"></script>
 
         @yield('content-scripts')

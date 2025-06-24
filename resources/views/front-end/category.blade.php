@@ -3,6 +3,52 @@
 
 @section('content-css')
     <link rel="stylesheet" href="{{ asset('css/front-end/category.css') }}">
+
+    <style>
+        /* Container for the scrollable content */
+        .scroll-container {
+            /* max-height: 300px; /* Set a max height to make it scrollable */
+            /* overflow-y: auto; /* Enable vertical scrolling */
+            /* border: 1px solid #dee2e6; /* Bootstrap-like border */
+            /* border-radius: 0.5rem; /* Rounded corners for the container */
+            /* background-color: #fff; /* White background for the content area */
+            /* padding: 1.5rem; /* Internal padding for content, not scrollbar */
+            /* width: 100%; /* Ensure it takes full width of its parent */
+            /* max-width: 400px; /* Max width for better presentation */
+            /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05); /* Subtle shadow */
+        }
+
+        /* --- Custom Scrollbar Styles for WebKit browsers (Chrome, Safari, Edge) --- */
+
+        /* Width of the scrollbar */
+        .scroll-container::-webkit-scrollbar {
+            width: 8px; /* Make it narrower */
+        }
+
+        /* Track of the scrollbar (the area behind the thumb) */
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1; /* Light gray track */
+            border-radius: 10px; /* Rounded track */
+        }
+
+        /* Thumb of the scrollbar (the draggable part) */
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #888; /* Darker gray thumb */
+            border-radius: 10px; /* Rounded thumb */
+        }
+
+        /* Hover state for the scrollbar thumb */
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #555; /* Even darker gray on hover */
+        }
+
+        /* --- Scrollbar Styles for Firefox --- */
+        /* Note: Firefox styling is more limited. */
+        .scroll-container {
+            /* scrollbar-width: thin; /* 'auto' or 'thin' */
+            /* scrollbar-color: #888 #f1f1f1; /* thumb color track color */
+        }
+    </style>
 @endsection
 
 
@@ -60,129 +106,41 @@
                     <div class="row">
 
                         <!-- FILTERS -->
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="filter-section">
 
                             <!-- SUB-CATEGORY -->
-                            <div class="col-md-12">
-                                <div class="card" style="">
-                                    <div class="card-body">
-                                        <p class="card-text"> SUB-CATEGORY </p>
-
-                                        <div class="list-group list-group-flush">
-                                            <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                                                <input class="form-check-input me-1" type="checkbox" value="">
-                                                First
-                                            </label>
-
-                                            <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                                                <input class="form-check-input me-1" type="checkbox" value="">
-                                                Second
-                                            </label>
-
-                                            <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                                                <input class="form-check-input me-1" type="checkbox" value="">
-                                                Third
-                                            </label>
-
-                                            <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                                                <input class="form-check-input me-1" type="checkbox" value="">
-                                                Fourth
-                                            </label>
-
-                                            <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                                                <input class="form-check-input me-1" type="checkbox" value="">
-                                                Fifth
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <span id="subCatFilter-adjacent"></span>
+                            <x-front.category.sub-category-filter :categorySlug="$category_slug"/>
 
                             <!-- THEME -->
-                            <div class="col-md-12">
-                                <div class="card" style="">
-                                    <div class="card-body">
-                                        <p class="card-text"> THEME </p>
+                            <span id="themeFilter-adjacent"></span>
+                            <x-front.category.theme-filter />
 
-                                        <div class="list-group list-group-flush">
-                                            <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                                                <input class="form-check-input me-1" type="checkbox" value="">
-                                                First
-                                            </label>
-
-                                            <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                                                <input class="form-check-input me-1" type="checkbox" value="">
-                                                Second
-                                            </label>
-
-                                            <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                                                <input class="form-check-input me-1" type="checkbox" value="">
-                                                Third
-                                            </label>
-
-                                            <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                                                <input class="form-check-input me-1" type="checkbox" value="">
-                                                Fourth
-                                            </label>
-
-                                            <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                                                <input class="form-check-input me-1" type="checkbox" value="">
-                                                Fifth
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            <!-- Attribute -->
+                            <span id="attributeFilter-adjacent"></span>
+                            <x-front.category.attribute-filter />
+                            
                             <!-- SIZE -->
-                            <div class="col-md-12">
-                                <div class="card" style="">
-                                    <div class="card-body">
-                                        <p class="card-text"> SIZE </p>
-
-                                        <div class="">
-                                            <label class="btn btn-outline-secondary cursor-pointer"> XXL </label>
-                                            <label class="btn btn-outline-secondary cursor-pointer"> XL </label>
-                                            <label class="btn btn-outline-secondary cursor-pointer"> L </label>
-                                            <label class="btn btn-outline-secondary cursor-pointer"> M </label>
-                                            <label class="btn btn-outline-secondary cursor-pointer"> S </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {{-- <span id="sizeFilter-adjacent"></span>
+                            <x-front.category.size-filter /> --}}
 
                             <!-- PRICE -->
-                            <div class="col-md-12">
-                                <div class="card" style="">
-                                    <div class="card-body">
-                                        <p class="card-text"> PRICE </p>
-
-                                        <div class="list-group list-group-flush">
-                                            <label class="list-group-item list-group-item-action cursor-pointer pl-4" aria-current="true" style="border-top:none;"> 
-                                                <input class="form-check-input me-1" name="price" type="radio" value="">
-                                                Rs. 599 To Rs. 1073
-                                            </label>
-
-                                            <label class="list-group-item list-group-item-action cursor-pointer pl-4" aria-current="true" style="border-top:none;"> 
-                                                <input class="form-check-input me-1" name="price" type="radio" value="">
-                                                Rs. 1074 To Rs. 1548
-                                            </label>
-
-                                            <label class="list-group-item list-group-item-action cursor-pointer pl-4" aria-current="true" style="border-top:none;"> 
-                                                <input class="form-check-input me-1" name="price" type="radio" value="">
-                                                Rs. 1074 To Rs. 1548
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <span id="priceFilter-adjacent"></span>
+                            <x-front.category.price-filter />
                         </div>
 
                         <!-- PRODUCTS -->
                         <div class="col-md-9">
 
-                            <div class="row">
+                            <livewire:front.product.load-products
+                                id="" 
+                                :categorySlug="$category_slug" 
+                                wire:listen="filtersUpdated->triggerRefresh"
+                            />
+                            
+                            {{-- <div class="row">
 
+                                
                                 <x-front.product.product-card
                                     displayPage="home"
                                     cardType="category"
@@ -222,7 +180,7 @@
                                     imageSlug="images/rick-n-m-tees.webp"
                                     description="Some quick example text to build on the card title and make up the bulk of the card's content."
                                 />
-                            </div>
+                            </div> --}}
 
                         </div>
                     </div>
@@ -239,8 +197,10 @@
 
 
 @section('content-scripts')
+    {{-- Used in the Sorting option dropdown --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-    
 @endsection
+    
+
+
+

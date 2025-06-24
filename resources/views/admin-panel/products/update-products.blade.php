@@ -331,7 +331,7 @@
                 theme: 'bootstrap4'
             })
 
-            const current_url = CURRENT_URL;
+            const current_url = MyApp.CURRENT_URL;
 
             const CATEGORY_ID_PRODUCT_FORM = document.getElementById('category_id');
             const SUB_CATEGORY_ID_PRODUCT_FORM = document.getElementById('sub_category_id');
@@ -561,8 +561,8 @@
             document.getElementById("product_name").addEventListener('keyup', event=>{
                 let element = event.target;
                 let product_name = element.value;
-                product_name = remove_whitespace(product_name);
-                document.getElementById('product_slug').value = generate_slug(product_name);
+                product_name = MyApp.remove_whitespace(product_name);
+                document.getElementById('product_slug').value = MyApp.generate_slug(product_name);
             });
             
             
@@ -580,7 +580,7 @@
 
                     if(category !== "0" && sub_category !== "0"){
                         alert("category saved");
-                        location.href = `${ADMIN_URL}/products-add/${sub_category}`;
+                        location.href = `${MyApp.ADMIN_URL}/products-add/${sub_category}`;
                     }
 
                 }
@@ -592,7 +592,7 @@
                     if(product_slug !== "0"){
                         // alert(product_slug);
 
-                        location.href = `${ADMIN_URL}/${element.dataset.url}/${product_slug}`;
+                        location.href = `${MyApp.ADMIN_URL}/${element.dataset.url}/${product_slug}`;
 
                     }
                 }

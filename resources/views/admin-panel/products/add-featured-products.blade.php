@@ -169,7 +169,7 @@
             })
             */
 
-            const current_url = CURRENT_URL;
+            const current_url = MyApp.CURRENT_URL;
 
             const CATEGORY_ID_INPUT = document.getElementById("categoryID");
             const SUB_CATEGORY_ID_INPUT = document.getElementById("subCategoryID");

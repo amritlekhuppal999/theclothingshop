@@ -152,8 +152,8 @@
                 
                 product_name = selected_option.innerText;
 
-                // const CURRENT_URL = `${PROTOCOL}//${HOSTNAME}:${PORT}${PATHNAME}`;
-                //location.href = `${PROTOCOL}//${HOSTNAME}:${PORT}/admin/products-variants/${selected_option.value}`;
+                // const MyApp.CURRENT_URL = `${MyApp.PROTOCOL}//${MyApp.HOSTNAME}:${MyApp.PORT}${MyApp.PATHNAME}`;
+                //location.href = `${MyApp.PROTOCOL}//${MyApp.HOSTNAME}:${MyApp.PORT}/admin/products-variants/${selected_option.value}`;
 
                 load_variant_list(product_id);
             });

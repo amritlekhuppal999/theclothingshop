@@ -74,12 +74,16 @@ class HomeController extends Controller
                                     ->where('SCI.status', 1);
                                 // Just mutate, no return
                             })
+                            ->join('category as CAT', function($join){
+                                $join->on('SC.category_id', '=', 'CAT.id');
+                            })
                             ->select(
                                 "SC.id as sub_cat_id", 
                                 "SC.sub_category_name as SC_name", 
                                 "SC.sub_category_slug as SC_slug", 
                                 "SCI.image_location as SCIL", 
-                                "SCI.prime_image as SC_prime_image"
+                                "SCI.prime_image as SC_prime_image",
+                                "CAT.category_slug"
                             )
                             ->where('SC.status', 1)
                             ->where('SC.featured', 1);
@@ -96,7 +100,7 @@ class HomeController extends Controller
                     "cardType" => "category",
                     "cardSize" => "4",
                     "cardTheme" => ($key == 0) ? "dark" : "",
-                    "slug" => 'category/'.$sub_cat["SC_slug"],
+                    "slug" => 'category/'.$sub_cat["category_slug"].'?sc='.$sub_cat["SC_slug"],
                     "imageSlug" => ($sub_cat["SCIL"]) ? $sub_cat["SCIL"] : "images/product-card-loader.jpg",
                     "description" => "",
                     "itemName" => $sub_cat["SC_name"],
@@ -162,12 +166,16 @@ class HomeController extends Controller
                                     ->where('SCI.status', 1);
                                 // Just mutate, no return
                             })
+                            ->join('category as CAT', function($join){
+                                $join->on('SC.category_id', '=', 'CAT.id');
+                            })
                             ->select(
                                 "SC.id as sub_cat_id", 
                                 "SC.sub_category_name as SC_name", 
                                 "SC.sub_category_slug as SC_slug", 
                                 "SCI.image_location as SCIL", 
-                                "SCI.prime_image as SC_prime_image"
+                                "SCI.prime_image as SC_prime_image",
+                                "CAT.category_slug"
                             )
                             ->where('SC.status', 1)
                             ->where('SC.featured', 0)->limit(8);
@@ -184,7 +192,7 @@ class HomeController extends Controller
                     "cardType" => "category",
                     "cardSize" => "3",
                     "cardTheme" => ($key == 0) ? "dark" : "",
-                    "slug" => 'category/'.$sub_cat["SC_slug"],
+                    "slug" => 'category/'.$sub_cat["category_slug"].'?sc='.$sub_cat["SC_slug"],
                     "imageSlug" => ($sub_cat["SCIL"]) ? $sub_cat["SCIL"] : "images/product-card-loader.jpg",
                     "description" => "",
                     "itemName" => $sub_cat["SC_name"],

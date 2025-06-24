@@ -360,7 +360,7 @@
                 let submit_btn = document.getElementById("upload-images");
                 let submit_btn_content = submit_btn.innerHTML;
 
-                submit_btn.innerHTML = LOADER_SMALL;
+                submit_btn.innerHTML = MyApp.LOADER_SMALL;
                 submit_btn.disabled = true;
 
                 if(!image_arr.length){
@@ -397,7 +397,7 @@
                     //return response_data;
 
                     if(response_data.requested_action_performed){
-                        submit_btn.innerHTML = CHECK_SUCCESS;
+                        submit_btn.innerHTML = MyApp.CHECK_SUCCESS;
                         toastr.success(response_data.message);
                         if(response_data.reload){
                             setTimeout(()=>{

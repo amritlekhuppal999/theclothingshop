@@ -307,7 +307,7 @@
                 let submit_btn = document.getElementById("upload-images");
                 let submit_btn_content = submit_btn.innerHTML;
 
-                submit_btn.innerHTML = LOADER_SMALL;
+                submit_btn.innerHTML = MyApp.LOADER_SMALL;
                 submit_btn.disabled = true;
                 
                 let form_data = {
@@ -338,7 +338,7 @@
                     //return response_data;
 
                     if(response_data.requested_action_performed){
-                        submit_btn.innerHTML = CHECK_SUCCESS;
+                        submit_btn.innerHTML = MyApp.CHECK_SUCCESS;
                         toastr.success(response_data.message);
                         if(response_data.reload){
                             setTimeout(()=>{
@@ -385,7 +385,7 @@
                     let delete_BTN = element;
 
                     let delete_BTN_content = delete_BTN.innerHTML;
-                    delete_BTN.innerHTML = LOADER_SMALL;
+                    delete_BTN.innerHTML = MyApp.LOADER_SMALL;
                     delete_BTN.disabled = true;
 
                     let parent_DIV = delete_BTN.closest(".img-block");
@@ -420,7 +420,7 @@
                                 parent_DIV.remove();
                             }, 1000);
                             /*
-                            submit_btn.innerHTML = CHECK_SUCCESS;
+                            submit_btn.innerHTML = MyApp.CHECK_SUCCESS;
                             if(response_data.reload){
                             }
                             */
@@ -574,7 +574,7 @@
 
                 document.getElementById("saved-sub-category-images").innerHTML = `
                     <div class="col-md-6">
-                        <h5 class="card-title"> Loading Images... ${LOADER_MEDIUM} </h5> <br />
+                        <h5 class="card-title"> Loading Images... ${MyApp.LOADER_MEDIUM} </h5> <br />
                     </div>
                 `; 
 

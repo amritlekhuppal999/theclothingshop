@@ -32,7 +32,7 @@
                                     @foreach($sub_categories as $sub_category)
                                         <li>
                                             <a 
-                                                href="{{ route("category", ["sub_category_slug" => $sub_category["sub_category_slug"] ]) }}"
+                                                href="{{ safe_route("category", ["category_slug" => getCategoryslug($products["category_id"]).'?sc='.$sub_category["sub_category_slug"] ]) }}"
                                                 target="0_"
                                                 class="btn btn-sm bg-purple">
                                                 {{ $sub_category["sub_category_name"] }}

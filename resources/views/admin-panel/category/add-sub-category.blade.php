@@ -172,8 +172,8 @@
 
             if(element.id == "subCategoryName"){
                 let sub_category_name = element.value;
-                sub_category_name = remove_whitespace(sub_category_name);
-                document.getElementById('subCategorySlug').value = generate_slug(sub_category_name);
+                sub_category_name = MyApp.remove_whitespace(sub_category_name);
+                document.getElementById('subCategorySlug').value = MyApp.generate_slug(sub_category_name);
             }
         });
 

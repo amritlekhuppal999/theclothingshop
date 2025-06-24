@@ -112,8 +112,8 @@
 
             if(element.id == "categoryName"){
                 let category_name = element.value;
-                category_name = remove_whitespace(category_name);
-                document.getElementById('categorySlug').value = generate_slug(category_name);
+                category_name = MyApp.remove_whitespace(category_name);
+                document.getElementById('categorySlug').value = MyApp.generate_slug(category_name);
             }
         });
 

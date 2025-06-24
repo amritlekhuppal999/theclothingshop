@@ -42,7 +42,6 @@ class ProductsController extends Controller
                                     'PRO.product_name', 'PRO.target_group', 'PRO.category_id', 
                                     'PRO.base_price', 'PRO.discount_percentage', 'PRO.status', 
                                     'PRO.id as PROD_ID', 'PRO.product_slug',
-                                    
                                 )
                                 ->when($request->has("search_keyword"), function($query) use($request){
                                     $search_keyword = $request->query("search_keyword");

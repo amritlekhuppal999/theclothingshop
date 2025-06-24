@@ -66,28 +66,57 @@ use App\Services\ProductService;
         }
     }
 
+    
+    
+    // CATEGORIES
+        if (!function_exists('getCategoryName')) {
+            function getCategoryName($category_id){
 
-    if (!function_exists('getCategoryName')) {
-        function getCategoryName($category_id){
-
-            return app(CategoryService::class)->getCategoryName($category_id);
-            // if confused what the hell this is , its a service class, read docs
+                return app(CategoryService::class)->getCategoryName($category_id);
+                // if confused what the hell this is , its a service class, read docs
+            }
         }
-    }
 
-    if (!function_exists('getSubCategoryName')) {
-        function getSubCategoryName($sub_category_id){
+        if (!function_exists('getCategoryslug')) {
+            function getCategoryslug($category_id){
 
-            return app(CategoryService::class)->getSubCategoryName($sub_category_id);
-            // if confused what the hell this is , its a service class, read docs
+                return app(CategoryService::class)->getCategoryslug($category_id);
+                // if confused what the hell this is , its a service class, read docs
+            }
         }
-    }
 
-    if(!function_exists('get_sub_category_list')){
-        function get_sub_category_list($product_id){
-            return app(CategoryService::class)->get_sub_category_list($product_id);
+        if (!function_exists('getCategoryId')) {
+            function getCategoryId($category_slug){
+
+                return app(CategoryService::class)->getCategoryId($category_slug);
+                // if confused what the hell this is , its a service class, read docs
+            }
         }
-    }
+    // CATEGORIES END
+
+    // SUB CATEGORIES
+        if (!function_exists('getSubCategoryName')) {
+            function getSubCategoryName($sub_category_id){
+
+                return app(CategoryService::class)->getSubCategoryName($sub_category_id);
+                // if confused what the hell this is , its a service class, read docs
+            }
+        }
+
+        if (!function_exists('getSubCategoryId')) {
+            function getSubCategoryId($sub_category_slug){
+
+                return app(CategoryService::class)->getSubCategoryId($sub_category_slug);
+                // if confused what the hell this is , its a service class, read docs
+            }
+        }
+
+        if(!function_exists('get_sub_category_list')){
+            function get_sub_category_list($product_id){
+                return app(CategoryService::class)->get_sub_category_list($product_id);
+            }
+        }
+    // SUB CATEGORIES END
 
 
 
@@ -129,3 +158,14 @@ use App\Services\ProductService;
     //         "4" =>  "Shop's Special",
     //     );
     // }
+
+
+    // Logging data
+        // $log_data = [
+        //     // "product_list" => $product_list,
+        //     "sql_query" => $sql_query,
+        //     "sql_str_binding" => $sql_str_binding,
+        // ];
+
+        // \Log::info("Product List Data:", $log_data);
+    // Logging data

@@ -55,8 +55,8 @@ define('ADMIN_LTE', "XAdminLTE");
         // Route::get('/category', function (Request $request) {
         //     return view(FRONT_END.'/category');
         // });
-        Route::get('/category/{sub_category_slug}', function (string $category_slug) {
-            return view(FRONT_END.'/category', ['sub_category_slug' => $category_slug]);
+        Route::get('/category/{category_slug}', function (string $category_slug) {
+            return view(FRONT_END.'/category', ['category_slug' => $category_slug]);
         })->name("category");
     // CATEGORY END
 

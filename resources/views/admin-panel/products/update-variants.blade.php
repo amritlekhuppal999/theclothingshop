@@ -314,7 +314,7 @@
             const VARIANT_NAME_ELEMENT = document.getElementById("variant_name");
             const VARIANT_SLUG_ELEMENT = document.getElementById("variant_slug");
 
-            const current_url = CURRENT_URL;
+            const current_url = MyApp.CURRENT_URL;
 
             const VARIANT_FORM = document.getElementById('variant-form');
 
@@ -584,8 +584,8 @@
             document.getElementById("variant_name").addEventListener('keyup', event=>{
                 let element = event.target;
                 let variant_name = element.value;
-                variant_name = remove_whitespace(variant_name);
-                document.getElementById('variant_slug').value = generate_slug(variant_name);
+                variant_name = MyApp.remove_whitespace(variant_name);
+                document.getElementById('variant_slug').value = MyApp.generate_slug(variant_name);
             });
             
             
@@ -703,10 +703,10 @@
 
                 let submit_btn = VARIANT_FORM.querySelector('[name="update-variant"]');
                 let submit_btn_content = submit_btn.innerHTML;
-                submit_btn.innerHTML = LOADER_SMALL;
+                submit_btn.innerHTML = MyApp.LOADER_SMALL;
                 submit_btn.disabled = true;
 
-                let variant_name = remove_whitespace(VARIANT_FORM.querySelector('[name="variant_name"]').value);
+                let variant_name = MyApp.remove_whitespace(VARIANT_FORM.querySelector('[name="variant_name"]').value);
                 let variant_slug = VARIANT_FORM.querySelector('[name="variant_slug"]').value;
                 let variant_slug_backup = VARIANT_FORM.querySelector('[name="variant_slug_backup"]').value;
                 let sku = VARIANT_FORM.querySelector('[name="sku"]').value;
@@ -760,12 +760,12 @@
                         case REQUEST_SUCCESSFUL:
                             if(response_data.requested_action_performed){
 
-                                submit_btn.innerHTML = CHECK_SUCCESS;
+                                submit_btn.innerHTML = MyApp.CHECK_SUCCESS;
                                 toastr.success(response_data.message);
                                 setTimeout(()=>{
                                     //location.reload();
                                     
-                                    let new_url = `${PROTOCOL}//${HOSTNAME}:${PORT}/admin/variants-update/${variant_slug}`
+                                    let new_url = `${MyApp.PROTOCOL}//${MyApp.HOSTNAME}:${MyApp.PORT}/admin/variants-update/${variant_slug}`
                                     history.pushState(null, null, new_url);
                                     location.reload();
                                 }, 1500);

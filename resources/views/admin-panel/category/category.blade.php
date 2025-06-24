@@ -221,7 +221,7 @@
                     console.log(category_status); 
                     //return false;
                     
-                    let new_location = appendQueryString(CURRENT_URL, "status", category_status);
+                    let new_location = MyApp.appendQueryString(MyApp.CURRENT_URL, "status", category_status);
 
                     if(category_status == "") new_location = '/admin/category';
                     
@@ -234,7 +234,7 @@
                 let category_id = action_btn.dataset.category_id;
                 // let requested_action;
                 let action_btn_content = action_btn.innerHTML;
-                action_btn.innerHTML = LOADER_SMALL;
+                action_btn.innerHTML = MyApp.LOADER_SMALL;
                 action_btn.disabled = true;
                 // return false;
 
@@ -314,7 +314,7 @@
 
                     if(result_options.search_keyword.length){
                         const queryParams = new URLSearchParams(result_options);
-                        let new_url = CURRENT_URL+'?'+queryParams;
+                        let new_url = MyApp.CURRENT_URL+'?'+queryParams;
                         location.href = new_url;
                         //history.pushState(null, null, new_url);
                         //load_products(result_options);

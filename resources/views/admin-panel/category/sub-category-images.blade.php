@@ -243,7 +243,7 @@
 
                 document.getElementById("saved-sub-category-images").innerHTML = `
                     <div class="col-md-6">
-                        <h5 class="card-title"> Loading Images... ${LOADER_MEDIUM} </h5> <br />
+                        <h5 class="card-title"> Loading Images... ${MyApp.LOADER_MEDIUM} </h5> <br />
                     </div>`; 
 
                 const request_options = {

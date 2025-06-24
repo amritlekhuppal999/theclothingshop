@@ -256,7 +256,7 @@
                 if(element.id === "select-status"){
                     let category_status = element.value;
                     
-                    let new_location = appendQueryString(CURRENT_URL, "status", category_status);
+                    let new_location = MyApp.appendQueryString(MyApp.CURRENT_URL, "status", category_status);
 
                     //if(category_status == "") new_location = '/admin/sub-category';
 
@@ -270,9 +270,9 @@
                 let selected_option = SELECT_PRODUCT_ELEMENT.options[SELECT_PRODUCT_ELEMENT.selectedIndex];
                 product_id = set_product_id();
 
-                // const CURRENT_URL = `${PROTOCOL}//${HOSTNAME}:${PORT}${PATHNAME}`;
+                // const MyApp.CURRENT_URL = `${MyApp.PROTOCOL}//${MyApp.HOSTNAME}:${MyApp.PORT}${MyApp.PATHNAME}`;
 
-                location.href = `${PROTOCOL}//${HOSTNAME}:${PORT}/admin/products-variants/${selected_option.value}`;
+                location.href = `${MyApp.PROTOCOL}//${MyApp.HOSTNAME}:${MyApp.PORT}/admin/products-variants/${selected_option.value}`;
             });
 
 
@@ -334,7 +334,7 @@
             async function delete_sub_category_X(delete_btn){
                 let sub_category_id = delete_btn.dataset.sub_category_id;
                 let delete_BTN_Content = delete_btn.innerHTML;
-                delete_btn.innerHTML = LOADER_SMALL;
+                delete_btn.innerHTML = MyApp.LOADER_SMALL;
                 delete_btn.disabled = true;
                 // return false;
 
@@ -392,7 +392,7 @@
                 let sub_product_id = action_btn.dataset.sub_product_id;
                 // let requested_action;
                 let action_btn_content = action_btn.innerHTML;
-                action_btn.innerHTML = LOADER_SMALL;
+                action_btn.innerHTML = MyApp.LOADER_SMALL;
                 action_btn.disabled = true;
                 // return false;
 
@@ -427,7 +427,7 @@
                         case REQUEST_SUCCESSFUL:
                             if(response_data.requested_action_performed){
 
-                                action_btn.innerHTML = CHECK_SUCCESS;
+                                action_btn.innerHTML = MyApp.CHECK_SUCCESS;
                                 toastr.success(response_data.message);
                                 setTimeout(()=>{
                                     // action_btn.closest(".variant-action-row").remove();
@@ -497,7 +497,7 @@
 
                     if(result_options.search_keyword.length){
                         const queryParams = new URLSearchParams(result_options);
-                        let new_url = CURRENT_URL+'?'+queryParams;
+                        let new_url = MyApp.CURRENT_URL+'?'+queryParams;
                         location.href = new_url;
                         //history.pushState(null, null, new_url);
                         //load_products(result_options);

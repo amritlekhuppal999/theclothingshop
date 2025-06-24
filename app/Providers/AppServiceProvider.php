@@ -17,6 +17,11 @@ use App\View\Components\front\navbar\NavMenu;
 use App\View\Components\front\navbar\NavItems;
 
 
+use App\View\Components\front\category\SubCategoryFilter;
+use App\View\Components\front\category\ThemeFilter;
+use App\View\Components\front\category\AttributeFilter;
+
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -43,5 +48,9 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('front.navbar.nav-bar', NavBar::class);
         Blade::component('front.navbar.nav-menu', NavMenu::class);
         Blade::component('front.navbar.nav-items', NavItems::class);
+        
+        Blade::component('front.category.sub-category-filter', SubCategoryFilter::class);
+        Blade::component('front.category.theme-filter', ThemeFilter::class);
+        Blade::component('front.category.attribute-filter', AttributeFilter::class);
     }
 }

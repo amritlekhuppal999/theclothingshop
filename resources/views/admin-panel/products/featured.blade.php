@@ -139,7 +139,7 @@
 
             if(result_options.search_keyword.length){
                 const queryParams = new URLSearchParams(result_options);
-                let new_url = CURRENT_URL+'?'+queryParams;
+                let new_url = MyApp.CURRENT_URL+'?'+queryParams;
                 location.href = new_url;
                 //history.pushState(null, null, new_url);
                 //load_products(result_options);
