@@ -239,6 +239,37 @@ class AttributeController extends Controller
     }
 
 
+    // Return all the values of size attribute
+    public function get_size_values(){
+        
+        $size_values = AttributeValue::from('attribute_values as AV')
+                                ->join('attributes as ATT', function($join){
+                                    $join->on('ATT.id', '=', 'AV.attribute_id');
+                                })
+                                ->where('ATT.name', 'size')
+                                ->orWhere('ATT.name', 'Size')
+                                ->select('AV.id', 'AV.value', 'AV.label')
+                                ->get();
+        
+        return ["size_values" => $size_values];
+    }
+
+    // Return all the values of color attribute
+    public function get_color_values(){
+        
+        $color_values = AttributeValue::from('attribute_values as AV')
+                                ->join('attributes as ATT', function($join){
+                                    $join->on('ATT.id', '=', 'AV.attribute_id');
+                                })
+                                ->where('ATT.name', 'color')
+                                ->orWhere('ATT.name', 'Color')
+                                ->select('AV.id', 'AV.value', 'AV.label')
+                                ->get();
+        
+        return ["color_values" => $color_values];
+    }
+
+
 
     // Get size attributes (NOT IN USE)
 

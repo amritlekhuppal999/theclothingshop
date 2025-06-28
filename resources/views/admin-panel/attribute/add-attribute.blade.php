@@ -186,7 +186,7 @@
 
     <script>
 
-        window.onload = ()=>{
+        document.addEventListener('DOMContentLoaded', ()=>{
 
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
@@ -210,6 +210,8 @@
                     }
                 }
             });
-        }
+        });
+
+        // window.onload = ()=>{};
     </script>
 @endsection

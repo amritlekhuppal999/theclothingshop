@@ -435,7 +435,7 @@ Feels like every day is the same, with nothing interesting happening. Well, say 
                 theme: 'bootstrap4'
             })
 
-            LOADING_ANIMATION();
+            MyApp.LOADING_ANIMATION();
 
             const current_url = MyApp.CURRENT_URL;
 

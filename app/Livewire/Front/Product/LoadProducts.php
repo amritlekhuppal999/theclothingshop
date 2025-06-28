@@ -72,6 +72,11 @@ class LoadProducts extends Component
     // fetch product details
     private function getProductData(){
 
+        /*
+        Need to be modified later to show paginated results instead of what we are doing right now,
+        which is just increasing count of total no of produced results for lazy load
+        */
+
         $productData = Product::from('products as PRO')
                         ->select(
                             "PRO.id as product_id", 
@@ -109,6 +114,8 @@ class LoadProducts extends Component
                         })
                         ->when($this->size, function($query) {
                             // TO DO LATER
+                            // $size_arr = ($this->size) ? explode(",", $this->size) : [];   // get the comma separated values from query params
+
                         }) 
                         ->when($this->color, function($query) {
                             // TO DO LATER

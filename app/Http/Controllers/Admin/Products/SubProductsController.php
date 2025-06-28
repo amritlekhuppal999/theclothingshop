@@ -76,7 +76,9 @@ class SubProductsController extends Controller
                 'variant_slug' => 'required|string|max:255|unique:sub_products,variant_slug',
                 'sku' => 'required|string|max:255|unique:sub_products,sku',
                 'price' => 'required|numeric|min:1|max:100000',
-                'quantity' => 'required|integer|min:0'
+                'quantity' => 'required|integer|min:0',
+                'size' => 'required|integer',
+                'color' => 'required|integer'
             ]);
 
             if($validator->fails()){
@@ -91,15 +93,15 @@ class SubProductsController extends Controller
             }
 
             // check for attribute values
-            if(count($request->attribute_pair) === 0 || !isset($request->attribute_pair)){
-                return response()->json([
-                    "type" => "Failed",
-                    "message" => "Attributes field must not be empty!!",
-                    "errors" => null,
-                    "requested_action_performed" => false,
-                    "reload" => false
-                ], 400);
-            }
+            // if(count($request->attribute_pair) === 0 || !isset($request->attribute_pair)){
+            //     return response()->json([
+            //         "type" => "Failed",
+            //         "message" => "Attributes field must not be empty!!",
+            //         "errors" => null,
+            //         "requested_action_performed" => false,
+            //         "reload" => false
+            //     ], 400);
+            // }
 
             DB::beginTransaction();
 
@@ -122,16 +124,40 @@ class SubProductsController extends Controller
                 foreach ($request->attribute_pair as $att_obj) {
                     $att_data_arr = array(
                         "attribute_value_id" => $att_obj["attribute_value_id"],
-                        "variant_id" => $last_inserted_variant_id
+                        "variant_id" => $last_inserted_variant_id,
+                        "primary_pair" => 0
                     );
                     
                     array_push($attr_mapper_arr, $att_data_arr);
                 }
+
+                /*The size and color values we get from form is ultimately passed into the attribute mapper 
+                with additional attributes.*/
+                $sizeAttVals = array(
+                    "attribute_value_id" => $request->size,
+                    "variant_id" => $last_inserted_variant_id,
+                    "primary_pair" => 1
+                );
+                $colorAttVals = array(
+                    "attribute_value_id" => $request->color,
+                    "variant_id" => $last_inserted_variant_id,
+                    "primary_pair" => 1
+                );
+                array_push($attr_mapper_arr, $sizeAttVals, $colorAttVals);
                 
                 $insertAttrMapper = AttributeMapper::insert($attr_mapper_arr);
 
                 // Commit the transaction if everything is successful
                 DB::commit();
+
+                // $log_data = [
+                //     "attr_mapper_arr" => $attr_mapper_arr,
+                //     "variant_data" => $var_arr,
+                //     //"sql_query" => $sql_query,
+                //     //"sql_str_binding" => $sql_str_binding,
+                // ];
+
+                // \Log::info("Variant Data:", $log_data);
                 
                 // This makes it more structured
                 return response()->json([
@@ -176,52 +202,95 @@ class SubProductsController extends Controller
         // Update variant view
         public function CREATE_VARIANT_UPDATE($subProductSlug){
             
-            if (!empty($subProductSlug)) {
+            try {
                 
-                try {
-                    
-                    $variant = SubProduct::where('variant_slug', $subProductSlug)->firstOrFail();
-                    $variant = SubProduct::where('variant_slug', $subProductSlug)->get();
+                // to check if the variant of given slug is present or not. Throws model not found exception.
+                $variant = SubProduct::where('variant_slug', $subProductSlug)->firstOrFail();
 
-                    // USING MULTI JOIN 
-                    $variant_attr = AttributeMapper::join("attribute_values as ATV", "attribute_value_id", "=", "ATV.id")
-                                                    ->join("attributes as ATR", "ATV.attribute_id", "=", "ATR.id")
-                                                    ->where('variant_id', $variant[0]["id"])
-                                                    ->select("ATR.id as AID", "ATV.id as AVID", "ATR.name as ATTRIBUTE_NAME", "ATV.value as ATTRIBUTE_VALUE", "ATV.label as ATTRIBUTE_LABEL")
-                                                    ->get();
-                    
-                    $return_data = array(
-                        "variant_selected" => true,
-                        "variant" => $variant[0],
-                        "variant_attr" => $variant_attr
-                    );
-                } 
-                catch (ModelNotFoundException $e) {
-                    $return_data = [
-                        "variant_selected" => false,
-                        "variant" => [],
-                        "message" => "No variant present for the given variant slug: " . $e->getMessage(),
+                $variant = SubProduct::from('sub_products as SP')
+                        ->join('products as PRO', function($join){
+                            $join->on('SP.product_id', '=', 'PRO.id');
+                        })
+                        ->select('SP.*', 'PRO.product_name')
+                        ->where('variant_slug', $subProductSlug)->get();
+
+                //$variant_arr = $variant->toArray();
+                $variant_id = $variant[0]["id"];
+                
+
+                $size_data = $this->get_primary_attribute($variant_id, "size");
+                $color_data = $this->get_primary_attribute($variant_id, "color");
+
+                // Log data
+                    $log_data = [
+                        "size_data" => $size_data->toArray(),
+                        "color_data" => $color_data->toArray(),
+                        // "sql_query" => $sql_query,
+                        // "sql_str_binding" => $sql_str_binding,
                     ];
-                }
-                catch (\Throwable $th) {
-                    $return_data = [
-                        "variant_selected" => false,
-                        "variant" => [],
-                        "message" => "Something went wrong " . $e->getMessage(),
-                    ];
-                }
 
-                return view($this->products_route.'update-variants', $return_data);
+                    // \Log::info("\n\nVariant Data:\n", $log_data);
+                // Log data END
 
-            } 
-            else {
+                // USING MULTI JOIN 
+                $variant_attr = AttributeMapper::join("attribute_values as ATV", "attribute_value_id", "=", "ATV.id")
+                                                ->join("attributes as ATR", "ATV.attribute_id", "=", "ATR.id")
+                                                ->where('variant_id', $variant_id)
+                                                ->select("ATR.id as AID", 
+                                                    "ATV.id as AVID", 
+                                                    "ATR.name as ATTRIBUTE_NAME", 
+                                                    "ATV.value as ATTRIBUTE_VALUE", 
+                                                    "ATV.label as ATTRIBUTE_LABEL"
+                                                )->get();
+                
                 $return_data = array(
-                    "variant_selected" => false,
-                    "message" => "Variant not selected."
+                    "variant_selected" => true,
+                    "variant" => $variant[0],
+                    "variant_attr" => $variant_attr,
+                    "primary_size" => $size_data[0]["attribute_value_id"],
+                    "primary_color" => $color_data[0]["attribute_value_id"]
                 );
                 
+            } 
+            catch (ModelNotFoundException $e) {
+                $return_data = [
+                    "variant_selected" => false,
+                    "variant" => [],
+                    "message" => "No variant present for the given variant slug: " . $e->getMessage(),
+                ];
+
                 return view($this->VIEW_NOT_FOUND, $return_data);
             }
+            catch (\Throwable $th) {
+                $return_data = [
+                    "variant_selected" => false,
+                    "variant" => [],
+                    "message" => "Something went wrong " . $th->getMessage(),
+                ];
+            }
+
+            return view($this->products_route.'update-variants', $return_data);
+        }
+
+        public function get_primary_attribute($variant_id, $attribute_name){
+            return AttributeMapper::from('attribute_mappers as ATM')
+                                    ->join("attribute_values as ATV", function($join){
+                                        $join->on("ATM.attribute_value_id", "=", "ATV.id");
+                                    })
+                                    ->join("attributes as ATR", function($join) use($attribute_name){
+                                        $join->on("ATV.attribute_id", "=", "ATR.id")
+                                            ->where(function($query)use($attribute_name){
+                                                $query->where("ATR.name", $attribute_name)
+                                                ->orWhere("ATR.name", ucfirst($attribute_name));
+                                            });
+                                    })
+                                    ->where('ATM.variant_id', $variant_id)
+                                    ->where('ATM.primary_pair', 1)
+                                    ->select(
+                                        // "ATR.name as attribute",
+                                        // "ATV.value",
+                                        "ATV.id as attribute_value_id"
+                                    )->get();
         }
 
         // store the updated details of variant
@@ -232,7 +301,9 @@ class SubProductsController extends Controller
                 // 'variant_slug' => 'required|string|max:255|unique:sub_products,variant_slug',
                 // 'sku' => 'required|string|max:255|unique:sub_products,sku',
                 'price' => 'required|numeric|min:1|max:100000',
-                'quantity' => 'required|integer|min:0'
+                'quantity' => 'required|integer|min:0',
+                'size' => 'required|integer',
+                'color' => 'required|integer'
             ];
 
             if($request->variant_slug !== $request->variant_slug_backup){
@@ -257,15 +328,15 @@ class SubProductsController extends Controller
             }
 
             // check for attribute values
-            if(count($request->attribute_pair) === 0 || !isset($request->attribute_pair)){
-                return response()->json([
-                    "type" => "Failed",
-                    "message" => "Attributes field must not be empty!!",
-                    "errors" => null,
-                    "requested_action_performed" => false,
-                    "reload" => false
-                ], 400);
-            }
+            // if(count($request->attribute_pair) === 0 || !isset($request->attribute_pair)){
+            //     return response()->json([
+            //         "type" => "Failed",
+            //         "message" => "Attributes field must not be empty!!",
+            //         "errors" => null,
+            //         "requested_action_performed" => false,
+            //         "reload" => false
+            //     ], 400);
+            // }
 
             DB::beginTransaction();
 
@@ -277,14 +348,16 @@ class SubProductsController extends Controller
 
                 $variant = SubProduct::findOrFail($variant_id);
 
-                $variant->Update([
+                $var_arr = [
                     "variant_name" => $request->variant_name,
                     "variant_slug" => $request->variant_slug,
                     "sku" => $request->sku,
                     "price" => $request->price,
                     "stock" => $request->quantity,
                     "status" => 1
-                ]);
+                ];
+
+                $variant->Update($var_arr);
 
                 foreach ($request->attribute_pair as $att_obj) {
                     
@@ -292,20 +365,36 @@ class SubProductsController extends Controller
 
                     $att_data_arr = array(
                         "attribute_value_id" => $att_obj["attribute_value_id"],
-                        "variant_id" => $variant_id
+                        "variant_id" => $variant_id,
+                        "primary_pair" => 0
                     );
                     
                     array_push($attr_mapper_arr, $att_data_arr);                                                
                 }
+
+                /*The size and color values we get from form is ultimately passed into the attribute mapper 
+                with additional attributes.*/
+                $sizeAttVals = array(
+                    "attribute_value_id" => $request->size,
+                    "variant_id" => $variant_id,
+                    "primary_pair" => 1
+                );
+                $colorAttVals = array(
+                    "attribute_value_id" => $request->color,
+                    "variant_id" => $variant_id,
+                    "primary_pair" => 1
+                );
+                array_push($attr_mapper_arr, $sizeAttVals, $colorAttVals);
+                // array_push($attr_mapper_arr, $colorAttVals);
                 
                 if(count($attr_mapper_arr)){
                     AttributeMapper::where('variant_id', $variant_id)->delete();
                     $insertAttrMapper = AttributeMapper::insert($attr_mapper_arr);
                 }
 
-
                 // Commit the transaction if everything is successful
                 DB::commit();
+                // $return_URI
                 
                 // This makes it more structured
                 return response()->json([
@@ -328,6 +417,16 @@ class SubProductsController extends Controller
             }
             catch(\Exception $e){   // General Error
                 DB::rollBack(); 
+
+                // Log data
+                    $log_data = [
+                        // "var_arr" => $var_arr,
+                        // "attr_mapper_arr" => $attr_mapper_arr,
+                        "error" => $e->getMessage(),
+                    ];
+
+                    \Log::info("\n\nVariant Data:", $log_data);
+                // Log data END
 
                 // This makes it more structured
                 return response()->json([

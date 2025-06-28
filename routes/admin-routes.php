@@ -161,6 +161,9 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
         Route::post('/attribute-value-add', [AttributeController::class, 'STORE_VAL'])->name('add-attribute-value');
         Route::get('/get-attribute-list', [AttributeController::class, 'get_attribute_list']);  // API CALL
         Route::get('/get-attribute-values/{attribute_id?}', [AttributeController::class, 'get_attribute_values']);  // API CALL
+        
+        Route::get('/get-size-values', [AttributeController::class, 'get_size_values']);  // API CALL
+        Route::get('/get-color-values', [AttributeController::class, 'get_color_values']);  // API CALL
 
 
         Route::get('/attribute/{attributeId}/edit/', [AttributeController::class, 'edit']);

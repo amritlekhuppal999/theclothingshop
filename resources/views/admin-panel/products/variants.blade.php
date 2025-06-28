@@ -424,7 +424,7 @@
                     //console.log('Response:', response_data);
 
                     switch (response.status) {
-                        case REQUEST_SUCCESSFUL:
+                        case MyApp.REQUEST_SUCCESSFUL:
                             if(response_data.requested_action_performed){
 
                                 action_btn.innerHTML = MyApp.CHECK_SUCCESS;
@@ -436,7 +436,7 @@
                             }
                         break;
 
-                        case VALIDATION_ERROR:
+                        case MyApp.VALIDATION_ERROR:
                             if(response_data.errors){
                                 response_data.errors.forEach(message_element=>{
                                     // toastr.error(message_element);
@@ -446,12 +446,12 @@
                             else toastr.error(response_data.message);
                         break;
 
-                        case BAD_REQUEST_ERROR:
+                        case MyApp.BAD_REQUEST_ERROR:
                             //toastr.error(response_data.message);
                             toastr.warning('<span style="color: blue;">'+response_data.message+'</span>');
                         break;
 
-                        case INTERNAL_SERVER_ERROR:
+                        case MyApp.INTERNAL_SERVER_ERROR:
                             toastr.error(response_data.message);
                             console.log(response_data.errors);
                         break;

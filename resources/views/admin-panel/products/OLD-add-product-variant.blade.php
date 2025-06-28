@@ -75,73 +75,6 @@
                                 
                                 @csrf
 
-                                {{--  --}}
-                                <div class="row">
-
-                                    {{-- Select Size Value --}}
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="">Size</label>
-                                            <select class="form-control" name="select_size_value" id="select-size-value" >
-                                                <option value="">Select</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    {{-- Select color Value --}}
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="">Color</label>
-                                            <select class="form-control" name="select_color_value" id="select-color-value">
-                                                <option value="">Select</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    {{-- Enter PRICE --}}
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="">Price</label>
-                                            <input 
-                                                type="number"
-                                                min="0"
-                                                class="form-control" 
-                                                id="price" name="price" 
-                                                placeholder="Price"
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {{-- Enter Quantity --}}
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="">Enter Quantity</label>
-                                            <input 
-                                                type="number" min="0" 
-                                                name="variant-quantity" id="variant-quantity" 
-                                                placeholder="Total no of items"
-                                                class="form-control"
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {{-- Add size value --}}
-                                    {{-- <div class="col-md-3">
-                                        <div class="form-group">
-                                            <br />
-                                            <button 
-                                                type="button"
-                                                class="btn btn-info mt-2"
-                                                name="save-attribute"
-                                                id="save-attribute">
-                                                Add Pair
-                                            </button>
-                                        </div>
-                                    </div> --}}
-                                </div>
-
                                 {{-- name and slug --}}
                                 <div class="row">
                                     
@@ -193,25 +126,51 @@
                                         </div>
                                     </div>
 
-                                    
+                                    {{-- Enter PRICE --}}
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Price</label>
+                                            <input 
+                                                type="number"
+                                                min="0"
+                                                class="form-control" 
+                                                id="price" name="price" 
+                                                placeholder="Variant Slug"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {{-- Enter Quantity --}}
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Enter Quantity</label>
+                                            <input 
+                                                type="number" min="0" 
+                                                name="variant-quantity" id="variant-quantity" 
+                                                placeholder="Total no of items"
+                                                class="form-control"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
 
-                                
 
-                                {{-- Additional Attribute --}}
+                                {{-- Variant Details (size, color, qty) --}}
                                 <div class="row">
 
-                                    {{-- Select Attribute --}}
+                                    {{-- Select Size --}}
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="">Select Additional Attribute</label>
+                                            <label for="">Select Attribute</label>
                                             <select class="form-control" name="select-attribute" id="select-attribute">
                                                 <option value="">Loading...</option>
                                             </select>
                                         </div>
                                     </div>
 
-                                    {{-- Select Attribute Value --}}
+                                    {{-- Select Color --}}
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="">Select Attribute Value</label>
@@ -221,7 +180,7 @@
                                         </div>
                                     </div>
 
-                                    {{-- Add Attribute value --}}
+                                    {{-- Select Color --}}
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             {{-- <label for="">Select Attribute Value</label> --}}
@@ -231,13 +190,11 @@
                                                 class="btn btn-info mt-2"
                                                 name="save-attribute"
                                                 id="save-attribute">
-                                                Add Attribute Pair
+                                                Add Attribue Pair
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-
-                                
 
                                 {{-- Added Attributes (Not saved in DB) --}}
                                 <div class="row" id="attribute-pair-section" hidden>
@@ -304,9 +261,7 @@
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 
     <script>
-        // window.onload = ()=>{};
-
-        document.addEventListener('DOMContentLoaded', ()=>{
+        window.onload = ()=>{
 
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
@@ -322,13 +277,8 @@
             const SELECT_PRODUCT_ELEMENT = document.getElementById("select-product");
             const SELECT_ATTRIBUTE_ELEMENT = document.getElementById("select-attribute");
             
-            const SELECT_SIZE_ELEMENT = document.getElementById("select-size-value");
-            const SELECT_COLOR_ELEMENT = document.getElementById("select-color-value");
-            
             const VARIANT_NAME_ELEMENT = document.getElementById("variant_name");
             const VARIANT_SLUG_ELEMENT = document.getElementById("variant_slug");
-            
-            const VARIANT_BASE_PRICE_ELE = document.getElementById("price");
 
             const current_url = MyApp.CURRENT_URL;
 
@@ -338,44 +288,22 @@
 
             const ADDED_ATTRIBUTE_PAIR_SECTION = document.getElementById("attribute-pair-section");
 
-            let sizeSubString = '';
-            let colorSubString = '';
-
-            let variantSubString = ' VARIANT';
-            
-            let variantName = '';
-
             load_product_list();
             get_attribute_list();
             //get_attribute_values();
-            get_size_values();
-            get_color_values();
-            
-            
 
             // set product id
             function set_product_id(){
-                let selected_option = SELECT_PRODUCT_ELEMENT.options[SELECT_PRODUCT_ELEMENT.selectedIndex];
-                return selected_option.dataset.id;
-            }
-
-            // change form field values based on selection of (product, size, color, etc)
-            function setVariantFormValues(){
                 VARIANT_NAME_ELEMENT.value = "";
                 VARIANT_SLUG_ELEMENT.value = "";
 
                 let selected_option = SELECT_PRODUCT_ELEMENT.options[SELECT_PRODUCT_ELEMENT.selectedIndex];
-
-                // checks if the product is selected
                 if(selected_option.value.length > 0){
-                    variantName = selected_option.innerText.trim();
-                    
-                    VARIANT_NAME_ELEMENT.value = variantName + variantSubString + sizeSubString + colorSubString;
-                    VARIANT_SLUG_ELEMENT.value = MyApp.generate_slug(VARIANT_NAME_ELEMENT.value);
-                    
-
-                    VARIANT_BASE_PRICE_ELE.value = selected_option.dataset.base_price;
+                    VARIANT_NAME_ELEMENT.value = selected_option.innerText+' VARIANT';
+                    VARIANT_SLUG_ELEMENT.value = selected_option.value+'-variant';
                 }
+                
+                return selected_option.dataset.id;
             }
 
             // load product list
@@ -413,12 +341,7 @@
                     product_list.forEach((element, index)=>{
                         let selected = (SELECT_PRODUCT_ELEMENT.dataset.value === element.product_slug) ? "selected" : "";
 
-                        let opt_str = `<option 
-                                value="${element.product_slug}" ${selected} 
-                                data-id=${element.id} 
-                                data-base_price="${element.base_price}" >
-                                ${element.product_name}
-                            </option>`;
+                        let opt_str = `<option value="${element.product_slug}" ${selected} data-id=${element.id}>${element.product_name}</option>`;
                         SELECT_PRODUCT_ELEMENT.innerHTML += opt_str;
                     });
                     
@@ -478,12 +401,9 @@
                             else SUB_CATEGORY_ID_PRODUCT_FORM.value = 0;
                         }
                         */
-                        if(element.name.toLowerCase() !== "size" && element.name.toLowerCase() !== "color"){
-
-                            let opt_str = `<option value="${element.id}" ${selected} >${element.name}</option>`;
-                            select_attribute_element.innerHTML += opt_str;
-                        }
                         
+                        let opt_str = `<option value="${element.id}" ${selected} >${element.name}</option>`;
+                        select_attribute_element.innerHTML += opt_str;
                     });
                     
                     
@@ -556,110 +476,6 @@
                 }
             }
 
-            // Load size attribute values 
-            async function get_size_values(){
-
-                let select_size_values_element = document.getElementById('select-size-value');
-
-                select_size_values_element.innerHTML = '<option value="">Loading...</option>';
-
-                /*
-                if(!category_id){
-                    select_attribute_values_element.innerHTML = '<option value="">Select Attribute</option>';
-                    return false;
-                }
-                */
-                
-                const request_options = {
-                    method: 'GET',
-                    // headers: {},
-                    // body: JSON.stringify(request_data)
-                };
-
-                let url = '/admin/get-size-values/';
-
-                try{
-                    let response = await fetch(url, request_options);
-                    // console.log(response);
-                    let response_data = await response.json();
-                    //console.log(response_data);
-                    //return response_data;
-
-                    select_size_values_element.innerHTML = '<option value="">Select </option>';
-
-                    //let attr_id_set_FLAG = false;    // to check if the sub_category id is set?
-
-                    let size_values = response_data.size_values;
-
-                    size_values.forEach((element, index)=>{
-                        let opt_str = `<option 
-                                value="${element.id}" 
-                                data-label="${element.label}">
-                                ${element.value} - ${element.label}
-                            </option>`;
-                        select_size_values_element.innerHTML += opt_str;
-                    });
-                    
-                    
-
-                }
-                catch(error){
-                    console.error('Error:', error);
-                }
-            }
-
-            // Load color attribute values 
-            async function get_color_values(){
-
-                let select_color_values_element = document.getElementById('select-color-value');
-
-                select_color_values_element.innerHTML = '<option value="">Loading...</option>';
-
-                /*
-                if(!category_id){
-                    select_attribute_values_element.innerHTML = '<option value="">Select Attribute</option>';
-                    return false;
-                }
-                */
-                
-                const request_options = {
-                    method: 'GET',
-                    // headers: {},
-                    // body: JSON.stringify(request_data)
-                };
-
-                let url = '/admin/get-color-values/';
-
-                try{
-                    let response = await fetch(url, request_options);
-                    // console.log(response);
-                    let response_data = await response.json();
-                    //console.log(response_data);
-                    //return response_data;
-
-                    select_color_values_element.innerHTML = '<option value="">Select </option>';
-
-                    //let attr_id_set_FLAG = false;    // to check if the sub_category id is set?
-
-                    let color_values = response_data.color_values;
-
-                    color_values.forEach((element, index)=>{
-                        let opt_str = `<option 
-                                value="${element.id}" 
-                                data-label="${element.label}">
-                                ${element.value} - ${element.label}
-                            </option>`;
-                        select_color_values_element.innerHTML += opt_str;
-                    });
-                    
-                    
-
-                }
-                catch(error){
-                    console.error('Error:', error);
-                }
-            }
-
             // function to check duplicate pairs
             function check_redundant_pair(name_id, value_id){
                 // name_id: attribute name id,  //value_id: attribute value id
@@ -668,32 +484,11 @@
                 return exists_index;
             }
 
-            // modify variant name & slug upon size selection
-            SELECT_SIZE_ELEMENT.addEventListener('change', event=>{
-                let selected_option = SELECT_SIZE_ELEMENT.options[SELECT_SIZE_ELEMENT.selectedIndex];
-                if(selected_option.value.length > 0){
-                    sizeSubString = ' | '+selected_option.dataset.label;
-                    setVariantFormValues();
-                }
-            });
 
-            // modify variant name & slug upon size selection
-            SELECT_COLOR_ELEMENT.addEventListener('change', event=>{
-                let selected_option = SELECT_COLOR_ELEMENT.options[SELECT_COLOR_ELEMENT.selectedIndex];
-                if(selected_option.value.length > 0){
-                    colorSubString = ' | '+selected_option.dataset.label;
-                    setVariantFormValues();
-                }
-            });
-
-            
             // Set product ID
             SELECT_PRODUCT_ELEMENT.addEventListener('change', event=>{
                 // let select_element = event.target;
                 // let selected_option = SELECT_PRODUCT_ELEMENT.options[SELECT_PRODUCT_ELEMENT.selectedIndex];
-                sizeSubString = ""; colorSubString = "";
-                VARIANT_FORM.reset();
-                setVariantFormValues();
                 product_id = set_product_id();
             });
 
@@ -840,9 +635,6 @@
                 let price = VARIANT_FORM.querySelector('[name="price"]').value;
                 let quantity = VARIANT_FORM.querySelector('[name="variant-quantity"]').value;
 
-                let size = VARIANT_FORM.querySelector('[name="select_size_value"]').value;
-                let color = VARIANT_FORM.querySelector('[name="select_color_value"]').value;
-
                 if(!product_id){
                     toastr.error("Select Product");
                     resetSubmitBTN();
@@ -856,8 +648,6 @@
                     sku: sku,
                     price: price,
                     quantity: quantity,
-                    size: size,
-                    color: color,
                     attribute_pair: attr_arr
                 };
 
@@ -939,9 +729,7 @@
                     submit_btn.disabled = false;
                 }
             });
-        });
-
-        
+        };
 
         
 

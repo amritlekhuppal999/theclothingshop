@@ -59,10 +59,27 @@ if (!MyApp.initDone){
     //FUNCTION TO REMOVE WHITESPACES FROM a STRING END 
     
     // FUNCTION TO GENERATE SLUG
-        MyApp.generate_slug = function (str){
-            //str.trim().replace(/\s+/g, " ");
-            return remove_whitespace(str.toLowerCase()).replace(/\s+/g, "-");
-        }
+        MyApp.generate_slug = function (str) {
+            // 1. Convert to lowercase
+            let cleanedStr = str.toLowerCase();
+
+            // 2. Replace anything that's NOT a letter, number, or apostrophe with a space
+            //    [^a-z0-9'] matches any character that is NOT:
+            //    a-z: lowercase letters
+            //    0-9: numbers
+            //    ': apostrophe
+            //    The 'g' flag ensures all occurrences are replaced.
+            // cleanedStr = cleanedStr.replace(/[^a-z0-9']/g, ' ');
+            cleanedStr = cleanedStr.replace(/[^a-z0-9]/g, ' ');
+
+            // 3. Remove leading/trailing whitespace (using your existing function)
+            cleanedStr = MyApp.remove_whitespace(cleanedStr);
+
+            // 4. Replace one or more spaces with a single hyphen
+            return cleanedStr.replace(/\s+/g, "-");
+
+            //return MyApp.remove_whitespace(str.toLowerCase()).replace(/\s+/g, "-");   //OLD FUNCTION
+        };
     // FUNCTION TO GENERATE SLUG END
     
         

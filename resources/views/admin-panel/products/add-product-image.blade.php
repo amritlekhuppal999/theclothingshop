@@ -321,7 +321,7 @@
                         inner_HTML += `
                             <div class="col-md-3 img-block ${highlighter_selector}">
                                 <div class="card card bg-dark text-white" style="" data-img_id="${image_id}">
-                                    <img src="${PUBLIC_PATH}/${image_URL}" class="card-img-top" />
+                                    <img src="${MyApp.PUBLIC_PATH}/${image_URL}" class="card-img-top" />
 
                                     <div class="card-body">
                                         <button type="button" class="btn btn-danger delete-image" data-img_id="${image_id}" title="Delete Image">

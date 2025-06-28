@@ -601,7 +601,7 @@ class ProductsController extends Controller
                                 })
                                 ->select(
                                     'products.id', 'products.product_name', 'products.product_slug',
-                                    'CAT.category_name'
+                                    'CAT.category_name', 'products.base_price'
                                 )
                                 ->where('products.status', 1)
                                 ->orderBy('products.product_name', 'ASC')

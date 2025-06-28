@@ -147,7 +147,7 @@
         }
 
 
-        LOADING_ANIMATION();
+        MyApp.LOADING_ANIMATION();
         
     </script>
 @endsection
