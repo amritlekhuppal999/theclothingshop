@@ -4,7 +4,8 @@
         <!-- headers -->
         <x-front.page-header />
         
-        <link rel="stylesheet" href="{{ asset("css/animation.js") }}">
+        <link rel="stylesheet" href="{{ asset("css/animation.css") }}">
+        <link rel="stylesheet" href="{{ asset("css/front-end/product-card.css") }}">
 
 
         @yield('content-css')

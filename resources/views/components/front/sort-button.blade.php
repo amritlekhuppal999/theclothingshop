@@ -3,7 +3,7 @@
     
     <div {{ $attributes->merge(["class" => "col-md-4 text-right"]) }} >
 
-        <div class="dropdown">
+        <div class="dropdown ">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ $buttonText }}
             </button>

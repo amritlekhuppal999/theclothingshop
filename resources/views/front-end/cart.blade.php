@@ -91,7 +91,7 @@
                 <!-- display applied filters here, along with pagination if possible -->
                 
                 <!-- SORT OPTIONS -->
-                <div class="col-md-6 offset-md-6 text-right mt-3 mb-2"> 
+                <div class="col-md-6 offset-md-6 text-right mt-3 mb-2" style="padding-right:2rem;"> 
                     <h3>CART</h3>
                 </div>
 

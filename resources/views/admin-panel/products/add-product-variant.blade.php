@@ -52,18 +52,18 @@
                 <div class="col-md-12">
 
                     {{-- card --}}
-                    <div class="card card-secondary "> {{-- collapsed-card --}}
+                    <div class="card card-purple  "> {{-- collapsed-card --}}
                         {{-- card header --}}
                         <div class="card-header">
                             <h3 class="card-title">Add Product Variants</h3>
 
                             {{-- collapse-expand BTN --}}
-                            <div class="card-tools">
+                            {{-- <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                            </div>
-                        </div>
+                            </div> --}}
+                        </div> 
                         
 
                         <!-- Card body (form start) -->
@@ -72,6 +72,10 @@
                                 action="{{-- route('add-product-variant') --}}"
                                 method="POST"
                                 id="variant-form">
+
+                                {{-- <h5 class="card-text mb-4 ">
+                                    <span class="text-purple">ADD VARIANTS</span> 
+                                </h5> --}}
                                 
                                 @csrf
 
@@ -228,7 +232,7 @@
                                             <br />
                                             <button 
                                                 type="button"
-                                                class="btn btn-info mt-2"
+                                                class="btn bg-dark mt-2"
                                                 name="save-attribute"
                                                 id="save-attribute">
                                                 Add Attribute Pair
@@ -236,8 +240,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                
 
                                 {{-- Added Attributes (Not saved in DB) --}}
                                 <div class="row" id="attribute-pair-section" hidden>
@@ -268,12 +270,13 @@
                                     </div>
                                 </div>
                                 
+                                {{-- Submit Form --}}
                                 <div class="row">
                                     <div class="col-md-12 d-flex justify-content-between">
                                         {{-- Add Variant --}}
                                         <button 
                                             type="submit" 
-                                            class="btn btn-primary"
+                                            class="btn bg-purple"
                                             id="add-variant"
                                             name="add-variant">
                                             Add Variant

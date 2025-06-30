@@ -259,7 +259,7 @@
                                             <br />
                                             <button 
                                                 type="button"
-                                                class="btn btn-info mt-2"
+                                                class="btn btn-dark mt-2"
                                                 name="save-attribute"
                                                 id="save-attribute">
                                                 Add Attribue Pair

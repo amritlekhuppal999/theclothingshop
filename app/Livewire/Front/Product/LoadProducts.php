@@ -5,6 +5,7 @@ namespace App\Livewire\Front\Product;
 use Livewire\Component;
 
 use Illuminate\Http\Request;    // Added
+use Illuminate\Support\Facades\DB;  // Added
 
 use App\Models\Product;
 // use App\Models\SubProdduct;
@@ -72,9 +73,11 @@ class LoadProducts extends Component
     // fetch product details
     private function getProductData(){
 
-        /*
-        Need to be modified later to show paginated results instead of what we are doing right now,
-        which is just increasing count of total no of produced results for lazy load
+        /* TODO
+            1   Need to be modified later to show paginated results instead of what we are doing right now,
+                which is just increasing count of total no of produced results for lazy load
+
+            2   DUPLICATE RESULTS!!!
         */
 
         $productData = Product::from('products as PRO')
@@ -112,13 +115,42 @@ class LoadProducts extends Component
                                 $join->on('PCM.product_id', '=', 'PRO.id')->whereIn('PCM.sub_category_id', $all_sub_cat_array);
                             });
                         })
-                        ->when($this->size, function($query) {
-                            // TO DO LATER
-                            // $size_arr = ($this->size) ? explode(",", $this->size) : [];   // get the comma separated values from query params
+                        ->when($this->color || $this->size, function($query) { // querying/joining the same table
+                            $color_arr = ($this->color) ? explode(",", $this->color) : [];   // get the comma separated values from query params
+                            $size_arr = ($this->size) ? explode(",", $this->size) : [];
 
-                        }) 
-                        ->when($this->color, function($query) {
-                            // TO DO LATER
+                            // $attribute_name = !empty($color_arr) ? 'Color' : 'Size';
+
+                            $primary_attribute_array = [...$size_arr, ...$color_arr];
+
+                            // SUB QUERY 
+                            $subProductSubQuery = DB::table('sub_products')
+                            ->select(DB::raw('MIN(id) as id'), 'product_id')
+                            ->groupBy('product_id');
+
+                            return $query
+                                ->joinSub($subProductSubQuery, 'SUB_PROD', function ($join) {
+                                    $join->on('SUB_PROD.product_id', '=', 'PRO.id');
+                                })
+                                // ->join('sub_products as SUB_PROD', function($join){
+                                //     $join->on('SUB_PROD.product_id', '=', 'PRO.id');
+                                // })
+                                ->join('attribute_mappers as ATM', function($join){
+                                    $join->on('ATM.variant_id', '=', 'SUB_PROD.id')->where('ATM.primary_pair', 1);
+                                })
+                                ->join('attribute_values as ATV', function($join) use($primary_attribute_array){
+                                    $join->on('ATV.id', '=', 'ATM.attribute_value_id')->whereIN('ATV.value', $primary_attribute_array);
+                                });
+
+                            /*
+                                What the hell are we doing in the SUB QUERY segment? An Explanation
+                                -- Join one variant per product
+                                INNER JOIN (
+                                    SELECT MIN(id) AS id, product_id
+                                    FROM sub_products
+                                    GROUP BY product_id
+                                ) AS SUB_PROD ON PRO.id = SUB_PROD.product_id
+                            */ 
                         })
                         ->when($this->price, function($query) {  // PRICE FILTER
                             $price_level = $this->price;
@@ -140,6 +172,7 @@ class LoadProducts extends Component
                         })
                         ->where('PRO.category_id', $this->categoryId)
                         ->orderBy('PRO.id', 'ASC')
+                        // ->distinct()
                         ->limit($this->loadAmount);
 
         return $productData;

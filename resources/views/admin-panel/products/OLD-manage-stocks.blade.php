@@ -8,30 +8,6 @@
     <!-- Select2 JS -->
     <link rel="stylesheet" href="{{ asset("plugins/select2/css/select2.min.css") }}">
     <link rel="stylesheet" href="{{ asset("plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css") }}">
-    <style>
-        .form-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .form-row label {
-            width: 100px;
-            text-align: right;
-            padding-right: 15px;
-            margin-bottom: 0;
-        }
-        .form-row input {
-            width: 200px;
-        }
-        .centered-form {
-            display: flex;
-            justify-content: center;
-        }
-        .form-container {
-            width: 100%;
-            max-width: 450px;
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -45,7 +21,7 @@
         </div>
 
         {{-- Select Product & Variant --}}
-        <div class="row justify-content-center">
+        <div class="row">
 
             {{-- Select Product --}}
             <div class="col-md-4 mb-2">
@@ -73,65 +49,66 @@
             </div>
         </div>
         
-        <div class="row justify-content-center">
+        <div class="row">
  
-            <div class="col-lg-8">
+            <div class="col-lg-6">
+                {{-- <x-admin.tables.table-component /> --}}
+
                 <div class="card">
                     <div class="card-header border-transparent" id="stock-detail"></div>
 
                     <form action="{{ route("update-variant-stock") }}" method="POST">
                         @csrf
 
-                        <div class="card-body centered-form">
-                            <div class="form-container">
-                                {{-- Operation Error/Success Message --}}
-                                @if(session('error'))
-                                    <div class="form-group text-center">
-                                        <span class="text-danger">
-                                            {{ session('error') }}
-                                        </span>
-                                    </div>
-                                @elseif(session('success'))
-                                    <div class="form-group text-center">
-                                        <span class="text-success">
-                                            {{ session('success') }}
-                                        </span>
-                                    </div>
-                                @endif
+                        <div class="card-body">
 
-                                <input type="hidden" name="variant_id" id="variant_id" />
-
-                                <div class="form-row">
-                                    <label for="quantity">Quantity:</label>
-                                    <input 
-                                        type="number" 
-                                        min="1"
-                                        class="form-control" 
-                                        id="quantity" name="quantity" 
-                                        placeholder="Quantity"
-                                        value="{{ old("quantity") }}"
-                                        step="1"
-                                        required
-                                    />
+                            {{-- Operation Error/Success Message --}}
+                            @if(session('error'))
+                                <div class="form-group">
+                                    <span class="text-danger">
+                                        {{ session('error') }}
+                                    </span>
                                 </div>
-
-                                <div class="form-row">
-                                    <label for="price">Price:</label>
-                                    <input 
-                                        type="number" 
-                                        min="1.00"
-                                        class="form-control" 
-                                        id="price" name="price" 
-                                        placeholder="Price"
-                                        value="{{ old("price") }}"
-                                        step="0.01"
-                                        required
-                                    />
+                            @elseif(session('success'))
+                                <div class="form-group">
+                                    <span class="text-success">
+                                        {{ session('success') }}
+                                    </span>
                                 </div>
+                            @endif
+
+                            <input type="hidden" name="variant_id" id="variant_id" />
+
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input 
+                                    type="number" 
+                                    min="1"
+                                    class="form-control" 
+                                    id="quantity" name="quantity" 
+                                    placeholder="Quantity"
+                                    value="{{ old("quantity") }}"
+                                    step="1"
+                                    required
+                                />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input 
+                                    type="number" 
+                                    min="1.00"
+                                    class="form-control" 
+                                    id="price" name="price" 
+                                    placeholder="Price"
+                                    value="{{ old("price") }}"
+                                    step="0.01"
+                                    required
+                                />
                             </div>
                         </div>
                         
-                        <div class="card-footer text-center">
+                        <div class="card-footer">
                             <button type="submit" class="btn btn bg-purple">Update Stock</button>
                         </div>
 

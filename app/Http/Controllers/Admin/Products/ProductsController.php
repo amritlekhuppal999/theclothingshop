@@ -556,7 +556,8 @@ class ProductsController extends Controller
     // Manage Product STOCK
         public function MANAGE_STOCK(Request $request){
                 
-            return view($this->products_route.'manage-stocks-copy');
+            // return view($this->products_route.'OLD-manage-stocks');
+            return view($this->products_route.'manage-stocks');
 
         }
     // Manage Product STOCK END

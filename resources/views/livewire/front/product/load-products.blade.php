@@ -1,6 +1,9 @@
 
 
 <div class="row" id="livewire-load-product">
+    <style>
+        
+    </style>
     
     {{-- {{ $totalRecords }} --}}
     @if($productList->isNotEmpty())
@@ -18,7 +21,7 @@
 
 
             <div class="col-md-3" wire:key="item-{{ $product["product_id"] }}" @if($loop->last) id="last_record" @endif>
-                <div class="card {{ ($key == 0) ? 'dark' : '' }}" style="">
+                {{-- <div class="card {{ ($key == 0) ? 'dark' : '' }}" style="">
                     <a href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}">
                         <img 
                             @php
@@ -34,7 +37,52 @@
                             {{ $product["product_name"] }}
                         </h5>
                     </div>
+                </div> --}}
+                
+                <div class="card product-card border-0 {{ ($key == 0) ? 'dark' : '' }}">
+                    <div class="product-image">
+                        <a href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}">
+                            <img 
+                                @php
+                                    $loc_img = ($product["image_location"] !=null ) ? $product["image_location"] : 'images/product-card-loader.jpg';
+                                @endphp
+                                src="{{ asset($loc_img) }}" 
+                                alt="Batman Caped Crusader Hoodie" class="card-img-top"
+                            />
+                        </a>
+                        
+                        {{-- <div class="oversized-fit">OVERSIZED FIT</div> --}}
+
+                        <button 
+                            class="favorite-btn" 
+                            onclick="toggleFavorite(this)" 
+                            aria-label="Add to favorites">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <a href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}">
+                            <h5 class="product-title">
+                                {{ $product["product_name"] }}
+                            </h5>
+                        </a>
+
+                        @php
+                            $base_price = $product["base_price"];
+                            $discount_percentage = $product["discount_percentage"];
+                            $discount_amount = ($discount_percentage/100) * $base_price;
+                            //echo $discount_amount;
+                            $discounted_price = $base_price - $discount_amount;
+                        @endphp
+
+                        <div class="price-section">
+                            <span class="current-price">₹{{ $discounted_price }}</span>
+                            <span class="original-price">₹{{ $base_price }}</span>
+                            <span class="discount-badge">{{ floor($product["discount_percentage"]) }}% </span>
+                        </div>
+                    </div>
                 </div>
+
             </div>
 
             {{-- {{ $product["product_name"] }} --}}
@@ -71,7 +119,18 @@
 @push('scripts')
 
     <script>
-        
+        function toggleFavorite(button) {
+            const icon = button.querySelector('i');
+            const isActive = button.classList.contains('active');
+            
+            if (isActive) {
+                button.classList.remove('active');
+                icon.className = 'far fa-heart';
+            } else {
+                button.classList.add('active');
+                icon.className = 'fas fa-heart';
+            }
+        }
     </script>
 
     {{-- <script>
