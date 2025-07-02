@@ -36,8 +36,8 @@ class LoadProducts extends Component
         Those public properties ($sc, $theme, etc.) actually hold the values.
         Without defining these as public properties, Livewire won’t know where to put the values and won’t sync them properly.
     */
-    protected $queryString = ["sc", "theme", "size", "color", "price"];
-    public $sc, $theme, $size, $color, $price;
+    protected $queryString = ["sc", "theme", "size", "color", "price", "sort"];
+    public $sc, $theme, $size, $color, $price, $sort;
 
     // this is triggered from front end to load more elements. (LAZY LOAD)
     public function loadMore(){
@@ -68,6 +68,9 @@ class LoadProducts extends Component
     }
     public function updatePrice($newPrice){
         $this->price = $newPrice;
+    }
+    public function updateSort($newSort){
+        $this->sort = $newSort;
     }
     
     // fetch product details
@@ -123,34 +126,44 @@ class LoadProducts extends Component
 
                             $primary_attribute_array = [...$size_arr, ...$color_arr];
 
-                            // SUB QUERY 
-                            $subProductSubQuery = DB::table('sub_products')
-                            ->select(DB::raw('MIN(id) as id'), 'product_id')
-                            ->groupBy('product_id');
+                            /*  // METHOD 2 (NOT WORKING AS INTENDED)
+                                $subProductSubQuery = DB::table('sub_products')
+                                    ->select(DB::raw('MIN(id) as id'), 'product_id')->groupBy('product_id');
 
+                                $ATM_subQuery = DB::table('attribute_mappers as ATM')
+                                    ->join('attribute_values as ATV', 'ATV.id', '=', 'ATM.attribute_value_id')
+                                    ->whereIn('ATV.value', $primary_attribute_array)
+                                    ->whereRaw('ATM.id = (
+                                        SELECT MIN(id)
+                                        FROM attribute_mappers
+                                        WHERE variant_id = ATM.variant_id
+                                    )')
+                                    ->select('ATM.id', 'ATM.variant_id', 'ATM.attribute_value_id');
+
+                                return $query
+                                    ->joinSub($subProductSubQuery, 'SUB_PROD', function ($join) {
+                                        $join->on('SUB_PROD.product_id', '=', 'PRO.id');
+                                    })
+                                    ->joinSub($ATM_subQuery, 'ATM', function ($join) {
+                                        $join->on('ATM.variant_id', '=', 'SUB_PROD.id');
+                                    });
+                            
+                            */
+
+                            // METHOD 1 (NOT WORKING AS INTENDED)
                             return $query
-                                ->joinSub($subProductSubQuery, 'SUB_PROD', function ($join) {
+                                ->join('sub_products as SUB_PROD', function($join){
                                     $join->on('SUB_PROD.product_id', '=', 'PRO.id');
                                 })
-                                // ->join('sub_products as SUB_PROD', function($join){
-                                //     $join->on('SUB_PROD.product_id', '=', 'PRO.id');
-                                // })
+
                                 ->join('attribute_mappers as ATM', function($join){
                                     $join->on('ATM.variant_id', '=', 'SUB_PROD.id')->where('ATM.primary_pair', 1);
                                 })
+                                
                                 ->join('attribute_values as ATV', function($join) use($primary_attribute_array){
                                     $join->on('ATV.id', '=', 'ATM.attribute_value_id')->whereIN('ATV.value', $primary_attribute_array);
                                 });
-
-                            /*
-                                What the hell are we doing in the SUB QUERY segment? An Explanation
-                                -- Join one variant per product
-                                INNER JOIN (
-                                    SELECT MIN(id) AS id, product_id
-                                    FROM sub_products
-                                    GROUP BY product_id
-                                ) AS SUB_PROD ON PRO.id = SUB_PROD.product_id
-                            */ 
+                            
                         })
                         ->when($this->price, function($query) {  // PRICE FILTER
                             $price_level = $this->price;
@@ -170,11 +183,42 @@ class LoadProducts extends Component
                             return $query->whereBetween('PRO.base_price', [$lower_limit, $upper_limit]);
 
                         })
-                        ->where('PRO.category_id', $this->categoryId)
-                        ->orderBy('PRO.id', 'ASC')
-                        // ->distinct()
-                        ->limit($this->loadAmount);
+                        
+                        
+                        ->when($this->sort, function($query) {  // SORT FILTER (ORDER BY)
+                            if(isset($this->sort) && !empty($this->sort)){
+                                
+                                $sort_level = $this->sort;
+                                $sort_column = ''; $sort_order = '';
+                                
+                                if($sort_level == 1){
+                                    $sort_column = 'PRO.product_name'; $sort_order = 'ASC';
+                                }
+                                else if($sort_level == 2){
+                                    $sort_column = 'PRO.product_name'; $sort_order = 'DESC';
+                                }
+                                else if($sort_level == 3){
+                                    $sort_column = 'PRO.base_price'; $sort_order = 'DESC';
+                                }
+                                else if($sort_level == 4){
+                                    $sort_column = 'PRO.base_price'; $sort_order = 'ASC';
+                                }
+                                else if($sort_level == 5){
+                                    $sort_column = 'PRO.id'; $sort_order = 'DESC';
+                                }
 
+
+                                return $query->orderBy($sort_column, $sort_order);
+                            }
+                            
+                            else return $query->orderBy('PRO.id', 'ASC');
+                        })
+                        // ->orderBy('PRO.id', 'ASC')
+                        ->where('PRO.category_id', $this->categoryId)
+                        ->distinct()    // THIS IS A QUICK FIX TO A MUCH MUCH BIGGER PROBLEM, WILL DEAL WITH IT LATER
+                        ->limit($this->loadAmount);
+                        
+        // $productData = $productData->distinct();
         return $productData;
     }
 
@@ -207,7 +251,7 @@ class LoadProducts extends Component
             "sql_str_binding" => $sql_str_binding,
         ];
 
-        //\Log::info("\n\nProduct List Data:", $log_data);
+        // \Log::info("\n\nProduct List Data:", $log_data);
 
         return view('livewire.front.product.load-products')->with([
             'productList' => $productList

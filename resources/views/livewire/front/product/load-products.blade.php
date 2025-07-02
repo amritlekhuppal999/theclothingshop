@@ -100,8 +100,10 @@
                 <h3>Chottu aur nikaal...</h3>
             </div>
         @else
-            <div class="col-md-12 text-center">
-                <h3>That's all from us!!</h3>
+            <div class="col-md-12 text-center mb-2">
+                <hr>
+                <img src="{{ asset("images/you-wanted-more.jpeg") }}" alt="" style="border-radius: 10px;">
+                <h6>You wanted more??</h6>
             </div>
         @endif
     

@@ -86,7 +86,7 @@ if (!MyApp.initDone){
     // Append query string to URL
         MyApp.appendQueryString = function (url, parameter, value) {
             const urlParts = url.split("?");
-            const baseUrl = urlParts[0];
+            const baseUrl = urlParts[0].replace("#", '');
             const existingParams = new URLSearchParams(urlParts[1] || "");
     
             // console.log(existingParams.toString());
@@ -97,7 +97,8 @@ if (!MyApp.initDone){
             } else {
                 existingParams.append(parameter, value);
             }
-        
+            
+            // baseUrl = baseUrl.replace("#", '');
             return baseUrl + (existingParams.toString() ? "?" + existingParams.toString() : "");
         }
     

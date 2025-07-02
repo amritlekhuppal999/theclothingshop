@@ -83,11 +83,22 @@
                             page="category"
                             class="offset-md-8"
                             buttonText="Select Sorting Options">
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2" style="">
-                                <li><a class="dropdown-item active" href="#">A-Z</a></li>
-                                <li><a class="dropdown-item" href="#">Price- High to Low </a></li>
-                                <li><a class="dropdown-item" href="#">Price- Low to High </a></li>
-                                <li><a class="dropdown-item" href="#"> Newest </a></li>
+                            <ul 
+                                class="dropdown-menu dropdown-menu-dark" 
+                                aria-labelledby="dropdownMenuButton2"
+                                id="sort-button"  style="">
+                                @php
+                                    $sort_value = 0;
+                                    if(request()->has('sort')){
+                                        $sort_value = request('sort');
+                                    }
+                                @endphp
+
+                                <li><a class="dropdown-item {{ $sort_value == 1 ? "active" : "" }}" href="#" data-value="1">A-Z</a></li> <!-- active -->
+                                <li><a class="dropdown-item {{ $sort_value == 2 ? "active" : "" }}" href="#" data-value="2">Z-A</a></li> <!-- active -->
+                                <li><a class="dropdown-item {{ $sort_value == 3 ? "active" : "" }}" href="#" data-value="3"> Price- High to Low </a></li>
+                                <li><a class="dropdown-item {{ $sort_value == 4 ? "active" : "" }}" href="#" data-value="4"> Price- Low to High </a></li>
+                                <li><a class="dropdown-item {{ $sort_value == 5 ? "active" : "" }}" href="#" data-value="5"> Newest </a></li>
                             </ul>
                         </x-front.sort-button>
 
@@ -199,6 +210,86 @@
 @section('content-scripts')
     {{-- Used in the Sorting option dropdown --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        // SORT PRODUCTS
+        document.addEventListener('livewire:initialized', event=>{
+            let sort_value = null;
+            let sort_parameter = "sort";
+
+            const loadProductElement = document.getElementById("livewire-load-product");
+            const LIVEWIRE_PRODUCT_COMPONENT = Livewire.find(loadProductElement.getAttribute('wire:id'));
+        
+            let trigger_my_function = MyApp.debounce(set_query_param, 1000);
+
+            const sort_options = document.getElementsByClassName("dropdown-item");
+
+            push_selected_sortOption();
+
+            const sort_button = document.getElementById('sort-button');
+
+            sort_button.addEventListener('click', event=>{
+                event.preventDefault();
+                let element = event.target;
+
+                if(element.className.includes("dropdown-item")){
+                    remove_active();
+                    sort_value = element.dataset.value;
+
+                    element.classList.add("active");
+                }
+                
+                // function to set url and push state
+                trigger_my_function();
+            });
+
+            // remove active class
+            function remove_active(){
+                let sort_option_array = Array.from(sort_options);
+                sort_option_array.map((element)=>{
+                    element.classList.remove("active");
+                });
+            }
+
+            // pushes already selected sub categories in the array
+            function push_selected_sortOption(){
+                // let sort_options = document.getElementsByClassName("dropdown-item");
+
+                let sort_option_array = Array.from(sort_options);
+
+                sort_option_array.map((element, index)=>{
+                    if(element.className.includes("active")){
+                        sort_value = element.dataset.value;
+                        return;
+                    }
+                });
+                //console.log("sort_value: ", sort_value);
+            }
+
+            // set values to query parameters upon selecting
+            function set_query_param(){
+                let sort_value_string = sort_value;
+
+                let new_url = MyApp.appendQueryString(window.location.href, sort_parameter, sort_value_string);
+                // console.log('new_url: ', new_url);
+                history.pushState(null, null, new_url);
+
+                livewireRerender()
+            }
+
+            //To reload/rerender the livewire component with new values
+            function livewireRerender(){
+                // LIVEWIRE_PRODUCT_COMPONENT.triggerRefresh();
+                // LIVEWIRE_PRODUCT_COMPONENT.call('triggerRefresh');
+
+                let sort = new URLSearchParams(window.location.search).get('sort')
+                LIVEWIRE_PRODUCT_COMPONENT.updateSort(sort);
+                // console.log(theme)
+            }
+
+        });
+    </script>
 @endsection
     
 
