@@ -29,7 +29,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 
 # Copy existing application directory permissions fix
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /storage /bootstrap/cache
 
 # Install PHP dependencies (composer install) without dev packages and optimize autoloader
 RUN composer install --no-dev --optimize-autoloader
