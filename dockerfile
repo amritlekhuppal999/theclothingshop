@@ -2,7 +2,10 @@
 FROM php:8.2-apache
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /app
+
+# Copy existing application directory contents
+COPY . /app
 
 # Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
@@ -22,8 +25,8 @@ RUN a2enmod rewrite
 # Install Composer globally
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy existing application directory contents
-COPY . /var/www/html
+
+
 
 # Copy existing application directory permissions fix
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
