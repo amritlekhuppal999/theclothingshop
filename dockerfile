@@ -1,37 +1,57 @@
-# Use official PHP 8.2 
-FROM php:8.2-apache
+# Use the official PHP 8.2 image with required extensions
+FROM php:8.2-fpm-alpine
 
-# Set working directory
-WORKDIR /var/www/html
+# Set working directory inside container
+WORKDIR /var/www
 
 # Install system dependencies and PHP extensions
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
+    bash \
+    curl \
     git \
     unzip \
-    libzip-dev \
     libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    curl \
-    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath xml
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    libxpm-dev \
+    libzip-dev \
+    zlib-dev \
+    icu-dev \
+    oniguruma-dev \
+    autoconf \
+    gcc \
+    g++ \
+    make \
+    && docker-php-ext-configure zip \
+    && docker-php-ext-install \
+        pdo \
+        pdo_mysql \
+        zip \
+        intl \
+        mbstring \
+        exif \
+        pcntl \
+        bcmath
 
-# Install Composer globally
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Install Composer
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
-# Copy existing application directory contents
-COPY /public /var/www/html
+# Copy existing app files
+COPY . .
 
-# Copy existing application directory permissions fix
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Install PHP dependencies (composer install) without dev packages and optimize autoloader
-RUN composer install --no-dev --optimize-autoloader
+# Set appropriate permissions
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# command to run the laravel server
-CMD php artisan serve --host=0.0.0.0 --port=80
+# Set environment variables
+ENV APP_ENV=production \
+    APP_DEBUG=false
 
-# Expose port 80
-EXPOSE 80
+# Expose port (Render uses 80 by default)
+EXPOSE 8000
 
-
+# Start Laravel using PHP’s built-in server
+CMD php artisan serve --host=0.0.0.0 --port=8000
