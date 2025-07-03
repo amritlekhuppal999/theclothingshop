@@ -65,7 +65,7 @@
                 <h3 class="text-danger">MAKE FRONT END FUNCTIONAL</h3>
                 <h3 class="text-success">FE-LOAD PRODUCTS</h3>
                 <h3 class="text-success">FE-MAKE DYNAMIC</h3>
-                <h3 class="text-secondary">Category PRODUCT PAGE size and color attributes</h3>
+                <h3 class="text-success">Category PRODUCT PAGE size and color attributes</h3>
                 <h3 class="text-danger">PRODUCT PAGE</h3>
                 <h3 class="text-danger">CART</h3>
                 <h3 class="text-danger">CHECKOUT</h3>
