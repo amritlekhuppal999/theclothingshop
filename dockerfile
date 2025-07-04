@@ -5,7 +5,7 @@ FROM php:8.2-fpm-alpine
 WORKDIR /var/www
 
 # Install system dependencies and PHP extensions
-RUN apk add --no-cache \
+RUN set -ex && apk add --no-cache \
     postgresql-dev \
     zip \
     bash \
