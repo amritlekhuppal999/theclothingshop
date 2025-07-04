@@ -6,6 +6,7 @@ WORKDIR /var/www
 
 # Install system dependencies and PHP extensions
 RUN apk add --no-cache \
+    zip \
     bash \
     curl \
     git \
@@ -21,11 +22,9 @@ RUN apk add --no-cache \
     autoconf \
     gcc \
     g++ \
-    make \
     && docker-php-ext-configure zip \
     && docker-php-ext-install \
         pdo \
-        pdo_mysql \
         pdo_pgsql \
         zip \
         intl \
