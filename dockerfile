@@ -6,6 +6,7 @@ WORKDIR /var/www
 
 # Install system dependencies and PHP extensions
 RUN apk add --no-cache \
+    postgresql-dev \
     zip \
     bash \
     curl \
@@ -22,7 +23,8 @@ RUN apk add --no-cache \
     autoconf \
     gcc \
     g++ \
-    && docker-php-ext-configure zip \
+    make \
+    && docker-php-ext-configure zip --with-libzip \
     && docker-php-ext-install \
         pdo \
         pdo_pgsql \
@@ -47,8 +49,8 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 # Set environment variables
-ENV APP_ENV=production \
-    APP_DEBUG=false
+# ENV APP_ENV=production \
+#     APP_DEBUG=false
 
 # Expose port (Render uses 80 by default)
 EXPOSE 8000
