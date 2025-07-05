@@ -25,7 +25,8 @@ class CategoryService{
 
         // returns category id
         public function getCategoryId($category_slug){   // can use slug aswell
-            $category_id = SubCategory::where('category_slug', $category_slug)->value('id');
+            // $category_id = SubCategory::where('category_slug', $category_slug)->value('id');
+            $category_id = Category::where('category_slug', $category_slug)->value('id');
 
             return $category_id;
         }

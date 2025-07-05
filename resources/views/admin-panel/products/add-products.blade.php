@@ -115,6 +115,8 @@
 
 @section('content')
 
+{{-- http://127.0.0.1:8000/admin/products-add?cat=bottomwear --}}
+
     @php
         $page_url = explode("/", request()->path());
     @endphp
@@ -130,8 +132,28 @@
             {{-- <h3> {{ request()->path() }} </h3> --}}
             {{-- <h3> @dump(explode("/", request()->path()) ) </h3> --}}
 
+            {{-- Operation ERROR/SUCCESS Message --}}
+            <div class="row">
+                <div class="col-md-12">
+                    @if(session('error'))
+                        <div class="card card-danger">
+                            <div class="card-header">
+                                <h4 class="card-title"> {{ session('error') }} </h4>
+                            </div>
+                        </div>
+                    @elseif(session('success'))
+                        <div class="card card-success">
+                            <div class="card-header">
+                                <h4 class="card-title"> {{ session('success') }} </h4>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             {{-- Add Product Form --}}
             <div class="row">
+
                 <div class="col-md-12">
 
                     {{-- card --}}
@@ -154,20 +176,7 @@
                             <form role="form" action="{{ route('add-product') }}" method="POST" id="product-form">
                                 @csrf
 
-                                {{-- Operation Error/Success Message --}}
-                                @if(session('error'))
-                                    <div class="form-group">
-                                        <span class="text-danger">
-                                            {{ session('error') }}
-                                        </span>
-                                    </div>
-                                @elseif(session('success'))
-                                    <div class="form-group">
-                                        <span class="text-success">
-                                            {{ session('success') }}
-                                        </span>
-                                    </div>
-                                @endif
+                                
 
                                 {{-- Category ID --}}
                                 <input type="hidden" id="category_id" name="category_id" value="{{ old('category_id') }}"/>
@@ -246,7 +255,7 @@
                                         class="form-control" 
                                         id="base-price" name="base_price" 
                                         placeholder="Base Price"
-                                        value="{{-- old('base_price') --}}1199"
+                                        value="{{-- old('base_price') --}}899"
                                         step="0.01"
                                         required
                                     />
@@ -281,20 +290,20 @@
                                         name="short_description" id="short-description"  
                                         rows="5">Product Details
 Material & Care:
-60% Cotton 40% Polyester
+100% Cotton
 Machine Wash
 
 Country of Origin: India (and proud)
 
 Manufactured & Sold By:
-The Clothing Store Pvt. Ltd.
-121, OONGA BOONGA Industrial Premises
-B.R. BOONGA Marg
-Lovely BONGA (E)
-BOONGA - 800 011
-tel:+1100-84848484
-connect@theclothingshop.com
-Customer care no. +91-1184848484</textarea>
+The Souled Store Pvt. Ltd.
+224, Tantia Jogani Industrial Premises
+J.R. Boricha Marg
+Lower Parel (E)
+Mumbai - 400 011
+tel:+9122-68493328
+connect@thesouledstore.com
+Customer care no. +91 22-68493328</textarea>
                                 </div>
                                 @error('short_description')
                                     <div class="alert alert-danger">{{ $message }}</div>
@@ -307,13 +316,12 @@ Customer care no. +91-1184848484</textarea>
                                         class="form-control" 
                                         name="long_description" id="long-description"  
                                         rows="10">Product Description
-Unofficial Licensed XXXX Polos.
+Get ultimate comfort and style with these easy-fit joggers ? 
+where coziness meets fashion. Redefine casual loungewear with its relaxed fit. 
+Crafted from premium-quality fabric, they offer a cloud-like feel that will make you want to live in them 24/7.
 
-COPIED !!!!
-
-Ugh, doesn't life get so boring sometimes?
-
-Feels like every day is the same, with nothing interesting happening. Well, say goodbye to that, because we've got something new for you! Wear your mood with this sassy t-shirt and make dressing up the most exciting part of your day. There could be the same shit every day, but your outfit doesn't have to be! Have a laugh and be prepared to be complimented when you're wearing this funny t-shirt.</textarea>
+Style Tip: Rock these joggers with a graphic tee and sneakers for an easy laid-back look. 
+Whether you're hitting the streets or chilling at home, these joggers are the perfect choice.</textarea>
                                 </div>
                                 @error('long_description')
                                     <div class="alert alert-danger">{{ $message }}</div>
@@ -348,41 +356,6 @@ Feels like every day is the same, with nothing interesting happening. Well, say 
                                             {{-- <div class="checkbox-item">
                                                 <input type="checkbox" id="option1">
                                                 <label for="option1">Email Notifications</label>
-                                            </div>
-
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="option2">
-                                                <label for="option2">Push Notifications</label>
-                                            </div>
-
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="option3">
-                                                <label for="option3">Weekly Newsletter</label>
-                                            </div>
-
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="option4">
-                                                <label for="option4">Marketing Updates</label>
-                                            </div>
-
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="option5">
-                                                <label for="option5">Product Announcements</label>
-                                            </div>
-
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="option6">
-                                                <label for="option6">Security Alerts</label>
-                                            </div>
-
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="option7">
-                                                <label for="option7">Beta Feature Access</label>
-                                            </div>
-
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="option8">
-                                                <label for="option8">Community Updates</label>
                                             </div> --}}
                                         </div>
                                     </div>
@@ -540,12 +513,12 @@ Feels like every day is the same, with nothing interesting happening. Well, say 
                     let sub_category_list = response_data.sub_category_list;
 
                     sub_category_list.forEach((element, index)=>{
-                        //let checked = (sub_category_element.dataset.value === element.sub_category_slug) ? "checked" : "";
-                        //let checked = (element.sub_category_slug === "all-topwear") ? "checked" : "";
+                        
                         let checked = "";
-                        if(element.sub_category_slug === "all-topwear" || element.sub_category_slug === "polos" ){
+                        /*if(element.sub_category_slug === "all-bottmwear" || element.sub_category_slug === "jeans" ){
                             checked = "checked";
                         }
+                        */
 
                         //let opt_str = `<option value="${element.sub_category_slug}" ${selected} data-id=${element.id}>${element.sub_category_name}</option>`;
                         //sub_category_element.innerHTML += opt_str;

@@ -35,7 +35,12 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
         
         Route::get('/products', [ProductsController::class, 'INDEX'])->name('products');
         Route::get('/products-add', [ProductsController::class, 'CREATE'])->name('products-add');
-        Route::post('/products-add', [ProductsController::class, 'STORE'])->name('add-product');
+        
+        Route::middleware('web')->group(function () {
+            Route::post('/products-add', [ProductsController::class, 'STORE'])->name('add-product');
+        });
+
+        // Route::post('/products-add', [ProductsController::class, 'STORE'])->name('add-product');
         Route::post('/products-update', [ProductsController::class, 'STORE_UPDATE'])->name('update-product');
         
         Route::get('/products-update/{productSlug}', [ProductsController::class, 'CREATE_UPDATE'])->name('products-update');

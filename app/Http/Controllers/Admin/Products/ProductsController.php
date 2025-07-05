@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;      // to use transactions
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+// use Illuminate\Support\ViewErrorBag;
 
 class ProductsController extends Controller
 {
@@ -87,35 +88,45 @@ class ProductsController extends Controller
             return view($this->products_route.'add-products', $return_data);
         }
 
-        // public function STORE(Request $request){
-        //     \Log::info($request->sub_category_id);
+        // public function STORE_X(Request $request){
+        //     // \Log::info($request->sub_category_id);
+        //     // Validate the incoming data
+        //     $vald = $request->validate([
+        //         'targetGroup' => 'required|integer',
+        //         // key value pairs...
+        //     ]);
+
+        //     DB::beginTransaction();
         // }
 
         // Save Category
         public function STORE(Request $request){
             
-            DB::beginTransaction();
+            // Validate the incoming data
+            $vald = $request->validate([
+                'targetGroup' => 'required|integer',
+                'product_name' => 'required|string|max:255',
+                'product_slug' => 'required|string|unique:products,product_slug',
+                'category_id' => 'integer',
+                'sub_category_id' => 'required|array|min:1',    // array validation
+                'base_price' => 'required|numeric|min:1|max:100000',
+                'discount_percentage' => 'required|numeric|min:0.01',
+                'short_description' => 'string|max:1000',
+                'long_description' => 'string|max:65535'
+            ]);
             
             try{
-                // Validate the incoming data
-                $request->validate([
-                    'targetGroup' => 'required|integer',
-                    'product_name' => 'required|string|max:255',
-                    'product_slug' => 'required|string|unique:products,product_slug',
-                    'category_id' => 'integer',
-                    // 'sub_category_id' => 'integer',
-                    'base_price' => 'required|numeric|min:1|max:100000',
-                    'discount_percentage' => 'required|numeric|min:0.01',
-                    'short_description' => 'string|max:1000',
-                    'long_description' => 'string|max:65535',
-                ]);
 
-                if(!count($request->sub_category_id)){
-                    throw ValidationException::withMessages([
-                        'sub_category_id' => ['No sub category selected.']
-                    ]);
-                    //return redirect()->back()->with('error', 'Failed to add product details: ' . $e->getMessage());
-                }
+                /*
+                    NOTE !!! 
+                    There is a bug that messes up the validation if one opens a new transaction before the validation part.
+                    The error bag that is filled by the validator upon rule violation remains empty because of it
+                    and user sees no error at all.
+
+                    FIX:
+                    Move it after the validation is done.
+                */
+                DB::beginTransaction();
 
                 // Save the data in the database
                 $product_data = Product::create([
@@ -149,18 +160,26 @@ class ProductsController extends Controller
 
                 DB::commit();
 
+                // LOG DATA
+                    $log_data = [
+                        // "product_list" => $product_list,
+                    ];
+
+                    // \Log::info("Product List Data:", $log_data);
+                // LOG DATA END
+
                 return redirect()->back()->with('success', 'Product added successfully!');
             }
             catch(QueryException $e){
                 DB::rollBack();
-                return redirect()->back()->with('error', 'Failed to add product details: ' . $e->getMessage());
+                return redirect()->back()->with('error', 'Failed to add product details: ' . $e->getMessage())->withInput();
                 // return redirect()->back()->with('error', 'An error occurred: ');
             }
-            catch(Exception $e){   // General Error
-                DB::rollBack();
-                return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
-                // return redirect()->back()->with('error', 'An error occurred: ');
-            }
+            // catch(Exception $e){   // General Error
+            //     DB::rollBack();
+            //     return redirect()->back()->withErrors('An error occurred: ' . $e->getMessage())->withInput();
+            //     // return redirect()->back()->with('error', 'An error occurred: ');
+            // }
         }
         
         // UDPATE product form view
@@ -172,20 +191,26 @@ class ProductsController extends Controller
                 try {
                     $product = Product::where('product_slug', $productSlug)->firstOrFail();
                     $product = Product::where('product_slug', $productSlug)->get();
+                    
+                    $product_id = getProductId($productSlug);
+                    $product_sub_categories = get_sub_category_list($product_id);
 
                     $return_data = array(
                         "product_selected" => true,
-                        "product" => $product[0]
+                        "product" => $product[0],
+                        "product_sub_categories" => $product_sub_categories     // sub categories mapped to product
                     );
                 }
                 catch (ModelNotFoundException $e) {
                     $return_data = [
                         "product_selected" => false,
                         "product" => [],
-                        "message" => "No product present for the given product slug: " . $e->getMessage(),
+                        "message" => "No product present for the given product slug. Check the slug entered and try again.: " . $e->getMessage(),
                         // "requested_action_performed" => false,
                         // "reload" => false
                     ];
+                    
+                    return view($this->VIEW_NOT_FOUND, $return_data);
                 }
                 catch (\Throwable $th) {
                     $return_data = [
@@ -216,27 +241,28 @@ class ProductsController extends Controller
         // Save Category
         public function STORE_UPDATE(Request $request){
 
+            $validation_arr = [
+                'targetGroup' => 'required|integer',
+                'product_name' => 'required|string|max:255',
+                // 'product_slug' => 'required|string|unique:products,product_slug',
+                'category_id' => 'integer',
+                'sub_category_id' => 'required|array|min:1',    // array validation
+                'base_price' => 'required|numeric|min:1|max:100000',
+                'discount_percentage' => 'required|numeric|min:0.01',
+                'short_description' => 'string|max:1000',
+                'long_description' => 'string|max:65535',
+            ];
+            
+            if($request->product_slug !== $request->product_slug_backup){
+                $validation_arr['product_slug'] = 'required|string|unique:products,product_slug';
+            }
+            // Validate the incoming data
+            $request->validate($validation_arr);
+
+
             try{
-
-                $validation_arr = [
-                    'targetGroup' => 'required|integer',
-                    'product_name' => 'required|string|max:255',
-                    // 'product_slug' => 'required|string|unique:products,product_slug',
-                    'category_id' => 'integer',
-                    'sub_category_id' => 'integer',
-                    'base_price' => 'required|numeric|min:1|max:100000',
-                    'discount_percentage' => 'required|numeric|min:0.01',
-                    'short_description' => 'string|max:1000',
-                    'long_description' => 'string|max:65535',
-                ];
-    
-                if($request->product_slug !== $request->product_slug_backup){
-                    $validation_arr['product_slug'] = 'required|string|unique:products,product_slug';
-                }
-    
-                // Validate the incoming data
-                $request->validate($validation_arr);
-
+                DB::beginTransaction();
+                
                 $product_id = $request->product_id;
 
                 $product = Product::findOrFail($product_id);
@@ -247,7 +273,7 @@ class ProductsController extends Controller
                     'product_slug' => $request->product_slug,
                     'target_group' => $request->targetGroup,
                     'category_id' => $request->category_id,
-                    'sub_category_id' => $request->sub_category_id,
+                    // 'sub_category_id' => $request->sub_category_id,
                     'base_price' => $request->base_price,
                     'discount_percentage' => $request->discount_percentage,
                     'short_description' => $request->short_description,
@@ -255,8 +281,26 @@ class ProductsController extends Controller
                     'status' => 1
                 ]);
 
-                //return back()->withErrors([ "error" => "Failed to add the category." ]);
-                // return redirect()->back()->with('error', 'Failed to add the attribute.');
+                // INSERT TO CATEGORY MAPPER
+                ProductCategoryMapper::where('product_id', $product_id)->delete();
+                // $insertAttrMapper = AttributeMapper::insert($attr_mapper_arr);
+
+                $prod_cat_mapper_array = array();
+            
+                foreach ($request->sub_category_id as $sub_category_id) {
+                    $mapper_array = array(
+                        "product_id" => $product_id,
+                        "sub_category_id" => $sub_category_id,
+                        "created_at" => now(),
+                        "updated_at" => now()
+                    );
+
+                    array_push($prod_cat_mapper_array, $mapper_array);
+                }
+
+                $prodCatMapper = ProductCategoryMapper::insert($prod_cat_mapper_array);
+                
+                DB::commit();
 
                 // return redirect()->back()->with('success', 'Product added successfully!');
 
@@ -264,12 +308,15 @@ class ProductsController extends Controller
                 return redirect($url)->with('success', 'Product updated successfully!');
             }
             catch (ModelNotFoundException $e) {
+                DB::rollBack();
                 return redirect()->back()->with('error', 'No product present for the given product slug');
             }
             catch(QueryException $e){
+                DB::rollBack();
                 return redirect()->back()->with('error', 'Failed to update product: ' . $e->getMessage());
             }
             catch(\Throwable $th){   // General Error
+                DB::rollBack();
                 return redirect()->back()->with('error', 'Failed to update product. An error occurred: ' . $th->getMessage());
             }
             

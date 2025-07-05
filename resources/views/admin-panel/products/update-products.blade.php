@@ -14,6 +14,102 @@
         label[for="radio"]{
             color: indigo;
         }
+        
+        .sub-category-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            /*box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);*/
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0);
+            /*border: 1px solid rgba(255, 255, 255, 0.2);*/
+            border: 1px solid lightgrey;
+            /*max-width: 500px;*/
+            width: 100%;
+        }
+
+        /*.sub-category-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 1.8em;
+        }
+        */
+
+        .checkbox-item {
+            display: inline-flex;
+            align-items: center;
+            margin: 10px;
+            /*margin-bottom: 10px;*/
+            /*margin: auto;*/
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin-right: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .checkbox-item input[type="checkbox"]:hover {
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .checkbox-item label {
+            margin-top:8px;
+            color: #555;
+            font-weight: 500;
+            cursor: pointer;
+            user-select: none;
+            flex: 1;
+            font-size: 1.1em;
+        }
+
+        .checkbox-item:has(input:checked) {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .checkbox-item:has(input:checked) label {
+            color: #333;
+            font-weight: 600;
+        }
     </style>
 @endsection
 
@@ -32,16 +128,23 @@
             {{-- <h3> {{ request()->path() }} </h3> --}}
             {{-- <h3> @dump(explode("/", request()->path()) ) </h3> --}}
 
-            {{-- SELECT Category --}}
+            {{-- Operation ERROR/SUCCESS Message --}}
             <div class="row">
-                {{-- Select Product --}}
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <h3>{{ $product["product_name"] }}</h3>
-                    </div>
+                <div class="col-md-12">
+                    @if(session('error'))
+                        <div class="card card-danger">
+                            <div class="card-header">
+                                <h4 class="card-title"> {{ session('error') }} </h4>
+                            </div>
+                        </div>
+                    @elseif(session('success'))
+                        <div class="card card-success">
+                            <div class="card-header">
+                                <h4 class="card-title"> {{ session('success') }} </h4>
+                            </div>
+                        </div>
+                    @endif
                 </div>
-
-                
             </div>
 
             {{-- Add Product Form --}}
@@ -49,40 +152,19 @@
                 <div class="col-md-12">
 
                     {{-- card --}}
-                    <div class="card card-purple ">
-                        {{-- card header --}}
-                        <div class="card-header">
-                            <h3 class="card-title">UPDATE PRODUCT {{-- $product["product_name"] --}} </h3>
-
-                            {{-- collapse-expand BTN --}}
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="card card-purple card-outline">
                         
                         {{-- card body --}}
                         <div class="card-body">
+                            
+                            {{-- Product Name --}}
+                            <h5 class="card-text mb-4">
+                                Update Product:  <span class="text-purple">{{ $product["product_name"] }}</span> 
+                            </h5>
+
                             <!-- form start -->
                             <form role="form" action="{{ route('update-product') }}" method="POST">
                                 @csrf
-
-                                {{-- Operation Error/Success Message --}}
-                                @if(session('error'))
-                                    <div class="form-group">
-                                        <span class="text-danger">
-                                            {{ session('error') }}
-                                        </span>
-                                    </div>
-                                @elseif(session('success'))
-                                    <div class="form-group">
-                                        <span class="text-success">
-                                            {{ session('success') }}
-                                        </span>
-                                    </div>
-                                @endif
-
 
                                 {{-- Product ID --}}
                                 <input type="hidden" id="product_id" name="product_id" value="{{ $product["id"] }}"/>
@@ -93,12 +175,12 @@
                                 {{-- Sub Category ID --}}
                                 <input type="hidden" id="sub_category_id" name="sub_category_id" value="{{ $product["sub_category_id"] }}"/>
 
-                                @error('category_id')
+                                {{-- @error('category_id')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                                 @error('sub_category_id')
                                     <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+                                @enderror --}}
 
                                 
                                 {{-- Gender --}}
@@ -141,35 +223,6 @@
                                 @error('targetGroup')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-
-                                {{-- Select Category/Sub-Cat --}}
-                                <div class="row">
-                                    {{-- Select Category --}}
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <select 
-                                                name="select-category" 
-                                                id="select-category" 
-                                                class="form-control" 
-                                                data-value="{{ isset($product["category_id"]) ? $product["category_id"] : '' }}">
-                                                <option value="">Loading...</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    {{-- Select Sub-Category --}}
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <select 
-                                                name="select-sub-category" 
-                                                id="select-sub-category" 
-                                                class="form-control" 
-                                                data-value="{{ isset($product["sub_category_id"]) ? $product["sub_category_id"] : '' }}">
-                                                <option value="">Select Sub Category</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 {{-- Product Name --}}
                                 <div class="form-group">
@@ -285,15 +338,45 @@
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
 
+                                <hr>
+                                {{-- Select Category --}}
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="">Select Category</label>
+                                            <select 
+                                                name="select-category" 
+                                                id="select-category" 
+                                                class="form-control" 
+                                                data-value="{{ isset($product["category_id"]) ? $product["category_id"] : '' }}">
+                                                <option value="">Loading...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                @error('category_id')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
 
+                                {{-- Select Sub-Category --}}
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label>Select Sub Category</label>
+                                        <div class="sub-category-container" id="sub-category-container">
+                                            {{-- <h4>Select Sub Category</h4> --}}
+                                            
+                                            {{-- <div class="checkbox-item">
+                                                <input type="checkbox" id="option1">
+                                                <label for="option1">Email Notifications</label>
+                                            </div> --}}
+                                        </div>
+                                    </div>
+                                </div>
+                                @error('sub_category_id')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                                 
-                                
-                                {{-- <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                                </div> --}}
-
-                                {{-- Save product BTN --}}
+                                {{-- Update product BTN --}}
                                 <div class="form-group">
                                     <button 
                                         type="submit" 
@@ -331,6 +414,13 @@
                 theme: 'bootstrap4'
             })
 
+            /*
+                This value has been fetched from backend and converted to a json.
+                Holds the value of sub-categories mapped to the given product.
+            */
+            const productSubCategories = @json($product_sub_categories);
+            // console.log(productSubCategories);
+
             const current_url = MyApp.CURRENT_URL;
 
             const CATEGORY_ID_PRODUCT_FORM = document.getElementById('category_id');
@@ -340,54 +430,6 @@
 
             load_category_list();
             //load_sub_category_list();
-
-            //load_product_list();
-            
-            // load product list
-            async function load_product_list(){
-                //let product_element = document.getElementById('select-product');
-
-                SELECT_PRODUCT_ELEMENT.innerHTML = '<option value="">Loading...</option>';
-                /*
-                const request_data = {
-                    result_count: result_count
-                };
-                const params = new URLSearchParams(request_data);
-                */
-                
-                const request_options = {
-                    method: 'GET',
-                    // headers: {},
-                    // body: JSON.stringify(request_data)
-                };
-
-                let url = '/admin/get-product-list';
-
-                try{
-                    let response = await fetch(url, request_options);
-                    // console.log(response);
-                    let response_data = await response.json();
-                    //console.log(response_data);
-                    //return response_data;
-
-                    SELECT_PRODUCT_ELEMENT.innerHTML = '<option value="">Select Product</option>';
-
-                    let prod_id_set_FLAG = false;    // to check if the product id is set?
-
-                    let product_list = response_data.product_list;
-                    product_list.forEach((element, index)=>{
-                        let selected = (SELECT_PRODUCT_ELEMENT.dataset.value === element.product_slug) ? "selected" : "";
-
-                        let opt_str = `<option value="${element.product_slug}" ${selected} data-id=${element.id}>${element.product_name}</option>`;
-                        SELECT_PRODUCT_ELEMENT.innerHTML += opt_str;
-                    });
-                    
-                    product_id = set_product_id();
-                }
-                catch(error){
-                    console.error('Error:', error);
-                }
-            }
 
             // load category list
             async function load_category_list(){
@@ -449,12 +491,12 @@
             // Load the sub category list 
             async function load_sub_category_list(category_id=0){
 
-                let sub_category_element = document.getElementById('select-sub-category');
+                let sub_category_element = document.getElementById('sub-category-container');
 
-                sub_category_element.innerHTML = '<option value="">Loading...</option>';
+                sub_category_element.innerHTML = '<span class="animate-loading-text">Loading...</span>';
 
                 if(!category_id){
-                    sub_category_element.innerHTML = '<option value="">Select Sub-Category</option>';
+                    sub_category_element.innerHTML = '<option value="">No category selected</option>';
                     return false;
                 }
 
@@ -480,25 +522,24 @@
                     //console.log(response_data);
                     //return response_data;
 
-                    sub_category_element.innerHTML = '<option value="">Select Sub Category</option>';
+                    sub_category_element.innerHTML = '';
 
-                    let sub_cat_id_set_FLAG = false;    // to check if the sub_category id is set?
+                    // let sub_cat_id_set_FLAG = false;    // to check if the sub_category id is set?
 
                     let sub_category_list = response_data.sub_category_list;
 
                     sub_category_list.forEach((element, index)=>{
-                        let selected = (sub_category_element.dataset.value == element.id) ? "selected" : "";
-
-                        // FOR setting values via query parameters (?cat=xyz&sub_cat=abc)
-                        if(!sub_cat_id_set_FLAG){
-                            if(selected == "selected"){
-                                SUB_CATEGORY_ID_PRODUCT_FORM.value = element.id;
-                                sub_cat_id_set_FLAG = true;
-                            }
-                            else SUB_CATEGORY_ID_PRODUCT_FORM.value = 0;
+                        let checked = "";
+                        const slugPresent = productSubCategories.some(subCategory => subCategory.sub_category_slug === element.sub_category_slug);
+                        if(slugPresent){
+                            checked = "checked";
                         }
-                        
-                        let opt_str = `<option value="${element.sub_category_slug}" ${selected} data-id=${element.id}>${element.sub_category_name}</option>`;
+
+                        let opt_str = `
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="${element.sub_category_slug}" name="sub_category_id[]" value="${element.id}" ${checked}>
+                                <label for="${element.sub_category_slug}">${element.sub_category_name}</label>
+                            </div>`;
                         sub_category_element.innerHTML += opt_str;
                     });
                     
@@ -534,7 +575,7 @@
             });
 
             // passing the sub category slug in the URL
-            document.getElementById("select-sub-category").addEventListener('change', event=>{
+            /*document.getElementById("select-sub-category").addEventListener('change', event=>{
                 let select_element = event.target;
 
                 let selected_option = select_element.options[select_element.selectedIndex];
@@ -549,12 +590,12 @@
                 
                 SUB_CATEGORY_ID_PRODUCT_FORM.value = sub_category_id;
 
-                /*
-                let new_url = appendQueryString(current_url, 'cat', category_slug);
-                new_url = appendQueryString(new_url, 'sub_cat', sub_category_slug);
-                history.pushState(null, null, new_url);
-                */
-            });
+                
+                // let new_url = appendQueryString(current_url, 'cat', category_slug);
+                // new_url = appendQueryString(new_url, 'sub_cat', sub_category_slug);
+                // history.pushState(null, null, new_url);
+                
+            });*/
 
 
             // Set product slug

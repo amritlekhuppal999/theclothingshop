@@ -118,7 +118,32 @@ use App\Services\ProductService;
         }
     // SUB CATEGORIES END
 
+    
+    // PRODUCTS
+        if (!function_exists('getProductName')) {
+            function getProductName($product_id){   // can use slug aswell
 
+                return app(ProductService::class)->getProductName($product_id);
+                // if confused what the hell this is , its a service class, read docs
+            }
+        }
+
+        if (!function_exists('getProductSlug')) {
+            function getProductSlug($product_id){
+
+                return app(ProductService::class)->getProductSlug($product_id);
+                // if confused what the hell this is , its a service class, read docs
+            }
+        }
+        
+        if (!function_exists('getProductId')) {
+            function getProductId($product_slug){
+
+                return app(ProductService::class)->getProductId($product_slug);
+                // if confused what the hell this is , its a service class, read docs
+            }
+        }
+    // PRODUCTS END
 
     if(!function_exists('get_target_group')){
         function get_target_group($gender_code){
