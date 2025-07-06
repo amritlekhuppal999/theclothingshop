@@ -9,6 +9,9 @@ use Illuminate\Http\Request;    //to have the current HTTP request automatically
 use App\Http\Controllers\FrontEnd\home\HomeController;
 use App\Http\Controllers\FrontEnd\product\ProductPageController;
 
+
+use Illuminate\Support\Facades\Artisan;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -112,6 +115,13 @@ define('ADMIN_LTE', "XAdminLTE");
 
     
     // FRONT-END   END
+
+
+    // TO Run migrations without shell via route 
+    Route::get('/run-migrations', function () {
+        Artisan::call('migrate', ['--force' => true]);
+        return 'Migrations run!';
+    });
     
     
     require __DIR__.'/user-auth.php';
