@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     libzip-dev \
     libpq-dev \
+    libonig-dev \
     && docker-php-ext-install zip
 
 # 2. Install required PHP extensions
