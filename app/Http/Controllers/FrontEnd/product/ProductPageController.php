@@ -36,8 +36,12 @@ class ProductPageController extends Controller
                                     ->where('status', 1)
                                     ->get();
                 
-                // $product_attribute_map = AttributeMapper::from('attribute_mappers as ATM')
-                //                             ->join('attribute_values');
+                $product_attribute_map = SubProduct::from('sub_products as SUB_PROD')
+                                            ->join('attribute_mappers as ATM', function($query){
+                                                $query->on('ATM.variant_id', '=', 'SUB_PROD.id');
+                                            })
+                                            ->join('attribute_values as ATV')
+                                            ->where('SUB_PROD.product_id', '=', $product_id);
 
                 $product_data = [
                     "product" => $product[0],

@@ -22,8 +22,9 @@ RUN docker-php-ext-install \
     pdo_pgsql \
     bcmath \
     mbstring \
-    tokenizer \
     xml
+
+# removed `tokenizer` package/extension 
 
 # Install Composer
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
