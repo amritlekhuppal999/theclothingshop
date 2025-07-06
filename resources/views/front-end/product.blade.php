@@ -21,6 +21,12 @@
         @include('components.front.carousel')
     </div> --}}
 
+    @php
+        $product = $product_data["product"];
+        // $product_attribute_map = $product_data["product_attribute_map"];
+        $product_images = $product_data["product_images"];
+    @endphp
+
     <div class="content"> 
         <div class="container-fluid">
             <!-- <p>Page Content..</p> -->
@@ -35,26 +41,45 @@
                     
                     <div class="card card-solid">
                         <div class="card-body">
+                            
                             <div class="row">
+                                
+                                {{-- Product Image Gallery --}}
                                 <div class="col-12 col-sm-6">
+                                    
                                     <div class="col-12">
-                                        <img src="../../dist/img/prod-1.jpg" class="product-image cursor-pointer" alt="Product Image">
+                                        @foreach($product_images as $key => $images)
+                                            @if($images["prime_image"])
+                                                <img 
+                                                    src="{{ asset($images["image_location"]) }}" 
+                                                    class="product-image cursor-pointer" 
+                                                    id="poster-image"
+                                                    alt="Prime Product Image"
+                                                />
+                                            @endif
+                                        @endforeach
                                     </div>
-
+                                    
                                     <div class="col-12 product-image-thumbs">
-                                        <div class="product-image-thumb cursor-pointer active"><img src="../../dist/img/prod-1.jpg" alt="Product Image"></div>
-                                        <div class="product-image-thumb cursor-pointer"><img src="../../dist/img/prod-2.jpg" alt="Product Image"></div>
-                                        <div class="product-image-thumb cursor-pointer"><img src="../../dist/img/prod-3.jpg" alt="Product Image"></div>
-                                        <div class="product-image-thumb cursor-pointer"><img src="../../dist/img/prod-4.jpg" alt="Product Image"></div>
-                                        <div class="product-image-thumb cursor-pointer"><img src="../../dist/img/prod-5.jpg" alt="Product Image"></div>
+                                        @foreach($product_images as $key => $images)    
+                                            {{-- {{}} --}}
+                                            <div class="product-image-thumb cursor-pointer {{ ($images["prime_image"] == 1) ? "active" : "" }}">
+                                                <img 
+                                                    src="{{ asset($images["image_location"]) }}" 
+                                                    class="product-image-list"
+                                                    alt="Product Image"
+                                                />
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
 
+                                {{-- Product Info --}}
                                 <div class="col-12 col-sm-6">
-                                    <h3 class="d-inline-block">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3>
+                                    <h3 class="d-inline-block">{{ $product["product_name"] }}</h3>
 
                                     <!-- Product description -->
-                                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
+                                    <p> {{ $product["short_description"] }} </p>
             
                                     <hr>
                                     <h4>Available Colors</h4>
@@ -183,7 +208,7 @@
                                         <!-- Add to Cart BTN -->
                                         <button 
                                             type="button"
-                                            class="btn btn-primary btn-lg btn-flat"
+                                            class="btn bg-purple btn-lg btn-flat"
                                             id="add-to-cart-btn">
                                             <i class="fas fa-cart-plus fa-lg mr-2"></i> 
                                             Add to Cart
@@ -200,12 +225,12 @@
                                     </div>
             
                                     <!-- share BTNS -->
-                                    <!-- <div class="mt-4 product-share">
+                                    {{-- <div class="mt-4 product-share">
                                         <a href="#" class="text-gray"> <i class="fab fa-facebook-square fa-2x"></i> </a>
                                         <a href="#" class="text-gray"> <i class="fab fa-twitter-square fa-2x"></i> </a>
                                         <a href="#" class="text-gray"> <i class="fas fa-envelope-square fa-2x"></i> </a>
                                         <a href="#" class="text-gray"> <i class="fas fa-rss-square fa-2x"></i> </a>
-                                    </div> -->
+                                    </div> --}}
         
                                 </div>
                             </div>
@@ -223,14 +248,17 @@
                                 </nav>
 
                                 <div class="tab-content p-3" id="nav-tabContent">
+                                    {{-- Long description --}}
                                     <div class="tab-pane fade show active" id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab"> 
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae condimentum erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed posuere, purus at efficitur hendrerit, augue elit lacinia arcu, a eleifend sem elit et nunc. Sed rutrum vestibulum est, sit amet cursus dolor fermentum vel. Suspendisse mi nibh, congue et ante et, commodo mattis lacus. Duis varius finibus purus sed venenatis. Vivamus varius metus quam, id dapibus velit mattis eu. Praesent et semper risus. Vestibulum erat erat, condimentum at elit at, bibendum placerat orci. Nullam gravida velit mauris, in pellentesque urna pellentesque viverra. Nullam non pellentesque justo, et ultricies neque. Praesent vel metus rutrum, tempus erat a, rutrum ante. Quisque interdum efficitur nunc vitae consectetur. Suspendisse venenatis, tortor non convallis interdum, urna mi molestie eros, vel tempor justo lacus ac justo. Fusce id enim a erat fringilla sollicitudin ultrices vel metus. 
+                                        {{ $product["long_description"] }}
                                     </div>
 
+                                    {{-- comment section --}}
                                     <div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> 
                                         Vivamus rhoncus nisl sed venenatis luctus. Sed condimentum risus ut tortor feugiat laoreet. Suspendisse potenti. Donec et finibus sem, ut commodo lectus. Cras eget neque dignissim, placerat orci interdum, venenatis odio. Nulla turpis elit, consequat eu eros ac, consectetur fringilla urna. Duis gravida ex pulvinar mauris ornare, eget porttitor enim vulputate. Mauris hendrerit, massa nec aliquam cursus, ex elit euismod lorem, vehicula rhoncus nisl dui sit amet eros. Nulla turpis lorem, dignissim a sapien eget, ultrices venenatis dolor. Curabitur vel turpis at magna elementum hendrerit vel id dui. Curabitur a ex ullamcorper, ornare velit vel, tincidunt ipsum. 
                                     </div>
 
+                                    {{-- ratings --}}
                                     <div class="tab-pane fade" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab"> 
                                         Cras ut ipsum ornare, aliquam ipsum non, posuere elit. In hac habitasse platea dictumst. Aenean elementum leo augue, id fermentum risus efficitur vel. Nulla iaculis malesuada scelerisque. Praesent vel ipsum felis. Ut molestie, purus aliquam placerat sollicitudin, mi ligula euismod neque, non bibendum nibh neque et erat. Etiam dignissim aliquam ligula, aliquet feugiat nibh rhoncus ut. Aliquam efficitur lacinia lacinia. Morbi ac molestie lectus, vitae hendrerit nisl. Nullam metus odio, malesuada in vehicula at, consectetur nec justo. Quisque suscipit odio velit, at accumsan urna vestibulum a. Proin dictum, urna ut varius consectetur, sapien justo porta lectus, at mollis nisi orci et nulla. Donec pellentesque tortor vel nisl commodo ullamcorper. Donec varius massa at semper posuere. Integer finibus orci vitae vehicula placerat. 
                                     </div>

@@ -1,56 +1,44 @@
-# Use the official PHP 8.2 image with required extensions
-FROM php:8.2-fpm-alpine
+###################################################################
 
-# Set working directory inside container
+FROM php:8.2-fpm
+
+# Set working directory
 WORKDIR /var/www
 
-# Install system dependencies and PHP extensions
-RUN set -ex && apk add --no-cache \
-    postgresql-dev \
-    zip \
-    bash \
-    curl \
+# 1. Install system-level dependencies (before PHP builds)
+RUN apt-get update && apt-get install -y \
     git \
     unzip \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    libwebp-dev \
-    libxpm-dev \
+    curl \
+    zip \
     libzip-dev \
-    zlib-dev \
-    icu-dev \
-    oniguruma-dev \
-    autoconf \
-    gcc \
-    g++ \
-    make \
-    && docker-php-ext-configure zip --with-libzip \
-    && docker-php-ext-install \
-        pdo \
-        pdo_pgsql \
-        zip \
-        intl \
-        mbstring \
-        exif \
-        pcntl \
-        bcmath
+    libpq-dev \
+    && docker-php-ext-install zip
+
+# 2. Install required PHP extensions
+RUN docker-php-ext-install \
+    pdo \
+    pdo_pgsql \
+    bcmath \
+    mbstring \
+    tokenizer \
+    xml
 
 # Install Composer
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
-# Copy existing app files
+# Install composer dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Copy Laravel files
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Set appropriate permissions
-RUN chown -R www-data:www-data /var/www \
+# Set permissions
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Set environment variables
-# ENV APP_ENV=production \
-#     APP_DEBUG=false
+# Run migrations or queue workers here if needed in entrypoint
+
 
 # Expose port (Render uses 80 by default)
 EXPOSE 8000

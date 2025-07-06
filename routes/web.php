@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;    //to have the current HTTP request automatically injected into your route callback
 
 use App\Http\Controllers\FrontEnd\home\HomeController;
+use App\Http\Controllers\FrontEnd\product\ProductPageController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -61,9 +62,11 @@ define('ADMIN_LTE', "XAdminLTE");
     // CATEGORY END
 
     // PRODUCT
-        Route::get('/product/{product_slug}', function (string $product_slug) {
-            return view(FRONT_END.'/product', ['product_slug' => $product_slug]);
-        })->name('product');
+        // Route::get('/product/{product_slug}', function (string $product_slug) {
+        //     return view(FRONT_END.'/product', ['product_slug' => $product_slug]);
+        // })->name('product');
+
+        Route::get('/product/{product_slug}', [ProductPageController::class, 'CREATE'])->name('product');
     // PRODUCT END
 
     
