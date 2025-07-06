@@ -119,8 +119,11 @@ define('ADMIN_LTE', "XAdminLTE");
 
     // TO Run migrations without shell via route 
     Route::get('/run-migrations', function () {
+        Artisan::call('config:clear');
+        Artisan::call('cache:clear');
+        Artisan::call('config:cache');
         Artisan::call('migrate', ['--force' => true]);
-        return 'Migrations run!';
+        return nl2br(Artisan::output());
     });
     
     
