@@ -1,5 +1,5 @@
 <?php
-
+exec('php artisan migrate --force');
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
