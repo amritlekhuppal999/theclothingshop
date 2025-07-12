@@ -28,11 +28,21 @@
 
                 
                 <div class="error-content">
-                    <h3><i class="fas fa-exclamation-triangle text-warning"></i> Page not found.</h3>
+                    @if(isset($message))
+                        <h3 class="text-danger">
+                            <i class="fas fa-exclamation-triangle text-warning"></i> 
+                            {{ $message }} 
+                        </h3>
+                        <a href="/home">return home</a>
+                    @else
+                        
+                        <h3><i class="fas fa-exclamation-triangle text-warning"></i> Page not found.</h3>
 
-                    <p>
-                        We could not find the page you were looking for. Meanwhile, you may <a href="/home">return home</a>.
-                    </p>
+                        <p>
+                            We could not find the page you were looking for. Meanwhile, you may <a href="/home">return home</a>.
+                        </p>
+                    @endif
+
 
                     {{-- <form class="search-form">
                         <div class="input-group">

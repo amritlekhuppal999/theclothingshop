@@ -44,9 +44,12 @@ if (!MyApp.initDone){
     
     // ERROR CODES
         MyApp.REQUEST_SUCCESSFUL = 200;     // Request successfully received
+        MyApp.REQUESTED_DATA_UNAVAILABLE = 204;     // The server successfully processed the request, and is not returning any content.
         MyApp.VALIDATION_ERROR = 422;       // Data sent do not obey the rules. (Form Validation, etc)
         MyApp.NOT_FOUND_ERROR = 404;        // Link/URL/URI/ROUTE NOT FOUND
         MyApp.BAD_REQUEST_ERROR = 400;      // User Sent incorrect/corrupt data
+        MyApp.UNAUTHORISED_ACCESS = 401;      // Unauthorised access
+        MyApp.PAGE_EXPIRED = 419;           // PAGE EXPIRED (maybe a csrf mismatch )
         MyApp.INTERNAL_SERVER_ERROR = 500;  // Dev/System/Backend messed up
     
     // ERROR CODES END
@@ -176,7 +179,7 @@ if (!MyApp.initDone){
     
                 return response_data;
             }
-            catch(error){
+            catch(error){   // Handles Network Errors
                 console.error('Error:', error);
             }
         }
@@ -231,7 +234,7 @@ if (!MyApp.initDone){
                     // }, 1000);
                 }
             }
-            catch(error){
+            catch(error){   // Handles Network Errors
                 console.error('Error:', error);
             }
         }
@@ -246,6 +249,21 @@ if (!MyApp.initDone){
             });
         }
     // A function to run loading animation anywhere END
+
+
+    // Check for empty objects 
+        MyApp.isEmptyObject = function (obj){
+            // Check if the object is null or undefined first to prevent errors
+            if(obj === null || typeof obj === 'undefined'){
+                return true;    // Consider null or undefined as "empty" in this context
+            }
+
+            // Check if the object has any enumerable string-keyed properties
+            return Object.keys(obj).length === 0;
+        }
+    // Check for empty objects  END
+
+
     
     // Set it to false so we can customise toastr methods
         //toastr.options.escapeHtml = false;

@@ -50,6 +50,7 @@
         <!-- ADMIN LTE JS -->
         <x-front.adminlte-scripts />
 
+        <script src="{{ asset("js/globals.js") }}"></script>
         <script src="{{ asset("js/text-animation.js") }}"></script>
 
         {{-- @livewireScripts --}}

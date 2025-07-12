@@ -3,6 +3,7 @@
 
 use App\Services\CategoryService;
 use App\Services\ProductService;
+use App\Services\AttributeService;
 
     if (!function_exists('base64_to_file')) {
         
@@ -66,7 +67,15 @@ use App\Services\ProductService;
         }
     }
 
-    
+    // ATTRIBUTES
+        if (!function_exists('getAttributeList')) {
+            function getAttributeList($attributeType=""){   // can use slug aswell
+
+                return app(AttributeService::class)->getAttributeList($attributeType);
+                // if confused what the hell this is , its a service class, read docs
+            }
+        }
+    // ATTRIBUTES END
     
     // CATEGORIES
         if (!function_exists('getCategoryName')) {

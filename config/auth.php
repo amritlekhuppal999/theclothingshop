@@ -40,12 +40,21 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // 'web-api' => [      // new guard for web-api
+        //     'driver' => 'session',
+        //     'provider' => 'users',
+        // ],
 
         'admin' => [    // new guard for admin
             'driver' => 'session',
             'provider' => 'users',
             // 'cookie' => 'admin_session', // This is No.1 BS and does not work.
         ],
+        // 'admin-api' => [    // new guard for admin-api
+        //     'driver' => 'session',
+        //     'provider' => 'users',
+        //     // 'cookie' => 'admin_session', // This is No.1 BS and does not work.
+        // ],
     ],
 
     /*

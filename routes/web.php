@@ -8,6 +8,7 @@ use Illuminate\Http\Request;    //to have the current HTTP request automatically
 
 use App\Http\Controllers\FrontEnd\home\HomeController;
 use App\Http\Controllers\FrontEnd\product\ProductPageController;
+use App\Http\Controllers\FrontEnd\cart\CartController;
 
 // use Illuminate\Support\Facades\Artisan;  // TO Run migrations without shell via route (DID NOT WORK)
 
@@ -68,7 +69,10 @@ define('ADMIN_LTE', "XAdminLTE");
         //     return view(FRONT_END.'/product', ['product_slug' => $product_slug]);
         // })->name('product');
 
-        Route::get('/product/{product_slug}', [ProductPageController::class, 'CREATE'])->name('product');
+        Route::get('/product/{product_slug}', [ProductPageController::class, 'INDEX'])->name('product');
+        
+        // Route::get('get-color-attribute', [ProductPageController::class, 'get_variant_attribute']); //API
+        Route::get('/get-color-attribute', [ProductPageController::class, 'get_variant_attribute'])->name('get-color-attribute'); //API
     // PRODUCT END
 
     
@@ -104,6 +108,8 @@ define('ADMIN_LTE', "XAdminLTE");
         Route::get('/cart', function () {
             return view(FRONT_END.'/cart');
         });
+
+        Route::post('/add-to-cart', [CartController::class, 'STORE'])->name('add-to-cart');
     // CART END
 
     // CHECKOUT
