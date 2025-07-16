@@ -16,4 +16,9 @@ class AttributeValue extends Model
         'value',
         'label'
     ];
+
+    public function attribute(){
+        // return $this->belongsTo(Attribute::class, '$this->foreign_key', 'local_key');
+        return $this->belongsTo(Attribute::class, 'attribute_id')->select('id', 'name');
+    }
 }

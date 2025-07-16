@@ -15,4 +15,11 @@ class AttributeMapper extends Model
         'attribute_value_id',
         'variant_id'
     ];
+
+    public function attributeValues(){
+        // return $this->belongsTo(AttributeValue::class, '$this->foreign_key', 'local_key');
+        return $this->belongsTo(AttributeValue::class, 'attribute_value_id')->select('id', 'value', 'label', 'attribute_id');
+    }
+
+    
 }

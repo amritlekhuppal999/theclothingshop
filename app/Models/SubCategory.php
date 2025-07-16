@@ -20,4 +20,9 @@ class SubCategory extends Model
         'featured_in_page',
         'status'
     ];
+
+    // Relations  (SEE DOCS for implementation details)
+    public function category() {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

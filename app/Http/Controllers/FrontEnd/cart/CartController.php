@@ -17,8 +17,49 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class CartController extends Controller
 {
     
+    private $FRONT_END = 'front-end';
+    private $VIEW_NOT_FOUND = '404';
+    
     private $default_quantity_limit = 10;
     private $cooldown_period = '1 Day';
+
+
+    // view cart page
+    public function CREATE() {
+        try {
+            
+            $cartData = Cart::with([
+                                'product' => fn($q) => $q->select('id', 'product_name', 'product_slug'),
+                                'product.primaryImage' => fn($q) => $q->select('product_id', 'image_location'),
+                                'variants.productAttributes.attributeValues.attribute',
+                                'product.PCM.subCategory' => fn($q) => $q->select('id', 'sub_category_name')
+                            ])
+                            ->select('id', 'product_id', 'variant_id', 'quantity')
+                            ->get();
+
+            $log_data = [
+                // "cartSql" => $cartData->toSql(),
+                // "variant_id" => $variant_data->getBindings(),
+                // "category_data" => $cart_data[0]["sub_product"]["product_attributes"],
+                "cartData" => $cartData->toArray(),
+            ];
+            //\Log::info("\nCart Data: ", $log_data);
+            
+            $returnData = [
+                // "cartData" => $cartData->get()->toArray()
+                "cartData" => $cartData->toArray()
+            ];
+        } 
+        catch (\Throwable $th) {
+            $returnData = [
+                "cartData" => [],
+                "message" => "Unable to load cart data.",
+                "error" => $th->getMessage()
+            ];
+        }
+        
+        return view($this->FRONT_END.'/cart', $returnData);
+    }
 
     // saves in cart 
     public function STORE(Request $request){

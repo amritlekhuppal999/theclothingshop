@@ -105,8 +105,10 @@ define('ADMIN_LTE', "XAdminLTE");
     // ORDERS END
 
     // CART
-        Route::get('/cart', function () {
-            return view(FRONT_END.'/cart');
+        Route::middleware(['auth'])->group(function(){
+            
+            Route::get('/cart', [CartController::class, 'CREATE']);
+
         });
 
         Route::post('/add-to-cart', [CartController::class, 'STORE'])->name('add-to-cart');

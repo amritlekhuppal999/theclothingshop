@@ -54,7 +54,7 @@
                 <h3 class="text-danger">Advance Filter</h3>
                 <h3 class="text-secondary">SKU GENERATOR</h3>
                 <h3 class="text-success">EDIT PRODUCT</h3>
-                <h3 class="text-secondary">EDIT VARIANTS - some change needed</h3>
+                <h3 class="text-success">EDIT VARIANTS - some change needed</h3>
                 <h3 class="text-secondary">VARIANT IMAGES</h3>
                 <h3 class="text-success">MANAGE STOCK</h3>
                 <h3 class="text-red">Database Records Deleter</h3>
@@ -66,7 +66,8 @@
                 <h3 class="text-success">FE-LOAD PRODUCTS</h3>
                 <h3 class="text-success">FE-MAKE DYNAMIC</h3>
                 <h3 class="text-success">Category PRODUCT PAGE size and color attributes</h3>
-                <h3 class="text-danger">PRODUCT PAGE</h3>
+                <h3 class="text-success">PRODUCT PAGE</h3>
+                <h4 class="text-secondary">PRODUCT PAGE Check Availablity</h4>
                 <h3 class="text-danger">CART</h3>
                 <h3 class="text-danger">CHECKOUT</h3>
                 <h3 class="text-danger">ORDER</h3>

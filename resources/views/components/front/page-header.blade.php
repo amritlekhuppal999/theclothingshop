@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
 <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 
+{{-- Bootstrap 5 --}}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
 <!-- MAIN CSS -->
 <link rel="stylesheet" href="{{ asset('css/front-end/main.css') }}">
 

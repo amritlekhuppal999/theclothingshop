@@ -23,4 +23,20 @@ class Product extends Model
         'long_description',
         'status'
     ];
+
+
+    public function variants() {
+        return $this->hasMany(SubProduct::class, 'product_id')->select('id', 'product_id', 'variant_name');
+    }
+    
+    public function primaryImage() {
+        return $this->hasOne(ProductImage::class, 'product_id')->where('prime_image', 1);
+    }
+
+    public function PCM(){  // category mapper
+        return $this->hasMany(ProductCategoryMapper::class, 'product_id');
+    }
+
+    
+
 }

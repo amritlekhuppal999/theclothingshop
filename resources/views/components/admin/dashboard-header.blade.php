@@ -31,6 +31,9 @@
     {{-- SELECTPICKER --}}
     <link rel="stylesheet" href="{{ asset('plugins/selectpicker/css/bootstrap-select.min.css') }}">
 
+    {{-- Bootstrap --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
     {{-- <link rel="stylesheet" href="{{ asset("plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css")}}"> --}}
 
 
