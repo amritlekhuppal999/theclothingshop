@@ -28,6 +28,16 @@ class CartController extends Controller
     public function CREATE() {
         try {
             
+            /**
+             * NOTE !!!!!!!!
+             * When dealing with RELATIONS and you intend to chain the relations like below.... 
+             * MAKE SURE TO INCLUDE THE `foreign_key` column that makes that relation possible aswell as local_key column whereever necessary.
+             * 
+             * These dont throw conventional error like laravel does so be carefull and check for missing foreign keys religiously if you dont see 
+             * your desigred result. It took me 3-4 days to understand and fix the Laravel Eloquent Relations.
+             * 
+             */
+
             $cartData = Cart::with([
                                 'product' => fn($q) => $q->select('id', 'product_name', 'product_slug'),
                                 'product.primaryImage' => fn($q) => $q->select('product_id', 'image_location'),
