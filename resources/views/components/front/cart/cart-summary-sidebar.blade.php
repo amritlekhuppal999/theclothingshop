@@ -17,11 +17,11 @@
             {{-- <h2 class="cart-title">CART</h2> --}}
             
             <div class="coupon-section">
-                <input type="text" class="form-control" placeholder="Apply Coupon">
+                <input type="text" class="form-control" placeholder="Apply Coupon (Coming soon)">
             </div>
             
             <div class="voucher-section">
-                <input type="text" class="form-control" placeholder="Gift Voucher">
+                <input type="text" class="form-control" placeholder="Gift Voucher (Coming soon)">
             </div>
             
             <div class="gift-wrap-section">

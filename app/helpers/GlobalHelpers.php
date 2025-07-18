@@ -4,6 +4,7 @@
 use App\Services\CategoryService;
 use App\Services\ProductService;
 use App\Services\AttributeService;
+use App\Services\WishlistService;
 
     if (!function_exists('base64_to_file')) {
         
@@ -154,12 +155,23 @@ use App\Services\AttributeService;
         }
     // PRODUCTS END
 
+    
+    // WISHLIST
+        if (!function_exists('isAddedToWishlist')) {
+            function isAddedToWishlist($product_id){   // can use slug aswell
+
+                return app(WishlistService::class)->isAddedToWishlist($product_id);
+                // if confused what the hell this is , its a service class, read docs
+            }
+        }
+    // WISHLIST END
+    
+    
     if(!function_exists('get_target_group')){
         function get_target_group($gender_code){
             return app(ProductService::class)->get_target_group($gender_code);
         }
     }
-
 
 
 

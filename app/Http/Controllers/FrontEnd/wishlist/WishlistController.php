@@ -32,7 +32,7 @@ class WishlistController extends Controller
 
         $productId = $request->productId;
         $userId = session()->has('web.UUID') ? session('web.UUID') : null;
-
+        
         try {
             Product::findOrFail($productId);
             $wishlistItem = Wishlist::where('product_id', $productId)->where('user_id', $userId);
@@ -83,6 +83,65 @@ class WishlistController extends Controller
             return response()->json([
                 "type" => "Failed",
                 "message" => "Something went wrong. Unable to add product to your wishlist.",
+                "errors" => $th->getMessage(),
+                "code" => 500,
+                "requested_action_performed" => false,
+                "reload" => false
+            ]);
+        }
+        
+    }
+
+
+    public function DELETE(Request $request){
+
+        if (!Auth::guard('web')->check()) {
+            return response()->json([
+                "type" => "Failed",
+                "message" => "Please login to continue",
+                "errors" => "Session Expired",
+                "code" => 401,
+                "requested_action_performed" => false,
+                "reload" => true
+            ]);
+        }
+
+        $productId = $request->productId;
+        $userId = session()->has('web.UUID') ? session('web.UUID') : null;
+        
+        try {
+            // Product::findOrFail($productId);
+            
+            $wishlistItem = Wishlist::where('product_id', $productId)->where('user_id', $userId)->delete();
+
+            return response()->json([
+                "type" => "Success",
+                "message" => "Product removed from wishlist",
+                "errors" => "",
+                "code" => 200,
+                "requested_action_performed" => true,
+                "reload" => false
+            ]);
+        } 
+        
+        // catch (ModelNotFoundException $e) {
+
+        //     return response()->json([
+        //         "type" => "Failed",
+        //         "message" => "Invalid product.",
+        //         "errors" => $e->getMessage(),
+        //         "code" => 404,
+        //         "requested_action_performed" => false,
+        //         "reload" => false
+        //     ]);
+        // }
+        
+        catch (\Throwable $th) {
+            // \Log::info("\Error Data: ", ["error" => $th->getMessage()]);
+
+            return response()->json([
+                "type" => "Failed",
+                "message" => "Something went wrong. Unable to remove product from your wishlist.",
                 "errors" => $th->getMessage(),
                 "code" => 500,
                 "requested_action_performed" => false,

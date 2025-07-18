@@ -1,138 +1,129 @@
 
 
-<div class="row" id="livewire-load-product">
-    <style>
+    <div class="row" id="livewire-load-product">
+        <style>
+            
+        </style>
         
-    </style>
-    
-    {{-- {{ $totalRecords }} --}}
-    @if($productList->isNotEmpty())
-        
-        @foreach($productList as $key => $product)
-            {{-- <x-front.product.product-card
-                displayPage="category"
-                cardType="product"
-                cardSize="3"
-                cardTheme="{{ ($key == 0) ? 'dark' : '' }}"
-                slug="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}"
-                imageSlug="{{ asset($product["image_location"]) }}"
-                description="{{ $product["short_description"] }}"
-            /> --}}
+        {{-- {{ $totalRecords }} --}}
+        @if($productList->isNotEmpty())
+            
+            @foreach($productList as $key => $product)
+                {{-- <x-front.product.product-card
+                    displayPage="category"
+                    cardType="product"
+                    cardSize="3"
+                    cardTheme="{{ ($key == 0) ? 'dark' : '' }}"
+                    slug="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}"
+                    imageSlug="{{ asset($product["image_location"]) }}"
+                    description="{{ $product["short_description"] }}"
+                /> --}}
 
 
-            <div class="col-md-3" wire:key="item-{{ $product["product_id"] }}" @if($loop->last) id="last_record" @endif>
-                {{-- <div class="card {{ ($key == 0) ? 'dark' : '' }}" style="">
-                    <a href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}">
-                        <img 
-                            @php
-                                $loc_img = ($product["image_location"] !=null ) ? $product["image_location"] : 'images/product-card-loader.jpg';
-                            @endphp
-                            src="{{  asset($loc_img) }}" 
-                            class="card-img-top" alt="..."
-                        />
-                    </a>
-                    
-                    <div class="card-body">
-                        <h5 class="text-center" >
-                            {{ $product["product_name"] }}
-                        </h5>
-                    </div>
-                </div> --}}
-                
-                <div class="card product-card border-0 {{ ($key == 0) ? 'dark' : '' }}">
-                    <div class="product-image">
+                <div class="col-md-3" wire:key="item-{{ $product["product_id"] }}" @if($loop->last) id="last_record" @endif>
+                    {{-- <div class="card {{ ($key == 0) ? 'dark' : '' }}" style="">
                         <a href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}">
                             <img 
                                 @php
                                     $loc_img = ($product["image_location"] !=null ) ? $product["image_location"] : 'images/product-card-loader.jpg';
                                 @endphp
-                                src="{{ asset($loc_img) }}" 
-                                alt="Batman Caped Crusader Hoodie" class="card-img-top"
+                                src="{{  asset($loc_img) }}" 
+                                class="card-img-top" alt="..."
                             />
                         </a>
                         
-                        {{-- <div class="oversized-fit">OVERSIZED FIT</div> --}}
-
-                        <button 
-                            class="favorite-btn" 
-                            onclick="toggleFavorite(this)" 
-                            aria-label="Add to favorites">
-                            <i class="far fa-heart"></i>
-                        </button>
-                    </div>
-                    <div class="card-body">
-                        <a href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}">
-                            <h5 class="product-title">
+                        <div class="card-body">
+                            <h5 class="text-center" >
                                 {{ $product["product_name"] }}
                             </h5>
-                        </a>
+                        </div>
+                    </div> --}}
+                    
+                    <div class="card product-card border-0 {{ ($key == 0) ? 'dark' : '' }}">
+                        <div class="product-image">
+                            <a href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}">
+                                <img 
+                                    @php
+                                        $loc_img = ($product["image_location"] !=null ) ? $product["image_location"] : 'images/product-card-loader.jpg';
+                                    @endphp
+                                    src="{{ asset($loc_img) }}" 
+                                    alt="Batman Caped Crusader Hoodie" class="card-img-top"
+                                />
+                            </a>
+                            
+                            {{-- <div class="oversized-fit">OVERSIZED FIT</div> --}}
 
-                        @php
-                            $base_price = $product["base_price"];
-                            $discount_percentage = $product["discount_percentage"];
-                            $discount_amount = ($discount_percentage/100) * $base_price;
-                            //echo $discount_amount;
-                            $discounted_price = $base_price - $discount_amount;
-                        @endphp
+                            <button 
+                                class="favorite-btn {{ isAddedToWishlist($product["product_id"]) ? "active" : "" }}" 
+                                data-product_id="{{ $product["product_id"] }}"
+                                data-saved_in_wishlist="{{ isAddedToWishlist($product["product_id"]) ? 1 : 0 }}"
+                                aria-label="Add to favorites">
+                                <i class="{{ isAddedToWishlist($product["product_id"]) ? "fas fa-heart" : "far fa-heart" }}"  
+                                    data-product_id="{{ $product["product_id"] }}"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}">
+                                <h5 class="product-title">
+                                    {{ $product["product_name"] }}
+                                </h5>
+                            </a>
 
-                        <div class="price-section">
-                            <span class="current-price">₹{{ $discounted_price }}</span>
-                            <span class="original-price">₹{{ $base_price }}</span>
-                            <span class="discount-badge">{{ floor($product["discount_percentage"]) }}% </span>
+                            @php
+                                $base_price = $product["base_price"];
+                                $discount_percentage = $product["discount_percentage"];
+                                $discount_amount = ($discount_percentage/100) * $base_price;
+                                //echo $discount_amount;
+                                $discounted_price = $base_price - $discount_amount;
+                            @endphp
+
+                            <div class="price-section">
+                                <span class="current-price">₹{{ $discounted_price }}</span>
+                                <span class="original-price">₹{{ $base_price }}</span>
+                                <span class="discount-badge">{{ floor($product["discount_percentage"]) }}% </span>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
-            </div>
+                {{-- {{ $product["product_name"] }} --}}
+            @endforeach
 
-            {{-- {{ $product["product_name"] }} --}}
-        @endforeach
+            @if($loadAmount < $totalRecords)
+                {{-- <div class="col-md-12 text-center">
+                    <h3>That's all from us... </h3>
+                </div> --}}
 
-        @if($loadAmount < $totalRecords)
-            {{-- <div class="col-md-12 text-center">
-                <h3>That's all from us... </h3>
-            </div> --}}
-
-            <div class="col-md-12 text-center"
-                x-data
-                x-intersect="$wire.loadMore()">
-                {{-- <h3>Loading more...</h3> --}}
-                <h3>Chottu aur nikaal...</h3>
-            </div>
+                <div class="col-md-12 text-center"
+                    x-data
+                    x-intersect="$wire.loadMore()">
+                    {{-- <h3>Loading more...</h3> --}}
+                    <h3>Chottu aur nikaal...</h3>
+                </div>
+            @else
+                <div class="col-md-12 text-center mb-2">
+                    <hr>
+                    <img src="{{ asset("images/you-wanted-more.jpeg") }}" alt="" style="border-radius: 10px;">
+                    <h6>You wanted more??</h6>
+                </div>
+            @endif
+        
         @else
-            <div class="col-md-12 text-center mb-2">
-                <hr>
-                <img src="{{ asset("images/you-wanted-more.jpeg") }}" alt="" style="border-radius: 10px;">
-                <h6>You wanted more??</h6>
+        
+            <div class="col-md-12">
+                <h3>No product available.</h3>
             </div>
+        
         @endif
-    
-    @else
-    
-        <div class="col-md-12">
-            <h3>No product available.</h3>
-        </div>
-    
-    @endif
 
-    
-</div>
+        
+    </div>
 
 @push('scripts')
 
     <script>
-        function toggleFavorite(button) {
-            const icon = button.querySelector('i');
-            const isActive = button.classList.contains('active');
-            
-            if (isActive) {
-                button.classList.remove('active');
-                icon.className = 'far fa-heart';
-            } else {
-                button.classList.add('active');
-                icon.className = 'fas fa-heart';
-            }
-        }
+        
     </script>
 
     {{-- <script>

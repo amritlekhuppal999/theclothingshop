@@ -146,7 +146,7 @@
                             <livewire:front.product.load-products
                                 id="" 
                                 :categorySlug="$category_slug" 
-                                wire:listen="filtersUpdated->triggerRefresh"
+                                {{-- wire:listen="filtersUpdated->triggerRefresh" --}}
                             />
                             
                             {{-- <div class="row">
@@ -286,6 +286,84 @@
                 let sort = new URLSearchParams(window.location.search).get('sort')
                 LIVEWIRE_PRODUCT_COMPONENT.updateSort(sort);
                 // console.log(theme)
+            }
+
+
+            // Save remove from wishlist
+            document.addEventListener('click', async event=>{
+                let element = event.target;
+                if(element.className.includes("favorite-btn")){
+                    
+                    toggleFavorite(element);
+                    let addToWishlistBtn = element;
+                    addToWishlistBtn.disabled = true;
+
+                    const request_data = {
+                        productId: addToWishlistBtn.dataset.product_id
+                    };
+                    const params = new URLSearchParams(request_data);
+
+                    const request_options = {
+                        method: 'GET',
+                        // headers: {},
+                        // body: JSON.stringify(request_data)
+                    };
+
+                    let route = '/add-to-wishlist?'; 
+                    if(addToWishlistBtn.dataset.saved_in_wishlist == 1){
+                        route = '/remove-from-wishlist?';
+
+                    }
+                    let url = route+params;
+
+                    try{
+                        let response = await fetch(url, request_options);
+
+                        //console.log(response);
+                        if(response.ok){
+                            let response_data = await response.json();
+                            //console.log(response_data);
+
+                            if(response_data.code === 200){
+                                toastr.success(response_data.message);                               
+                            }
+
+                            else {
+                                toastr.error(response_data.message);
+                                toggleFavorite(element);
+                            }
+                            
+
+                            setTimeout(()=>{
+                                if(response_data.reload) location.reload();
+                            }, 800);
+                        }
+
+                        addToWishlistBtn.disabled = false;
+
+                    }
+                    catch(error){
+                        console.error('Error:', error);
+                        addToWishlistBtn.disabled = false;
+                        toggleFavorite(element);
+                    }
+                }
+
+                
+            });
+
+            // wishlist btn fn
+            function toggleFavorite(button) {
+                const icon = button.querySelector('i');
+                const isActive = button.classList.contains('active');
+                
+                if (isActive) {
+                    button.classList.remove('active');
+                    icon.className = 'far fa-heart';
+                } else {
+                    button.classList.add('active');
+                    icon.className = 'fas fa-heart';
+                }
             }
 
         });

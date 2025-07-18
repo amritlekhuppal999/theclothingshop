@@ -121,14 +121,6 @@ class CartController extends Controller
         return view($this->FRONT_END.'/cart', $returnData);
     }
 
-    function calculate_itme_price($total_price, $discount_sum, $discount_count){
-        $divide_by_total = $discount_count * 100;  // cause we have summed the total discounts
-        
-        $discount_amount = ($discount_sum/$divide_by_total) * $total_price;
-
-        $final_discounted_price = $total_price - $discount_amount;
-    }
-
     // saves in cart 
     public function STORE(Request $request){
 
@@ -162,8 +154,11 @@ class CartController extends Controller
 
         try {
             
+            $userId = session()->has('web.UUID') ? session('web.UUID') : null;
+            
             $check_product = Cart::where('product_id', $request->product_id)
-                                    ->where('variant_id', $request->variant_id);
+                                    ->where('variant_id', $request->variant_id)
+                                    ->where('user_id', $userId);
                                     
             // update quantity if product is already present
             if($check_product->get()->isNotEmpty()){

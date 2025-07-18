@@ -119,6 +119,7 @@ define('ADMIN_LTE', "XAdminLTE");
 
     // Wishlist (without middleware)
         Route::get('/add-to-wishlist', [WishlistController::class, 'STORE'])->name('add-to-wishlist');
+        Route::get('/remove-from-wishlist', [WishlistController::class, 'DELETE'])->name('remove-from-wishlist');
     // Wishlist (without auth middleware) END
 
 
