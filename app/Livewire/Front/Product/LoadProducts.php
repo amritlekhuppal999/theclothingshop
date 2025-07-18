@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * LIVEWIRE WORKING EXAMPLE
+ */
+
 namespace App\Livewire\Front\Product;
 
 use Livewire\Component;

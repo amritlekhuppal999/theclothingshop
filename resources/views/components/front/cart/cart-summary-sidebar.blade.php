@@ -1,4 +1,15 @@
+@php
+    $cartSummary = $cartSummary[0];
+    $total_price_before_discount = round($cartSummary["total_price_before_discount"], 2);
+    $total_discount_amount = round($cartSummary["total_discount_amount"], 2);
+    $total_price_after_discount = round($cartSummary["total_price_after_discount"], 2);
+@endphp
 
+{{-- <pre>
+    @php
+        var_dump($cartSummary);
+    @endphp
+</pre> --}}
 
 
     <div class="cart-sidebar">
@@ -27,18 +38,19 @@
                 
                 <div class="summary-row">
                     <span>Cart Total</span>
-                    <span>₹ 6084.46</span>
+                    <span>₹ {{ $total_price_before_discount }}</span>
                 </div>
                 
                 <div class="summary-row">
-                    <span>Discount</span>
-                    <span class="discount-amount">- ₹ 600.00</span>
+                    {{-- <span>Discount</span> --}}
+                    <span>Saved</span>
+                    <span class="discount-amount">- ₹ {{ $total_discount_amount }}</span>
                 </div>
                 
-                <div class="summary-row">
+                {{-- <div class="summary-row">
                     <span>GST</span>
                     <span class="gst-amount">₹ 611.54</span>
-                </div>
+                </div> --}}
                 
                 <div class="summary-row">
                     <span>Shipping Charges</span>
@@ -47,7 +59,7 @@
                 
                 <div class="summary-row total">
                     <span>Total Amount</span>
-                    <span>₹ 6096.00</span>
+                    <span>₹ {{ $total_price_after_discount }} </span>
                 </div>
             </div>
             

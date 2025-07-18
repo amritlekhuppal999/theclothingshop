@@ -9,6 +9,7 @@ use Illuminate\Http\Request;    //to have the current HTTP request automatically
 use App\Http\Controllers\FrontEnd\home\HomeController;
 use App\Http\Controllers\FrontEnd\product\ProductPageController;
 use App\Http\Controllers\FrontEnd\cart\CartController;
+use App\Http\Controllers\FrontEnd\wishlist\WishlistController;
 
 // use Illuminate\Support\Facades\Artisan;  // TO Run migrations without shell via route (DID NOT WORK)
 
@@ -94,6 +95,8 @@ define('ADMIN_LTE', "XAdminLTE");
                 Route::get('/wishlist', function () {
                     return view(FRONT_END.'/Wishlist');
                 });
+
+                
             // WISHLIST END
         });
     // AUTH MIDDLEWARE END
@@ -106,13 +109,19 @@ define('ADMIN_LTE', "XAdminLTE");
 
     // CART
         Route::middleware(['auth'])->group(function(){
-            
             Route::get('/cart', [CartController::class, 'CREATE']);
-
         });
 
         Route::post('/add-to-cart', [CartController::class, 'STORE'])->name('add-to-cart');
+        Route::get('/remove-cart-item', [CartController::class, 'DELETE'])->name('remove-cart-item');
+        Route::get('/cart-update-item-qty', [CartController::class, 'UPDATE'])->name('cart-update-item-qty');
     // CART END
+
+    // Wishlist (without middleware)
+        Route::get('/add-to-wishlist', [WishlistController::class, 'STORE'])->name('add-to-wishlist');
+    // Wishlist (without auth middleware) END
+
+
 
     // CHECKOUT
         Route::get('/checkout', function () {

@@ -18,6 +18,9 @@
 {{-- Bootstrap 5 --}}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
+<!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+
 <!-- MAIN CSS -->
 <link rel="stylesheet" href="{{ asset('css/front-end/main.css') }}">
 

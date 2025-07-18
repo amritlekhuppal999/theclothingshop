@@ -864,7 +864,7 @@
                                         
                                         {{-- Price Section --}}
                                         <div class="price-section">
-                                            <div class="price" id="product-price">₹1199.00</div>
+                                            <div class="price" id="product-price">₹{{ $product["base_price"] }}</div>
                                             <div class="price-label">MRP incl. of all taxes</div>
                                         </div>
                                         

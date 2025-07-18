@@ -26,7 +26,7 @@ class Product extends Model
 
 
     public function variants() {
-        return $this->hasMany(SubProduct::class, 'product_id')->select('id', 'product_id', 'variant_name');
+        return $this->hasMany(SubProduct::class, 'product_id')->select('id', 'product_id', 'variant_name', 'stock');
     }
     
     public function primaryImage() {

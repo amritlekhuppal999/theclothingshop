@@ -261,67 +261,8 @@
 
 
 @php
-    $itemDetailsArr = array(
-        [
-            "product_id"    => "1",
-            "product_slug"    => "product_slug",
-            "product_name"  =>  "Hulk",
-            "product_category"  =>  "Sleeveless",
-            "product_image"  =>  "images/op-hoodie.webp",
-            "size"  =>  "L",
-            "quantity"  =>  "1",
-            "color" =>  "Green",
-            "item_price" =>  "699",
-            "item_discount" => "100",
-            "delivery_details"  =>  array(
-                "estimated_delivery" => "31 Oct",
-                "delivery_status"   => ""
-            )
-        ],
-        
-        [
-            "product_id"    => "2",
-            "product_slug"    => "product_slug",
-            "product_name"  =>  "Rick-N-Morty Tees",
-            "product_category"  =>  "Oversized",
-            "product_image"  =>  "images/rick-n-m-tees.webp",
-            "size"  =>  "L",
-            "quantity"  =>  "1",
-            "color" =>  "Black",
-            "item_price" =>  "699",
-            "item_discount" => "100",
-            "delivery_details"  =>  array(
-                "estimated_delivery" => "2 Nov",
-                "delivery_status"   => ""
-            )
-        ],
-
-        [
-            "product_id"    => "3",
-            "product_slug"    => "product_slug",
-            "product_name"  =>  "One Piece Shirts",
-            "product_category"  =>  "Oversized",
-            "product_image"  =>  "images/one-piece.webp",
-            "size"  =>  "XL",
-            "quantity"  =>  "3",
-            "color" =>  "Grey",
-            "item_price" =>  "699",
-            "item_discount" => "100",
-            "delivery_details"  =>  array(
-                "estimated_delivery" => "5 Nov",
-                "delivery_status"   => ""
-            )
-        ]
-    );
-
-
-    $billing_details = array(
-        "cart_total" => "6084.00",
-        "discount" =>  "600.00",
-        "GST" => "611.54",
-        "shipping_charges"  => "20",
-        "total_amount" => "6093"
-    );
+    $cartDataArr = $cartData->toArray();
+    $cartSummary = $cartSummary->toArray();
 @endphp
 
 
@@ -346,23 +287,35 @@
                 </div>
             </div>
 
-            <div class="row">
-                <!-- Cart Items -->
-                <div class="col-lg-8">
-                    @foreach($cartData as $cartItems)
+            @if($cartData->isNotEmpty())
+                
+                <div class="row">
+                    <!-- Cart Items -->
+                    <div class="col-lg-8">
+                        @foreach($cartDataArr as $cartItems)
+                            
+                            <x-front.cart.cart-item  :cartItems="$cartItems" />
+
+                        @endforeach
                         
-                        <x-front.cart.cart-item  :cartItems="$cartItems" />
+                    </div>
 
-                    @endforeach
-                    
+                    <!-- Cart Summary Sidebar -->
+                    <div class="col-lg-4">
+                        <x-front.cart.cart-summary-sidebar :cartSummary="$cartSummary" />
+                    </div>
+                
                 </div>
 
-                <!-- Cart Summary Sidebar -->
-                <div class="col-lg-4">
-                    <x-front.cart.cart-summary-sidebar />
+            @else
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <h4>Cart Empty!!</h4>
+                        <img class="mb-2" src="{{ asset('images/arey-le-lo.jpg') }}" alt="" style="height:50%; border-radius:10px;">
+                        <h4>Offer Jabar hai humhari... kuch le lo.. arey le lo.</h4>
+                    </div>
                 </div>
-            
-            </div>
+            @endif
 
 
             
@@ -373,6 +326,230 @@
 
 
 
-@section('content-scripts')
-    
-@endsection
+@push('scripts') 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', event=>{
+
+            // CART ITEMS
+                document.addEventListener('click', async e=>{
+                    let element = e.target;
+                    
+                    // Remove from cart
+                    if(element.className.includes("remove-item")){
+
+                        if(!confirm("Remove item from cart?")){
+                            return false;
+                        }
+
+                        let removeItemBtn = element;
+                        removeItemBtn.disabled = true;
+
+                        let dataObj = {
+                            cartItemId: removeItemBtn.dataset.item_id
+                        };
+                        let route = '/remove-cart-item?';
+
+                        try{
+                            let response = await cartActions(route, dataObj);
+
+                            //console.log(response);
+                            if(response.ok){
+                                let response_data = await response.json();
+                                //console.log(response_data);
+
+                                if(response_data.code === 200){
+                                    toastr.success(response_data.message);
+
+                                    document.getElementById(removeItemBtn.dataset.item_id).remove();
+                                }
+
+                                else toastr.error(response_data.message);
+
+                                setTimeout(()=>{
+                                    if(response_data.reload) location.reload();
+                                }, 800);
+                            }
+
+                            removeItemBtn.disabled = false;
+
+                        }
+                        catch(error){
+                            console.error('Error:', error);
+                            removeItemBtn.disabled = false;
+                        }                  
+
+                    }
+
+                    // Wishlist
+                    if(element.className.includes("add-to-wishlist")){
+                        if(!confirm("Add product to wishlist?")){
+                            return false;
+                        }
+
+                        let addToWishlistBtn = element;
+                        addToWishlistBtn.disabled = true;
+
+                        let dataObj = {
+                            productId: addToWishlistBtn.dataset.product_id
+                        };
+                        let route = '/add-to-wishlist?';
+
+                        try{
+                            let response = await cartActions(route, dataObj);
+
+                            //console.log(response);
+                            if(response.ok){
+                                let response_data = await response.json();
+                                //console.log(response_data);
+
+                                if(response_data.code === 200){
+                                    toastr.success(response_data.message);                               
+                                }
+
+                                else toastr.error(response_data.message);
+
+                                setTimeout(()=>{
+                                    if(response_data.reload) location.reload();
+                                }, 800);
+                            }
+
+                            addToWishlistBtn.disabled = false;
+
+                        }
+                        catch(error){
+                            console.error('Error:', error);
+                            addToWishlistBtn.disabled = false;
+                        }
+                        
+                    }
+                });
+
+                //ON CHANGE EVENT
+                document.addEventListener('change', async e=>{
+                    let element = e.target;
+
+                    // QUANTITY
+                    if (element.className.includes("item-quantity")) {
+
+                        let changeItemEle = element;
+
+                        let originalQty = changeItemEle.dataset.quantity;
+                        let newQty = changeItemEle.value;
+
+                        changeItemEle.disabled = true;
+
+                        let dataObj = {
+                            cartItemId: changeItemEle.dataset.item_id,
+                            newQuantity: newQty
+                        };
+                        let route = '/cart-update-item-qty?';
+
+                        try{
+                            let response = await cartActions(route, dataObj);
+
+                            //console.log(response);
+                            if(response.ok){
+                                let response_data = await response.json();
+                                //console.log(response_data);
+
+                                if(response_data.code === 200){
+                                    toastr.success(response_data.message);
+                                    
+                                    // get cart item element using itemId for targated dom manupulation;
+                                    let cartItemId = changeItemEle.dataset.item_id;
+                                    let itemCardBlock = document.getElementById(cartItemId);
+                                    update_item_prices(newQty, itemCardBlock);                               
+                                }
+
+                                else toastr.error(response_data.message);
+
+                                setTimeout(()=>{
+                                    if(response_data.reload) location.reload();
+                                }, 800);
+                            }
+
+                            else{
+                                changeItemEle.value = originalQty;
+                            }
+
+                            changeItemEle.disabled = false;
+
+                        }
+                        catch(error){
+                            console.error('Error:', error);
+                            changeItemEle.disabled = false;
+                            changeItemEle.value = originalQty;
+                        }
+                    }
+                });
+
+                //cart action btn
+                async function cartActions(route, dataObj){
+                    
+                    const request_data = dataObj;
+                    const params = new URLSearchParams(request_data);
+
+                    const request_options = {
+                        method: 'GET',
+                        // headers: {},
+                        // body: JSON.stringify(request_data)
+                    };
+
+                    //let url = '/remove-cart-item?'+params;
+                    let url = route+params;
+                    return await fetch(url, request_options);
+
+                    /*
+                        returns promise that will be handled in the calling function
+                    */
+                }
+
+
+                // update price section 
+                function update_item_prices($new_quantity, element){
+                    const priceSection = element.querySelector('.price-section');
+
+                    const discountedPrice = priceSection.querySelector('.discounted-price');
+                    const totalPrice = priceSection.querySelector('.total-price');
+                    // const mrpText = priceSection.querySelector('.mrp-text');
+                    const discountText = priceSection.querySelector('.price-difference');
+
+                    //let ogCurrentPrice = discountedPrice.value;
+                    //let ogOriginalPrice = totalPrice.value;
+                    // let ogMrpText = mrpText.value;
+                    // let ogDiscountText = discountText.value;
+
+                    let singleItemPrice = priceSection.dataset.single_item_price;
+                    let discountPercentage = priceSection.dataset.discount_percentage;
+
+                    let new_total_price = parseInt($new_quantity) * parseFloat(singleItemPrice);
+
+
+                    let discounted_amount = (discountPercentage/100) * new_total_price;
+                    let new_discounted_price = new_total_price - discounted_amount;
+                    //console.log(new_total_price, new_discounted_price); return false;
+                    let price_difference = new_total_price - new_discounted_price;
+
+                    discounted_amount = Math.round(discounted_amount*100) / 100 ;
+                    new_discounted_price = Math.round(new_discounted_price*100) / 100 ;
+                    price_difference = Math.round(price_difference*100) / 100 ;
+
+                    discountedPrice.innerText = `₹ ${new_discounted_price}`;
+                    totalPrice.innerText = `₹ ${new_total_price}`;
+
+                    discountText.innerText = `₹ ${price_difference} OFF`;
+                }
+            // CART ITEMS END
+
+            
+            
+            // CART ITEM SUMMARY
+
+            // CART ITEM SUMMARY END
+
+        });
+    </script>
+@endpush
+
+{{-- @once @endonce --}}

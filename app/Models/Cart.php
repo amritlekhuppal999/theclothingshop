@@ -25,7 +25,7 @@ class Cart extends Model
     }
 
     public function variants() {
-        return $this->belongsTo(SubProduct::class, 'variant_id')->select('id', 'product_id', 'variant_name');
+        return $this->belongsTo(SubProduct::class, 'variant_id')->select('id', 'product_id', 'variant_name', 'stock', 'price');
     }
 
     public function PCM(){
