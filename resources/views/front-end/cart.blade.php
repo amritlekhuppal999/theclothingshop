@@ -276,16 +276,10 @@
             <!-- <p>Page Content..</p> -->
 
             {{-- breadcrumb --}}
-            <div class="row">
-                <div class="col-md-6 offset-md-6 text-right mt-3 " > 
-                    {{-- <h3>/cart</h3> --}}
-                    
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                        <li class="breadcrumb-item active">cart</li>
-                    </ol>
-                </div>
-            </div>
+            <x-front.breadcrumb>
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active">Cart</li>
+            </x-front.breadcrumb>
 
             @if($cartData->isNotEmpty())
                 

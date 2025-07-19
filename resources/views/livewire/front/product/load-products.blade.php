@@ -1,9 +1,9 @@
 
 
     <div class="row" id="livewire-load-product">
-        <style>
-            
-        </style>
+        
+        {{-- This span will bring focus back to the top of the page when new results load upon parameter change --}}
+        {{-- <span id="bring-back-focus"></span> --}}
         
         {{-- {{ $totalRecords }} --}}
         @if($productList->isNotEmpty())

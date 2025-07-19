@@ -14,7 +14,7 @@
     </div> --}}
 
     <div class="content"> 
-        <div class="container-fluid">
+        <div class="container">
             <!-- <p>Page Content..</p> -->
 
             
@@ -77,10 +77,10 @@
             const LIVEWIRE_WISHLIST_COMPONENT = Livewire.find(loadWishlistElement.getAttribute('wire:id'));
 
             loadWishlistElement.addEventListener('click', async e=>{
-                e.preventDefault();
                 let element = e.target;
 
                 if(element.className.includes("remove-item")){
+                    e.preventDefault();
                     if(!confirm("Remove seletec item?")){
                         return false;
                     }

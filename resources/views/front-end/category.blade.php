@@ -21,7 +21,7 @@
         /* --- Custom Scrollbar Styles for WebKit browsers (Chrome, Safari, Edge) --- */
 
         /* Width of the scrollbar */
-        .scroll-container::-webkit-scrollbar {
+        .scroll-container::-webkit-scrollbar, .filter-sub-section::-webkit-scrollbar{
             width: 8px; /* Make it narrower */
         }
 
@@ -47,6 +47,37 @@
         .scroll-container {
             /* scrollbar-width: thin; /* 'auto' or 'thin' */
             /* scrollbar-color: #888 #f1f1f1; /* thumb color track color */
+        }
+
+        
+        
+        .filter-sub-section{
+            position:sticky; 
+            top:20px; 
+            /*background:red;*/
+            /*height:634px;*/
+            height: 60rem;
+            overflow-y:auto;
+        }
+        
+        .filter-sub-section-filler{
+            height:300px;
+        }
+
+        /*@media (min-width: 1200px) {
+            .filter-sub-section {
+                max-height: 61rem;
+            }
+        }*/
+        @media (min-width: 1870px) {
+            .filter-sub-section {
+                /*max-height: 61rem;*/
+                height: 100rem;
+                
+            }
+            .filter-sub-section-filler{
+                height:30rem;
+            }
         }
     </style>
 @endsection
@@ -117,82 +148,39 @@
                     <div class="row">
 
                         <!-- FILTERS -->
-                        <div class="col-md-3" id="filter-section">
+                        <div class="col-md-3  " id="filter-section" >
 
-                            <!-- SUB-CATEGORY -->
-                            <span id="subCatFilter-adjacent"></span>
-                            <x-front.category.sub-category-filter :categorySlug="$category_slug"/>
-
-                            <!-- THEME -->
-                            <span id="themeFilter-adjacent"></span>
-                            <x-front.category.theme-filter />
-
-                            <!-- Attribute -->
-                            <span id="attributeFilter-adjacent"></span>
-                            <x-front.category.attribute-filter />
+                            <div class="filter-sub-section ">
                             
-                            <!-- SIZE -->
-                            {{-- <span id="sizeFilter-adjacent"></span>
-                            <x-front.category.size-filter /> --}}
+                                <!-- SUB-CATEGORY -->
+                                <x-front.category.sub-category-filter :categorySlug="$category_slug" />
 
-                            <!-- PRICE -->
-                            <span id="priceFilter-adjacent"></span>
-                            <x-front.category.price-filter />
+                                <!-- THEME -->
+                                <x-front.category.theme-filter />
+
+                                <!-- Attribute -->
+                                <x-front.category.attribute-filter />
+                                
+                                <!-- PRICE -->
+                                <x-front.category.price-filter />
+
+                                <div class="filter-sub-section-filler ">
+                                    <!-- Lets see whats happening here...
+                                    So we made a sub-section and made it sticky so that the filter section does not fly off to 
+                                    oblivion when page is scrolled.
+                                    Next we added this filler div with some height because upon scrolling new items were loaded
+                                    preventing few parts of price filter never surfacing as scrolling further loaded more and
+                                    it kept the part hidden. Adding this filler allowed us to scroll further.
+                                    The scrollbar is hidden to make it look not UGLY -->
+                                </div>
+                            </div>
                         </div>
 
                         <!-- PRODUCTS -->
                         <div class="col-md-9">
 
-                            <livewire:front.product.load-products
-                                id="" 
-                                :categorySlug="$category_slug" 
-                                {{-- wire:listen="filtersUpdated->triggerRefresh" --}}
-                            />
-                            
-                            {{-- <div class="row">
-
-                                
-                                <x-front.product.product-card
-                                    displayPage="home"
-                                    cardType="category"
-                                    cardSize="3"
-                                    cardTheme="dark"
-                                    slug="/product/product_slug"
-                                    imageSlug="images/one-piece.webp"
-                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                                />
-
-                                <x-front.product.product-card
-                                    displayPage="home"
-                                    cardType="category"
-                                    cardSize="3"
-                                    cardTheme=""
-                                    slug="/product/product_slug"
-                                    imageSlug="images/op-hoodie.webp"
-                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                                />
-
-                                <x-front.product.product-card
-                                    displayPage="home"
-                                    cardType="category"
-                                    cardSize="3"
-                                    cardTheme=""
-                                    slug="/product/product_slug"
-                                    imageSlug="images/rick-n-m-tees.webp"
-                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                                />
-
-                                <x-front.product.product-card
-                                    displayPage="home"
-                                    cardType="category"
-                                    cardSize="3"
-                                    cardTheme=""
-                                    slug="/product/product_slug"
-                                    imageSlug="images/rick-n-m-tees.webp"
-                                    description="Some quick example text to build on the card title and make up the bulk of the card's content."
-                                />
-                            </div> --}}
-
+                            <livewire:front.product.load-products :categorySlug="$category_slug" />
+                
                         </div>
                     </div>
 

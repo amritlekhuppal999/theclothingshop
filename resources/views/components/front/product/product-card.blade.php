@@ -2,6 +2,8 @@
     $card_class = ($cardTheme == "dark") ? "bg-dark text-white" : "";
 @endphp
 
+    {{-- VIEW NOT IN USE --}}
+
     <!-- Product Card -->
 
     <div class="col-md-{{ $cardSize }}">

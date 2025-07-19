@@ -12,9 +12,9 @@
                     {{ $category["category_name"] }}
                 </a>
                 
-                <x-front.navbar.nav-items :categoryId="$category['id']" />
+                <x-front.navbar.nav-items :categoryId="$category['id']" :categorySlug="$category['category_slug']"/>
             </li>
 
         @endforeach
     </ul>
-    
+    {{--  --}}

@@ -11,11 +11,12 @@ use App\Models\SubCategory;         // ADDED
 class NavItems extends Component
 {
     public $sub_categories;
+    
     /*** Create a new component instance.*/
-    public function __construct(public $categoryId){
+    public function __construct(public $categoryId, public $categorySlug){
         
         try {
-            $sub_category_data = SubCategory::select('id', 'sub_category_name', 'sub_category_slug')
+            $sub_category_data = SubCategory::select('id', 'sub_category_name', 'sub_category_slug', 'category_id')
                 ->where('category_id', $categoryId)
                 ->where('status', 1);
 

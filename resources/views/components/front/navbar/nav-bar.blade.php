@@ -19,6 +19,7 @@
                 <!-- Left navbar links -->
                 <x-front.navbar.nav-menu :categories="$categories" />
                 
+                
                 <!-- SEARCH FORM -->
                 <x-front.searchbar />
             </div>
@@ -27,6 +28,7 @@
     
             <!-- Right navbar links -->
             <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+
                 
                 <!-- Messages Dropdown Menu -->
                 <x-front.navbar.nav-profile />

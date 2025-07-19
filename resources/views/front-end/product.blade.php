@@ -361,6 +361,12 @@
                 padding: 2.5rem;
             }
         }
+        @media (min-width: 1870px) {
+            .product-section {
+                max-width: 650px;
+                padding: 2.5rem;
+            }
+        }
     </style>
 
 
@@ -369,7 +375,8 @@
         .gallery-container {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-radius: 20px;
-            padding: 2rem;
+            /*padding: 2rem;*/
+            padding: 0;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             /*max-width: 600px;*/
             margin: 2rem auto;
@@ -637,7 +644,7 @@
         @media (max-width: 576px) {
             .gallery-container {
                 margin: 0.5rem;
-                padding: 1rem;
+                /*padding: 1rem;*/
                 border-radius: 12px;
             }
             
@@ -670,7 +677,7 @@
         @media (max-width: 400px) {
             .gallery-container {
                 margin: 0.25rem;
-                padding: 0.75rem;
+                /*padding: 0.75rem;*/
             }
             
             .main-image {
@@ -718,224 +725,190 @@
     @endphp
 
     <div class="content"> 
-        <div class="container-fluid">
+        <div class="container">
             <!-- <p>Page Content..</p> -->
-
-            <div class="row">
-                <!-- Breadcrumb -->
-                <div class="col-md-6 offset-md-6 text-right mt-3 mb-2"> 
-                    <span>Breadcrumb</span>
+            <!-- Breadcrumb -->
+            <x-front.breadcrumb>
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active">Product</li>
+            </x-front.breadcrumb>
+            
+            
+            <div class="row ">
+                
+                {{-- Product Image Gallery --}}
+                <div class="col-12 col-sm-6">
+                    <div class="gallery-container mt-0">
+                        <!-- Main Image Display -->
+                        <div class="main-image-container">
+                            {{-- <div class="product-badge">New Arrival</div> --}}
+                            @foreach($product_images as $key => $images)
+                                @if($images["prime_image"])
+                                    <img 
+                                        src="{{ asset($images["image_location"]) }}" 
+                                        class="main-image cursor-pointer" 
+                                        id="poster-image"
+                                        alt="Prime Product Image"
+                                    />
+                                @endif
+                            @endforeach
+                        </div>
+                        
+                        <!-- Thumbnails -->
+                        <div class="thumbnails-container" id="thumbnailsContainer">
+                            <!-- Thumbnails will be populated by JavaScript -->
+                            @foreach($product_images as $key => $images)    
+                                {{-- {{}} --}}
+                                <img 
+                                    src="{{ asset($images["image_location"]) }}" 
+                                    class=" thumbnail {{ ($images["prime_image"] == 1) ? "active" : "" }}"
+                                    alt="Product Image"
+                                />
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-md-12">
-                    
-                    <div class="card card-solid">
-                        <div class="card-body">
-                            
-                            <div class="row">
-                                
-                                {{-- Product Image Gallery --}}
-                                <div class="gallery-container">
-                                    <!-- Main Image Display -->
-                                    <div class="main-image-container">
-                                        {{-- <div class="product-badge">New Arrival</div> --}}
-                                        @foreach($product_images as $key => $images)
-                                            @if($images["prime_image"])
-                                                <img 
-                                                    src="{{ asset($images["image_location"]) }}" 
-                                                    class="main-image cursor-pointer" 
-                                                    id="poster-image"
-                                                    alt="Prime Product Image"
-                                                />
-                                            @endif
-                                        @endforeach
-                                        
-                                        {{-- <div class="image-overlay">
-                                            <div class="zoom-icon" id="zoomIcon">
-                                                <i class="fas fa-search-plus"></i>
-                                            </div>
-                                        </div> --}}
-                                        
-                                        {{-- <div class="image-actions">
-                                            <button class="action-btn" id="wishlistBtn" title="Add to Wishlist">
-                                                <i class="far fa-heart"></i>
-                                            </button>
-                                            <button class="action-btn" id="shareBtn" title="Share">
-                                                <i class="fas fa-share-alt"></i>
-                                            </button>
-                                        </div>
-                                        
-                                        <button class="navigation-arrows nav-prev" id="prevBtn">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </button>
-                                        <button class="navigation-arrows nav-next" id="nextBtn">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </button>
-                                        
-                                        <div class="image-counter">
-                                            <span id="currentImage">1</span> / <span id="totalImages">6</span>
-                                        </div> --}}
-                                    </div>
-                                    
-                                    <!-- Thumbnails -->
-                                    <div class="thumbnails-container" id="thumbnailsContainer">
-                                        <!-- Thumbnails will be populated by JavaScript -->
-                                        @foreach($product_images as $key => $images)    
-                                            {{-- {{}} --}}
-                                            <img 
-                                                src="{{ asset($images["image_location"]) }}" 
-                                                class=" thumbnail {{ ($images["prime_image"] == 1) ? "active" : "" }}"
-                                                alt="Product Image"
-                                            />
-                                        @endforeach
-                                    </div>
-                                </div>
+                {{-- Product Info --}}
+                <div class="col-12 col-sm-6">
+                    <div class="product-section mt-0">
+                        <h1 class="product-title"> {{ $product["product_name"] }} </h1>
 
-                                {{-- Product Info --}}
-                                <div class="col-12 col-sm-6">
-                                    <div class="product-section">
-                                        <h1 class="product-title"> {{ $product["product_name"] }} </h1>
-
-                                        <p class="product-description">
-                                            {{ $product["short_description"] }}
-                                        </p>
-                                        
-                                        {{-- Select Size --}}
-                                        <div class="size-selector">
-                                            <div class="size-label">
-                                                Please select one 
-                                                <a href="#" class="size-chart-link">
-                                                    <i class="fas fa-ruler"></i> Size Chart
-                                                </a>
-                                            </div>
-                                            
-                                            {{-- size btns --}}
-                                            <div class="" id="size-options"> <!-- size-options -->
-                                                @foreach(getAttributeList("size") as $key => $attribute)
-                                                    <button 
-                                                        class="size-btn {{ !isset($PAL[$attribute["value"]]) ? 'disabled' : '' }} " 
-                                                        data-product_id="{{ $product["id"] }}"
-                                                        data-attribute_id="{{ $attribute["id"] }}"
-                                                        data-size="{{ $attribute["value"] }}" 
-                                                        title="{{ !isset($PAL[$attribute["value"]]) ? 'Out of stock' : '' }}"
-                                                        {{ !isset($PAL[$attribute["value"]]) ? 'disabled' : '' }}>
-                                                        {{ $attribute["value"] }}
-                                                    </button>
-                                                @endforeach
-                                            </div>
-                                            
-                                            {{-- Notify Me --}}
-                                            <div class="mt-2">
-                                                <small class="text-muted">Size not available? 
-                                                    <a href="#" class="notify-link">
-                                                        <i class="fas fa-bell"></i> Notify Me
-                                                    </a>
-                                                </small>
-                                            </div>
-                                        </div>
-
-                                        {{-- Available Color (build by JS) --}}
-                                        <div id="color-selector">
-                                            
-                                            <span id="select-color-loading" hidden>Loading...</span>
-                                            
-                                            <div id="color-selector-body" hidden>
-                                                <div class="color-label">
-                                                    Available Color 
-                                                </div>
-                                                
-                                                {{-- color btns --}}
-                                                <div class="" id="color-options"> </div>
-                                            </div>
-                                        </div>
-                                        
-                                        {{-- Check Availability --}}
-                                        <div class="availability-section mt-3">
-                                            <div class="availability-label">
-                                                <i class="fas fa-map-marker-alt"></i> Check Availability
-                                            </div>
-                                            <div class="pincode-group">
-                                                <input type="text" class="pincode-input" placeholder="Enter Pincode" maxlength="6">
-                                                <button class="check-btn">
-                                                    <i class="fas fa-search"></i> Check
-                                                </button>
-                                            </div>
-                                        </div>
-                                        
-                                        {{-- Price Section --}}
-                                        <div class="price-section">
-                                            <div class="price" id="product-price">₹{{ $product["base_price"] }}</div>
-                                            <div class="price-label">MRP incl. of all taxes</div>
-                                        </div>
-                                        
-                                        {{-- select quantity --}}
-                                        <div class="quantity-section">
-                                            <label class="quantity-label">Quantity</label>
-                                            <select class="quantity-select" id="select-quantity">
-                                                @for ($i=1; $i<=10; $i++)
-                                                    <option value="{{ $i }}"> {{ $i }} </option>
-                                                @endfor
-                                            </select>
-                                        </div>
-
-                                        {{-- returned response --}}
-                                        <div id="response-message" class="mb-2" style="min-height:30px;"></div>
-                                        
-                                        <div class="action-buttons">
-                                            <button class="add-to-cart">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                Add to Cart
-                                            </button>
-                                            <button class="add-to-wishlist">
-                                                <i class="far fa-heart"></i>
-                                                Add to Wishlist
-                                            </button>
-                                        </div>
-                                    </div>
-        
-                                </div>
-                                
-                                <!-- Fullscreen Modal -->
-                                <div class="fullscreen-modal" id="fullscreenModal">
-                                    <button class="close-modal" id="closeModal">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                    <img src="" alt="Fullscreen Image" class="fullscreen-image" id="fullscreenImage">
-                                </div>
+                        <p class="product-description">
+                            {{ $product["short_description"] }}
+                        </p>
+                        
+                        {{-- Select Size --}}
+                        <div class="size-selector">
+                            <div class="size-label">
+                                Please select one 
+                                <a href="#" class="size-chart-link">
+                                    <i class="fas fa-ruler"></i> Size Chart
+                                </a>
                             </div>
-
                             
-                            <!-- Product Details -->
-                            <div class="row mt-4">
-                                <nav class="w-100">
-                                    <div class="nav nav-tabs" id="product-tab" role="tablist">
-                                        <a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab" href="#product-desc" role="tab" aria-controls="product-desc" aria-selected="true"> Product Detail </a>
-
-                                        <a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="false"> Comments </a>
-                                        
-                                        <a class="nav-item nav-link" id="product-rating-tab" data-toggle="tab" href="#product-rating" role="tab" aria-controls="product-rating" aria-selected="false"> Rating </a>
-                                    </div>
-                                </nav>
-
-                                <div class="tab-content p-3" id="nav-tabContent">
-                                    {{-- Long description --}}
-                                    <div class="tab-pane fade show active" id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab"> 
-                                        {{ $product["long_description"] }}
-                                    </div>
-
-                                    {{-- comment section --}}
-                                    <div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> 
-                                        Vivamus rhoncus nisl sed venenatis luctus. Sed condimentum risus ut tortor feugiat laoreet. Suspendisse potenti. Donec et finibus sem, ut commodo lectus. Cras eget neque dignissim, placerat orci interdum, venenatis odio. Nulla turpis elit, consequat eu eros ac, consectetur fringilla urna. Duis gravida ex pulvinar mauris ornare, eget porttitor enim vulputate. Mauris hendrerit, massa nec aliquam cursus, ex elit euismod lorem, vehicula rhoncus nisl dui sit amet eros. Nulla turpis lorem, dignissim a sapien eget, ultrices venenatis dolor. Curabitur vel turpis at magna elementum hendrerit vel id dui. Curabitur a ex ullamcorper, ornare velit vel, tincidunt ipsum. 
-                                    </div>
-
-                                    {{-- ratings --}}
-                                    <div class="tab-pane fade" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab"> 
-                                        Cras ut ipsum ornare, aliquam ipsum non, posuere elit. In hac habitasse platea dictumst. Aenean elementum leo augue, id fermentum risus efficitur vel. Nulla iaculis malesuada scelerisque. Praesent vel ipsum felis. Ut molestie, purus aliquam placerat sollicitudin, mi ligula euismod neque, non bibendum nibh neque et erat. Etiam dignissim aliquam ligula, aliquet feugiat nibh rhoncus ut. Aliquam efficitur lacinia lacinia. Morbi ac molestie lectus, vitae hendrerit nisl. Nullam metus odio, malesuada in vehicula at, consectetur nec justo. Quisque suscipit odio velit, at accumsan urna vestibulum a. Proin dictum, urna ut varius consectetur, sapien justo porta lectus, at mollis nisi orci et nulla. Donec pellentesque tortor vel nisl commodo ullamcorper. Donec varius massa at semper posuere. Integer finibus orci vitae vehicula placerat. 
-                                    </div>
-
-                                </div>
+                            {{-- size btns --}}
+                            <div class="" id="size-options"> <!-- size-options -->
+                                @foreach(getAttributeList("size") as $key => $attribute)
+                                    <button 
+                                        class="size-btn {{ !isset($PAL[$attribute["value"]]) ? 'disabled' : '' }} " 
+                                        data-product_id="{{ $product["id"] }}"
+                                        data-attribute_id="{{ $attribute["id"] }}"
+                                        data-size="{{ $attribute["value"] }}" 
+                                        title="{{ !isset($PAL[$attribute["value"]]) ? 'Out of stock' : '' }}"
+                                        {{ !isset($PAL[$attribute["value"]]) ? 'disabled' : '' }}>
+                                        {{ $attribute["value"] }}
+                                    </button>
+                                @endforeach
+                            </div>
+                            
+                            {{-- Notify Me --}}
+                            <div class="mt-2">
+                                <small class="text-muted">Size not available? 
+                                    <a href="#" class="notify-link">
+                                        <i class="fas fa-bell"></i> Notify Me
+                                    </a>
+                                </small>
                             </div>
                         </div>
+
+                        {{-- Available Color (build by JS) --}}
+                        <div id="color-selector">
+                            
+                            <span id="select-color-loading" hidden>Loading...</span>
+                            
+                            <div id="color-selector-body" hidden>
+                                <div class="color-label">
+                                    Available Color 
+                                </div>
+                                
+                                {{-- color btns --}}
+                                <div class="" id="color-options"> </div>
+                            </div>
+                        </div>
+                        
+                        {{-- Check Availability --}}
+                        <div class="availability-section mt-3">
+                            <div class="availability-label">
+                                <i class="fas fa-map-marker-alt"></i> Check Availability
+                            </div>
+                            <div class="pincode-group">
+                                <input type="text" class="pincode-input" placeholder="Enter Pincode" maxlength="6">
+                                <button class="check-btn">
+                                    <i class="fas fa-search"></i> Check
+                                </button>
+                            </div>
+                        </div>
+                        
+                        {{-- Price Section --}}
+                        <div class="price-section">
+                            <div class="price" id="product-price">₹{{ $product["base_price"] }}</div>
+                            <div class="price-label">MRP incl. of all taxes</div>
+                        </div>
+                        
+                        {{-- select quantity --}}
+                        <div class="quantity-section">
+                            <label class="quantity-label">Quantity</label>
+                            <select class="quantity-select" id="select-quantity">
+                                @for ($i=1; $i<=10; $i++)
+                                    <option value="{{ $i }}"> {{ $i }} </option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        {{-- returned response --}}
+                        <div id="response-message" class="mb-2" style="min-height:30px;"></div>
+                        
+                        <div class="action-buttons">
+                            <button class="add-to-cart">
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
+                            <button class="add-to-wishlist" data-product_id="{{ $product["id"] }}">
+                                <i class="far fa-heart"></i>
+                                Add to Wishlist
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- Fullscreen Modal -->
+                <div class="fullscreen-modal" id="fullscreenModal">
+                    <button class="close-modal" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <img src="" alt="Fullscreen Image" class="fullscreen-image" id="fullscreenImage">
+                </div>
+            </div>
+
+            
+            <!-- Product Details -->
+            <div class="row ">
+                <nav class="w-100">
+                    <div class="nav nav-tabs" id="product-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab" href="#product-desc" role="tab" aria-controls="product-desc" aria-selected="true"> Product Detail </a>
+
+                        <a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="false"> Comments </a>
+                        
+                        <a class="nav-item nav-link" id="product-rating-tab" data-toggle="tab" href="#product-rating" role="tab" aria-controls="product-rating" aria-selected="false"> Rating </a>
+                    </div>
+                </nav>
+
+                <div class="tab-content p-3" id="nav-tabContent">
+                    {{-- Long description --}}
+                    <div class="tab-pane fade show active" id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab"> 
+                        {{ $product["long_description"] }}
+                    </div>
+
+                    {{-- comment section --}}
+                    <div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> 
+                        Vivamus rhoncus nisl sed venenatis luctus. Sed condimentum risus ut tortor feugiat laoreet. Suspendisse potenti. Donec et finibus sem, ut commodo lectus. Cras eget neque dignissim, placerat orci interdum, venenatis odio. Nulla turpis elit, consequat eu eros ac, consectetur fringilla urna. Duis gravida ex pulvinar mauris ornare, eget porttitor enim vulputate. Mauris hendrerit, massa nec aliquam cursus, ex elit euismod lorem, vehicula rhoncus nisl dui sit amet eros. Nulla turpis lorem, dignissim a sapien eget, ultrices venenatis dolor. Curabitur vel turpis at magna elementum hendrerit vel id dui. Curabitur a ex ullamcorper, ornare velit vel, tincidunt ipsum. 
+                    </div>
+
+                    {{-- ratings --}}
+                    <div class="tab-pane fade" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab"> 
+                        Cras ut ipsum ornare, aliquam ipsum non, posuere elit. In hac habitasse platea dictumst. Aenean elementum leo augue, id fermentum risus efficitur vel. Nulla iaculis malesuada scelerisque. Praesent vel ipsum felis. Ut molestie, purus aliquam placerat sollicitudin, mi ligula euismod neque, non bibendum nibh neque et erat. Etiam dignissim aliquam ligula, aliquet feugiat nibh rhoncus ut. Aliquam efficitur lacinia lacinia. Morbi ac molestie lectus, vitae hendrerit nisl. Nullam metus odio, malesuada in vehicula at, consectetur nec justo. Quisque suscipit odio velit, at accumsan urna vestibulum a. Proin dictum, urna ut varius consectetur, sapien justo porta lectus, at mollis nisi orci et nulla. Donec pellentesque tortor vel nisl commodo ullamcorper. Donec varius massa at semper posuere. Integer finibus orci vitae vehicula placerat. 
                     </div>
 
                 </div>
@@ -969,6 +942,7 @@
             const quantity_selector = document.getElementById('select-quantity');
 
             ADD_TO_CART_BTN = document.querySelector('.add-to-cart');
+            ADD_TO_WISHLIST_BTN = document.querySelector('.add-to-wishlist');
          
             const delayed_call_attributes = MyApp.debounce(load_color_attr_wrapper, 1000);
             
@@ -1274,6 +1248,63 @@
                     catch(error){ 
                         console.error('Error:', error);
                     }
+                }
+            });
+
+
+            // Add to wishlist
+            ADD_TO_WISHLIST_BTN.addEventListener('click', async event=>{
+                let element = event.target;
+
+                const originalBtnHTML = ADD_TO_WISHLIST_BTN.innerHTML;
+                ADD_TO_WISHLIST_BTN.innerHTML = MyApp.LOADER_SMALL + ' Saving...';
+
+                ADD_TO_WISHLIST_BTN.disabled = true;
+
+                const request_data = {
+                    productId: ADD_TO_WISHLIST_BTN.dataset.product_id
+                };
+                const params = new URLSearchParams(request_data);
+
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+
+                let url = '/add-to-wishlist?'+params;
+                //console.log(url);
+
+                try{
+                    let response = await fetch(url, request_options);
+
+                    //console.log(response);
+                    if(response.ok){
+                        let response_data = await response.json();
+                        //console.log(response_data);
+
+                        if(response_data.code === 200){
+                            toastr.success(response_data.message);      
+
+                            LIVEWIRE_WISHLIST_COMPONENT.refresh();
+                        }
+
+                        else toastr.error(response_data.message);
+                        
+
+                        setTimeout(()=>{
+                            if(response_data.reload) location.reload();
+                        }, 800);
+                    }
+
+                    ADD_TO_WISHLIST_BTN.disabled = false;
+                    ADD_TO_WISHLIST_BTN.innerHTML = originalBtnHTML;
+
+                }
+                catch(error){
+                    console.error('Error:', error);
+                    ADD_TO_WISHLIST_BTN.disabled = false;
+                    ADD_TO_WISHLIST_BTN.innerHTML = originalBtnHTML;
                 }
             });
         });

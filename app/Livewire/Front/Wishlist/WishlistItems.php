@@ -47,28 +47,31 @@ class WishlistItems extends Component
                                     $query->on('PRO.id', '=', 'PI.product_id')->where('PI.prime_image', 1);
                                 })
                                 ->select(
-                                            'PRO.id as product_id', 'PRO.product_name', 'PRO.product_slug', 
-                                            'wishlist.id',
-                                            'PI.image_location'
+                                        'PRO.id as product_id', 'PRO.product_name', 'PRO.product_slug', 
+                                        'wishlist.id',
+                                        'PI.image_location'
                                     )
                                 ->when($this->sort, function($query) {  // SORT FILTER (ORDER BY)
+                                    
+                                    
                                     if(isset($this->sort) && !empty($this->sort)){
                                         
                                         $sort_level = $this->sort;
-                                        $sort_column = 'cart.id'; $sort_order = 'DESC'; // Default
+                                        // $sort_column = 'wishlist.id'; $sort_order = 'DESC'; // Default
                                         
                                         if($sort_level == 1){   // Newest First
-                                            $sort_column = 'cart.id'; $sort_order = 'DESC';
+                                            $sort_column = 'wishlist.id'; $sort_order = 'DESC';
                                         }
-                                        else if($sort_level == 2){  // OLDEST first
-                                            $sort_column = 'cart.id'; $sort_order = 'ASC';
-                                        }        
+                                        else if($sort_level == 2){   // OLDEST First
+                                            $sort_column = 'wishlist.id'; $sort_order = 'ASC';     
+                                        }
                                                 
+                                        return $query->orderBy($sort_column, $sort_order);
                                     }
                                     
-                                    return $query->orderBy($sort_column, $sort_order);
                                 })
-                                ->where('wishlist.user_id', $userId);
+                                ->where('wishlist.user_id', $userId)
+                                ->orderBy('wishlist.id', 'DESC');   // Default Sort order (Newest First)
                                 // ->limit($this->item_load_limit);
         
         // capture the total count first then store the collection with limit or else will get same record count for both.

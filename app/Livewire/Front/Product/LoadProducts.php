@@ -45,15 +45,6 @@ class LoadProducts extends Component
 
     // this is triggered from front end to load more elements. (LAZY LOAD)
     public function loadMore(){
-        // if (!empty($params)) {
-        //     foreach ($params as $key => $value) {
-        //         if (property_exists($this, $key)) {
-        //             $this->$key = $value;
-        //         }
-        //         // $this->queryString[$key] = $value;
-        //     }
-        // }
-
         $this->loadAmount += 8;
     }
 
@@ -76,7 +67,7 @@ class LoadProducts extends Component
     public function updateSort($newSort){
         $this->sort = $newSort;
     }
-    
+
     // fetch product details
     private function getProductData(){
 
@@ -219,22 +210,25 @@ class LoadProducts extends Component
                         })
                         // ->orderBy('PRO.id', 'ASC')
                         ->where('PRO.category_id', $this->categoryId)
-                        ->distinct()    // THIS IS A QUICK FIX TO A MUCH MUCH BIGGER PROBLEM, WILL DEAL WITH IT LATER
-                        ->limit($this->loadAmount);
+                        ->distinct();    // THIS IS A QUICK FIX TO A MUCH MUCH BIGGER PROBLEM, WILL DEAL WITH IT LATER
+                        // ->limit($this->loadAmount);
                         
         // $productData = $productData->distinct();
         return $productData;
     }
 
-        
+    
+    // For loading a skeleton view
+    // public function placeholder(){
+    //     return view('components.front.product.load-product-skeleton');
+    // }
+    
     public function mount(Request $request, $categorySlug){
         
         $category_id = Category::where('category_slug', $categorySlug)->first();
         $this->categoryId = ($category_id) ? $category_id->id : 0;
         
-        $productData = $this->getProductData();
-        
-        // $this->totalRecords = $productData->count();
+        //$productData = $this->getProductData();
     }
 
 
@@ -244,21 +238,24 @@ class LoadProducts extends Component
 
         $this->totalRecords = $productData->count();
 
-        $productList = $productData->get();
-        $sql_query = $productData->toSql();
-        $sql_str_binding = $productData->getBindings();
-
-        $log_data = [
-            // "product_list" => $productList,
-            // "product_image" => $productList->toArray()[1]["image_location"],
-            "sql_query" => $sql_query,
-            "sql_str_binding" => $sql_str_binding,
-        ];
-
-        // \Log::info("\n\nProduct List Data:", $log_data);
+        $productList = $productData->limit($this->loadAmount)->get();
+        
 
         return view('livewire.front.product.load-products')->with([
             'productList' => $productList
         ]);
     }
 }
+
+
+// $sql_query = $productData->toSql();
+// $sql_str_binding = $productData->getBindings();
+
+// $log_data = [
+//     // "product_list" => $productList,
+//     // "product_image" => $productList->toArray()[1]["image_location"],
+//     "sql_query" => $sql_query,
+//     "sql_str_binding" => $sql_str_binding,
+// ];
+
+// \Log::info("\n\nProduct List Data:", $log_data);
