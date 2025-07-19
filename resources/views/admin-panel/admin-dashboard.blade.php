@@ -68,7 +68,7 @@
                 <h3 class="text-success">Category PRODUCT PAGE size and color attributes</h3>
                 <h3 class="text-success">PRODUCT PAGE</h3>
                 <h4 class="text-secondary">PRODUCT PAGE Check Availablity</h4>
-                <h3 class="text-danger">CART</h3>
+                <h3 class="text-success">CART</h3>
                 <h3 class="text-danger">CHECKOUT</h3>
                 <h3 class="text-danger">ORDER</h3>
                 

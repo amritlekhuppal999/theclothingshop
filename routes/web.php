@@ -109,7 +109,7 @@ define('ADMIN_LTE', "XAdminLTE");
 
     // CART
         Route::middleware(['auth'])->group(function(){
-            Route::get('/cart', [CartController::class, 'CREATE']);
+            Route::get('/cart', [CartController::class, 'INDEX']);
         });
 
         Route::post('/add-to-cart', [CartController::class, 'STORE'])->name('add-to-cart');

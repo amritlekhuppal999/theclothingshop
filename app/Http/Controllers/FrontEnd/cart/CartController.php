@@ -26,7 +26,7 @@ class CartController extends Controller
 
 
     // view cart page
-    public function CREATE() {
+    public function INDEX() {
         try {
             
             $userId = session()->has('web.UUID') ? session('web.UUID') : null;

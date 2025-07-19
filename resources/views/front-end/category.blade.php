@@ -60,24 +60,25 @@
             overflow-y:auto;
         }
         
-        .filter-sub-section-filler{
+        /*.filter-sub-section-filler{
             height:300px;
-        }
-
-        /*@media (min-width: 1200px) {
-            .filter-sub-section {
-                max-height: 61rem;
-            }
         }*/
-        @media (min-width: 1870px) {
+
+        @media (min-width: 768px) {
+            .filter-sub-section {
+                height: 34rem;
+            }
+        }
+        @media (max-width: 1870px) {
             .filter-sub-section {
                 /*max-height: 61rem;*/
-                height: 100rem;
+                
                 
             }
-            .filter-sub-section-filler{
+            
+            /*.filter-sub-section-filler{
                 height:30rem;
-            }
+            }*/
         }
     </style>
 @endsection
@@ -164,7 +165,7 @@
                                 <!-- PRICE -->
                                 <x-front.category.price-filter />
 
-                                <div class="filter-sub-section-filler ">
+                                {{-- <div class="filter-sub-section-filler ">
                                     <!-- Lets see whats happening here...
                                     So we made a sub-section and made it sticky so that the filter section does not fly off to 
                                     oblivion when page is scrolled.
@@ -172,7 +173,7 @@
                                     preventing few parts of price filter never surfacing as scrolling further loaded more and
                                     it kept the part hidden. Adding this filler allowed us to scroll further.
                                     The scrollbar is hidden to make it look not UGLY -->
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
