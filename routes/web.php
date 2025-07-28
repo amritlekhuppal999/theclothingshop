@@ -11,6 +11,9 @@ use App\Http\Controllers\FrontEnd\product\ProductPageController;
 use App\Http\Controllers\FrontEnd\cart\CartController;
 use App\Http\Controllers\FrontEnd\wishlist\WishlistController;
 
+use App\Http\Controllers\FrontEnd\profile\ProfileController;
+
+use App\Mail\WelcomeMail;
 // use Illuminate\Support\Facades\Artisan;  // TO Run migrations without shell via route (DID NOT WORK)
 
 // Route::get('/', function () {
@@ -80,15 +83,17 @@ define('ADMIN_LTE', "XAdminLTE");
     // AUTH MIDDLEWARE
         Route::middleware(['auth'])->group(function(){
             // PROFILE
-                Route::get('/profile', function () {
-                    return view(FRONT_END.'/profile');
+                Route::get('/profile', [ProfileController::class, 'INDEX'])->name('profile');
+                
+                Route::get('/profile2', function () {
+                    return view(FRONT_END.'/profile.profile-copy');
                 });
             // PROFILE END
 
             // ACCOUNT
-                Route::get('/account/{profile}', function () {
-                    return view(FRONT_END.'/account');
-                });
+                // Route::get('/account/{profile}', function () {
+                //     return view(FRONT_END.'/account');
+                // });
             // ACCOUNT END
 
             // WISHLIST
@@ -100,6 +105,14 @@ define('ADMIN_LTE', "XAdminLTE");
             // WISHLIST END
         });
     // AUTH MIDDLEWARE END
+    
+    // PROFILE
+        Route::post('/add-address', [ProfileController::class, 'STORE_ADDRESS'])->name("add-address");
+        Route::post('/edit-profile', [ProfileController::class, 'EDIT_PROFILE'])->name("edit-profile");
+        Route::get('/toggle-default-address', [ProfileController::class, 'TOGGLE_DEFAULT_ADDRESS'])->name("toggle-default-address");
+        Route::get('/remove-saved-address', [ProfileController::class, 'REMOVE_SAVED_ADDRESS'])->name("remove-saved-address");
+        Route::post('/generate-email-verification-code', [ProfileController::class, 'GENERATE_EMAIL_VERIFICATION_CODE'])->name("generate-email-verification-code");
+    // PROFILE END
 
     // ORDERS
         Route::get('/orders', function () {
@@ -129,6 +142,12 @@ define('ADMIN_LTE', "XAdminLTE");
             return view(FRONT_END.'/checkout');
         });
     // CHECKOUT END
+
+    // SEND TEST MAIL
+        Route::get('/send-welcome-mail', function () {
+            Mail::to('amritlekhuppal999@gmail.com')->send(new WelcomeMail());
+        });
+    // SEND TEST MAIL END
 
     
     // FRONT-END   END

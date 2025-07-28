@@ -13,14 +13,14 @@ use App\Http\Controllers\LoginController;
     //     return view(FRONT_END.'/layouts/login');
     // });
     
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'authenticate'])->name('login-user');
+    Route::get('/login', [LoginController::class, 'CREATE'])->name('login');
+    Route::post('/login', [LoginController::class, 'AUTHENTICATE'])->name('login-user');
     
     // Route::get('/register', function () {
     //     return view(FRONT_END.'/layouts/register');
     // });
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('resgister');
-    Route::post('/register', [RegisterController::class, 'register'])->name('register-user');
+    Route::get('/register', [RegisterController::class, 'CREATE'])->name('resgister');
+    Route::post('/register', [RegisterController::class, 'REGISTER'])->name('register-user');
 
     Route::get('/forgot-password', function () {
         return view(FRONT_END.'/layouts/forgot-password');

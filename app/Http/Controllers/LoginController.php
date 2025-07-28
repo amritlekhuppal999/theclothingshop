@@ -12,14 +12,18 @@ class LoginController extends Controller
 {
     
     //To return login page view
-    public function showLoginForm()
+    public function CREATE()
     {
-        return view('layouts/login');
-        // return view(FRONT_END.'/layouts/login');
+        
+        if (!Auth::guard('web')->check()){
+            return view('layouts/login');
+        }
+
+        return redirect('home');
     }
  
     //Method to LOGIN the User
-    public function authenticate(Request $request): RedirectResponse
+    public function AUTHENTICATE(Request $request): RedirectResponse
     {
         
         try {

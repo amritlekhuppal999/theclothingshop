@@ -16,13 +16,16 @@ use App\Models\User;
 class RegisterController extends Controller
 {
     //
-    public function showRegistrationForm()
+    public function CREATE()
     {
-        return view('layouts/register');
-        // return view(FRONT_END.'/layouts/login');
+        if (!Auth::guard('web')->check()){
+            return view('layouts/register');
+        }
+
+        return redirect('home');
     }
 
-    public function register(Request $request): RedirectResponse
+    public function REGISTER(Request $request): RedirectResponse
     {
         
         try {

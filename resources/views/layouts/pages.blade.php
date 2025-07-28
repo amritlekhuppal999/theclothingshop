@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="{{ asset("css/animation.css") }}">
         <link rel="stylesheet" href="{{ asset("css/front-end/product-card.css") }}">
 
-
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         @yield('content-css')
         {{-- @livewireStyles --}}
 

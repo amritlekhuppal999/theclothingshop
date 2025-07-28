@@ -189,6 +189,74 @@ use App\Services\WishlistService;
         }
     }
 
+
+    if(!function_exists('getAddressType')){
+        function getAddressType($address_type){
+            $type_arr = array(
+                "1" => "Home",
+                "2" => "Office",
+                "3" => "Other"
+            );
+            return $type_arr[$address_type];
+        }
+    }
+    if(!function_exists('getAddressIcon')){
+        function getAddressIcon($address_type){
+            $type_arr = array(
+                "1" => '<i class="fas fa-home text-primary" style="font-size: 1.5rem;"></i>',
+                "2" => '<i class="fas fa-building text-info" style="font-size: 1.5rem;"></i>',
+                "3" => '<i class="fas fa-map-pin text-warning" style="font-size: 1.5rem;"></i>'
+            );
+            return $type_arr[$address_type];
+        }
+    }
+
+    if(!function_exists('getAddressCategory')){
+        function getAddressCategory($address_category){
+            $cat_arr = array(
+                "1" => "Shipping",
+                "2" => "Billing",
+            );
+            return $cat_arr[$address_category];
+        }
+    }
+
+
+    // GENERATE RANDOM CODE
+        // returns a 6 digit numeric code
+        // function generateSixDigitCode(): int{
+        //     return random_int(100000, 999999);
+        // }
+
+        // returns a 6 digit numeric code that can lead with 0 aswell
+        function generateSixDigitCode(): string{
+            return str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        }
+
+        // function generateNumericCode(int $digits = 6): int{
+        //     // Enforce min/max boundaries
+        //     $digits = max(3, min(8, $digits));
+
+        //     $min = (int) str_repeat('1', 1) . str_repeat('0', $digits - 1); // e.g., 100000 for 6 digits
+        //     $max = (int) str_repeat('9', $digits);                          // e.g., 999999 for 6 digits
+
+        //     return random_int($min, $max);
+        // }
+
+        // returns a 6 digit alpha-numeric code
+        // function generateAlphanumericCode(int $length = 6): string{
+        //     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        //     $code = '';
+
+        //     for ($i = 0; $i < $length; $i++) {
+        //         $code .= $characters[random_int(0, strlen($characters) - 1)];
+        //     }
+        //     return $code;
+        // }
+    // GENERATE RANDOM CODE END
+
+
+
     
     // function get_featured_group(){
     //     $feature_array = array(

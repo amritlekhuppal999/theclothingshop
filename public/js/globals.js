@@ -264,6 +264,21 @@ if (!MyApp.initDone){
     // Check for empty objects  END
 
 
+    // COPY to CLIPBOARD
+        MyApp.copyTextToClipboard = async function (text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                console.log('Text copied to clipboard successfully!');
+                toastr.success("Text Copied");
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                // Fallback for older browsers or if permission is denied
+                //fallbackCopyTextToClipboard(text);
+            }
+        }
+    // COPY to CLIPBOARD END
+
+
     
     // Set it to false so we can customise toastr methods
         //toastr.options.escapeHtml = false;

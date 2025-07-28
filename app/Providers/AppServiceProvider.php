@@ -21,6 +21,9 @@ use App\View\Components\front\category\SubCategoryFilter;
 use App\View\Components\front\category\ThemeFilter;
 use App\View\Components\front\category\AttributeFilter;
 
+use App\View\Components\front\profile\EditProfile;
+use App\View\Components\front\profile\ManageAddress;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -52,5 +55,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('front.category.sub-category-filter', SubCategoryFilter::class);
         Blade::component('front.category.theme-filter', ThemeFilter::class);
         Blade::component('front.category.attribute-filter', AttributeFilter::class);
+        
+        
+        Blade::component('front.profile.manage-address', ManageAddress::class);
     }
 }
