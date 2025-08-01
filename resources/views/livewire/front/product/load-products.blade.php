@@ -63,7 +63,9 @@
                             </button>
                         </div>
                         <div class="card-body">
-                            <a href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}">
+                            <a 
+                                href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}"
+                                class="text-decoration-none">
                                 <h5 class="product-title">
                                     {{ $product["product_name"] }}
                                 </h5>

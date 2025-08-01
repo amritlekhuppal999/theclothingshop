@@ -323,9 +323,11 @@
                             }
                             
 
+                            /*
                             setTimeout(()=>{
                                 if(response_data.reload) location.reload();
                             }, 800);
+                            */
                         }
 
                         addToWishlistBtn.disabled = false;

@@ -23,7 +23,9 @@
                         </div>
 
                         <div class="card-body">
-                            <a href="{{ safe_route('product', ["product_slug" => $item["product_slug"]]) }}">
+                            <a 
+                                href="{{ safe_route('product', ["product_slug" => $item["product_slug"]]) }}"
+                                class="text-decoration-none">
                                 <h5 class="product-title">
                                     {{ $item["product_name"] }}
                                 </h5>

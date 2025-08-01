@@ -3,7 +3,7 @@
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
             @if (Request::path() == "profile" )
-                <i class="fas fa-user-alt" style="color: #e1141e;"></i>
+                <i class="fas fa-user-alt text-purple"></i>
             @else 
                 <i class="fas fa-user-alt"></i>
             @endif
