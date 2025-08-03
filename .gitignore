@@ -24,3 +24,7 @@ yarn-error.log
 /.idea
 /.vscode
 /resources/views/XAdminLTE
+.env.hostinger.docker
+docker
+docker-compose.yml
+docker-compose.yaml

@@ -7,7 +7,10 @@
         <link rel="stylesheet" href="{{ asset("css/animation.css") }}">
         <link rel="stylesheet" href="{{ asset("css/front-end/product-card.css") }}">
 
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @if(env("APP_ENV") == "local")
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @endif
+
         @yield('content-css')
         {{-- @livewireStyles --}}
 

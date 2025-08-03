@@ -111,6 +111,7 @@
         
                             <!-- Change Password -->
                             <x-front.profile.change-password />
+                            
 
                             {{-- Update Email --}}
                             <x-front.profile.update-email :userData="$UserData"/>

@@ -3,8 +3,10 @@ vendor
 .git
 .gitignore
 npm-debug.log
-Dockerfile
+docker
 docker-compose.yml
+docker-compose.yaml
 tests
 .env
+.env.hostinger.docker
 storage/*.key
