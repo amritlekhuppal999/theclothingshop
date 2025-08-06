@@ -152,6 +152,15 @@ define('ADMIN_LTE', "XAdminLTE");
     
     // FRONT-END   END
 
+    // SESSION TEST
+    Route::get('/session-test', function () {
+        session(['test_key' => 'hello']);
+        return [
+          'id' => session()->getId(),
+          'value' => session('test_key')
+        ];
+    });
+
 
     // TO Run migrations without shell via route (DID NOT WORK)
     // Route::get('/run-migrations', function () {
