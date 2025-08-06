@@ -9,6 +9,7 @@
 /public/images/sub_product
 /storage/*.key
 /vendor
+database/theclothingshop.sql
 .env
 .env.backup
 .env.production
@@ -24,7 +25,6 @@ yarn-error.log
 /.idea
 /.vscode
 /resources/views/XAdminLTE
-.env.hostinger.docker
 docker
 docker-compose.yml
 docker-compose.yaml

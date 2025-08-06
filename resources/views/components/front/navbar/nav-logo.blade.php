@@ -10,5 +10,9 @@
             class="brand-image img-circle elevation-3"
             style="opacity: .8"
         />
-        <span class="brand-text font-weight-light">{{config('app.name')}}</span>
+        @if(env("APP_ENV") == "local")
+            <span class="brand-text font-weight-light text-danger">{{config('app.name')}}</span>
+        @elseif(env("APP_ENV") == "production") 
+            <span class="brand-text font-weight-light text-success">{{config('app.name')}}</span>
+        @endif
     </a>

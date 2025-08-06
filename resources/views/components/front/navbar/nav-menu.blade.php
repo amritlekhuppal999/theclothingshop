@@ -1,5 +1,5 @@
     
-    <ul class="navbar-nav" >
+    <ul class="navbar-nav" style="">
         @foreach($categories as $category)
             
             <li class="nav-item dropdown">

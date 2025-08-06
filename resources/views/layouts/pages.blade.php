@@ -7,6 +7,8 @@
         <link rel="stylesheet" href="{{ asset("css/animation.css") }}">
         <link rel="stylesheet" href="{{ asset("css/front-end/product-card.css") }}">
 
+        
+
         @if(env("APP_ENV") == "local")
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
@@ -27,20 +29,6 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 
-                <!-- BREAD CRUM / Content Header (Page header) -->
-                {{-- @include('components.front.breadcrumb') --}}
-
-                <!-- To add margin gap -->
-                <!-- <div class="content-header"> 
-                    <div class="container"></div>
-                </div> -->
-
-                <!-- Main content -->
-                <!-- <div class="content">
-                    <div class="container"></div>
-                </div> -->
-                {{-- <x-test-component /> --}}
-
                 @yield('content')
 
             </div>

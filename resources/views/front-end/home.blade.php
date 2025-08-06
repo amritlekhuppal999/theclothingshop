@@ -9,15 +9,7 @@
 @section('content')
     
     <div class="banner" id="load-carousel">
-        {{-- @include('components.front.carousel') --}}
-        <!-- <img src="{{-- asset('images/all-star.jpg') --}}" alt="Banner Image"> -->
-         {{-- <div class="banner-text">
-            <h1>Welcome to Our Store</h1>
-            <p>Find the best products here!</p>
-        </div>  --}}
-        
         <x-front.carousel />
-        {{-- <x-front.carousel :bannerImages="$bannerImages" /> --}}
     </div>
 
     <div class="content"> 

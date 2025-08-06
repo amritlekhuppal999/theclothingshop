@@ -1,7 +1,7 @@
 
 
 
-<form class="form-inline ml-0 ml-md-3">
+<form class="form-inline ml-0 ml-md-3" style="min-width:150px; max-width:190px;">
     <div class="input-group input-group-sm">
         <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
