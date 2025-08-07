@@ -1,6 +1,6 @@
     
     
-    <li class="nav-item">
+    <li class="nav-item nav-cart">
         <a class="nav-link" href="/cart">
             @if (Request::path() == "cart" )
                 {{-- <i class="fas fa-shopping-cart" style="color: #e1141e;"></i> --}}

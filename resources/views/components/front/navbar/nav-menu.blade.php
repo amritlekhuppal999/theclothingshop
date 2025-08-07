@@ -2,7 +2,7 @@
     <ul class="navbar-nav" style="">
         @foreach($categories as $category)
             
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" style="">
                 <a 
                     href="#" 
                     id="" 
@@ -12,7 +12,7 @@
                     {{ $category["category_name"] }}
                 </a>
                 
-                <x-front.navbar.nav-items :categoryId="$category['id']" :categorySlug="$category['category_slug']"/>
+                <x-front.navbar.nav-items :categoryId="$category['id']" :categorySlug="$category['category_slug']" position="navbar"/>
             </li>
 
         @endforeach

@@ -1,6 +1,6 @@
 
 
-    <li class="nav-item ">
+    <li class="nav-item nav-wishlist">
         <a class="nav-link" href="/wishlist">
             @if (Request::path() == "wishlist" )
                 {{-- <i class="fas fa-heart" style="color: #e1141e;"></i> --}}
