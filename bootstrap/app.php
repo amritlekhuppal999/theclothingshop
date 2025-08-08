@@ -13,7 +13,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+
+        // added 
+        // $middleware->web([
+        //     \Illuminate\Cookie\Middleware\EncryptCookies::class,
+        //     \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+        //     \Illuminate\Session\Middleware\StartSession::class,
+        //     \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        //     // \App\Http\Middleware\VerifyCsrfToken::class,
+        // ]);
+
+        //Lets you use 'set_session' as shorthand for your custom middleware
         $middleware->alias([
             'set_session' => UseAdminSession::class,
         ]);

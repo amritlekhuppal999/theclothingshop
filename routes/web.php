@@ -155,10 +155,17 @@ define('ADMIN_LTE', "XAdminLTE");
     // SESSION TEST
     Route::get('/session-test', function () {
         session(['test_key' => 'hello']);
-        return [
-          'id' => session()->getId(),
-          'value' => session('test_key')
-        ];
+
+        if(env('APP_ENV') == "local"){
+            // return [
+            //   'id' => session()->getId(),
+            //   'value' => session('test_key'),
+            //   'csrf_token' => csrf_token()
+            // ];
+            return session()->all();
+        }
+
+        return "sry bro, you can't see...";
     });
 
 

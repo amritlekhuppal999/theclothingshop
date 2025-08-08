@@ -49,14 +49,3 @@
         @yield('content-scripts')
     </body>
 </html>
-
-
-<?php 
-    /*
-     * 
-     * {{-- <x-component /> --}}
-     * @include('component')
-     * 
-     * these two do the same thing so don't get confused
-     */
-?>
