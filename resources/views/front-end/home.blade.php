@@ -17,8 +17,8 @@
             <!-- <p>Page Content..</p> -->
 
             <!-- CATEGORIES -->
-            <div class="row">
-                <div class="col-md-12 text-center mt-5 mb-3">
+            <div class="row" id="big-three-section">
+                <div class="col-md-12 text-center">
                     <h3>CATEGORIES</h3>
                 </div>
 
@@ -38,7 +38,7 @@
 
             <!-- NEW ADDITIONS / NEW ARRIVALS -->
             <div class="row" id="new-additions-section" >
-                <div class="col-md-12 text-center mt-5 mb-3">
+                <div class="col-md-12 text-center">
                     <h3>NEW ADDITIONS</h3>
                 </div>
 
@@ -87,7 +87,7 @@
 
             <!-- BEST SELLING -->
             <div class="row" id="best-sellers-section" >
-                <div class="col-md-12 text-center mt-5 mb-3">
+                <div class="col-md-12 text-center">
                     <h3>BEST SELLING</h3>
                 </div>
 
@@ -136,7 +136,7 @@
 
             <!-- POP CULTURE / SHOP BY FANDOM -->
             <div class="row" id="pop-culture-section" >
-                <div class="col-md-12 text-center mt-5 mb-3">
+                <div class="col-md-12 text-center">
                     <h3>POP CULTURE</h3>
                 </div>
 
@@ -180,7 +180,7 @@
             // Mapping divs to functions
             const actions = {
                 "load-carousel": () => { load_banner_carousel(); },
-                "the-big-three": () => { load_featured_category(); },
+                //"the-big-three": () => { load_featured_category(); },
                 "the-remaining-featured-category": () => { load_remaining_featured_category(); },
                 "new-additions": () => { load_featured_products("new-arrivals", "new-additions"); },
                 "best-sellers": () => { load_featured_products("best-sellers", "best-sellers"); },
@@ -190,7 +190,7 @@
             // array to store section ids
             const section_array = [
                 "load-carousel", 
-                "the-big-three", 
+                //"the-big-three", 
                 "the-remaining-featured-category",
                 "new-additions",
                 "best-sellers",
@@ -198,6 +198,7 @@
             ];
 
             scrollObserve(actions, section_array);
+            load_featured_category();
 
             // load_banner_carousel();
             // function to load ADDED banner images
@@ -247,7 +248,7 @@
                 };
 
                 let url = `get-featured-category`;
-                // console.log(url);
+                // console.log(url);asdfjknasdljf
 
                 try{
                     let response = await fetch(url, request_options);
@@ -263,6 +264,7 @@
                     const html = await response.text();
                     // console.log(html);
                     FEATURED_THREE.innerHTML = html;
+                    
                 }
 
                 catch(error){
@@ -298,6 +300,7 @@
                     const html = await response.text();
                     //console.log(html);
                     FEATURED_REMAINING.innerHTML = html;
+                    trimCardTitle("category-title-re");
                 }
 
                 catch(error){
@@ -325,7 +328,7 @@
 
                 let url = `get-featured-products?feature_group=${feature_group}`;
                 //console.log(url);
-                (feature_group == "best-sellers") ? console.log(url) : "";
+                //(feature_group == "best-sellers") ? console.log(url) : "";
                 //return false;
 
                 try{
@@ -340,8 +343,10 @@
                     }
 
                     const html = await response.text();
-                    (feature_group == "best-sellers") ? console.log(html) : "";
+                    //(feature_group == "best-sellers") ? console.log(html) : "";
                     LOADOUT_POINT.innerHTML = html;
+
+                    trimCardTitle("product-title-re");
                 }
 
                 catch(error){
@@ -382,6 +387,24 @@
             loaderTextArray.forEach((element)=>{
                 new TextAnimator(element);
             });
+
+            function trimCardTitle(class_name){
+                //let class_name="item-title-re";
+                let TRIM_AFTER_LEN = 0;
+                
+                if(window.screen.width >= 768){
+                    TRIM_AFTER_LEN = 11;
+                }
+                if(window.screen.width >= 1366){
+                    TRIM_AFTER_LEN = 18;
+                }
+                
+                let element = document.getElementsByClassName(class_name);
+                element = Array.from(element);
+                element.forEach(element =>{
+                    element.innerText = MyApp.limitString(element.innerText, TRIM_AFTER_LEN);
+                });
+            }
         }
     </script>
 @endsection

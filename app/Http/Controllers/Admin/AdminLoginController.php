@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
 use Illuminate\Session\TokenMismatchException;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AdminLoginController extends Controller
 {
@@ -29,8 +29,17 @@ class AdminLoginController extends Controller
                 "email" => ["required", "email"],
                 "password" => ['required', 'string'],
             ]);
+
     
             // Make sure only admin type can login
+            $credentials['status'] = 1;
+            // $credentials['role'] = 'admin';
+
+            $AdminRoles = AdminRoleArr();
+
+            $Admin = User::where('email', $request->email)
+                            ->whereIn('role', $AdminRoles)
+                            ->firstOrFail();
     
             if(Auth::guard('admin')->attempt($credentials)){
                 $request->session()->regenerate();
@@ -55,12 +64,13 @@ class AdminLoginController extends Controller
                     ->withInput(['email' => $request->email]);
 
         } 
-        catch (\Throwable $th) {
+        catch (ModelNotFoundException $e) {
             return redirect()->back()->withErrors([
-                    'error'=> 'Unable to login, try again later. ',
-                    'exception_msg' => $th->getMessage()
-                ])->withInput(['email' => $request->email]);
+                'error'=> 'No record of this admin.',
+                // 'exception_msg' => $e->getMessage()
+            ])->withInput(['email' => $request->email]);
         }
+        
         catch (QueryException $e) {
             return redirect()->back()->withErrors([
                     'error'=> 'DB error. Unable to login. ',
@@ -71,6 +81,12 @@ class AdminLoginController extends Controller
             return redirect()->back()->withErrors([
                     'error'=> 'Something went wrong. Try again later. ',
                     'exception_msg' => $e->getMessage()
+                ])->withInput(['email' => $request->email]);
+        }
+        catch (\Throwable $th) {
+            return redirect()->back()->withErrors([
+                    'error'=> 'Unable to login, try again later. ',
+                    'exception_msg' => $th->getMessage()
                 ])->withInput(['email' => $request->email]);
         }
         // catch (ValidationException $e) {

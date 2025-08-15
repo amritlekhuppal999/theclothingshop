@@ -1,11 +1,11 @@
-<!-- Happiness is not something readymade. It comes from your own actions. - Dalai Lama -->
+    
     @php
         // var_dump($sub_category); echo "<br/>";
         //echo "SQL STR: "; var_dump($sql_query); echo "<br/>";
         // echo "ERROR STR: ";var_dump($error_msg); echo "<br/>";
     @endphp
     
-    <div class="row w-100 m-auto" >
+    <div class="row " > <!-- w-100 m-auto -->
         @if(count($product_array))
             @foreach($product_array as $product_html)
                 

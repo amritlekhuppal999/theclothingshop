@@ -20,24 +20,7 @@
                 /> --}}
 
 
-                <div class="col-md-3" wire:key="item-{{ $product["product_id"] }}" @if($loop->last) id="last_record" @endif>
-                    {{-- <div class="card {{ ($key == 0) ? 'dark' : '' }}" style="">
-                        <a href="{{ safe_route('product', ["product_slug" => $product["product_slug"]]) }}">
-                            <img 
-                                @php
-                                    $loc_img = ($product["image_location"] !=null ) ? $product["image_location"] : 'images/product-card-loader.jpg';
-                                @endphp
-                                src="{{  asset($loc_img) }}" 
-                                class="card-img-top" alt="..."
-                            />
-                        </a>
-                        
-                        <div class="card-body">
-                            <h5 class="text-center" >
-                                {{ $product["product_name"] }}
-                            </h5>
-                        </div>
-                    </div> --}}
+                <div class="col-6 col-md-6 col-lg-3 col-xl-3" wire:key="item-{{ $product["product_id"] }}" @if($loop->last) id="last_record" @endif>
                     
                     <div class="card product-card border-0 {{ ($key == 0) ? 'dark' : '' }}">
                         <div class="product-image">
@@ -104,11 +87,19 @@
                     <h3>Chottu aur nikaal...</h3>
                 </div>
             @else
-                <div class="col-md-12 text-center mb-2">
-                    <hr>
-                    <img src="{{ asset("images/you-wanted-more.jpeg") }}" alt="" style="border-radius: 10px;">
-                    <h6>You wanted more??</h6>
-                </div>
+
+                @if($productList->count() > 50)
+                    
+                    <div class="col-md-12 text-center mb-2 mt-1">
+                        {{-- <hr> --}}
+                        {{-- <img src="{{ asset("images/you-wanted-more.jpeg") }}" alt="" style="border-radius: 10px;"> --}}
+                        <h6>You wanted more??</h6>
+                    </div>
+                @else
+                    <div class="col-md-12 text-center mb-2 mt-1">
+                        <h6>Thats all we got...</h6>
+                    </div>
+                @endif
             @endif
         
         @else

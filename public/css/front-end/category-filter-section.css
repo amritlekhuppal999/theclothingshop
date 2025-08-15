@@ -1,0 +1,99 @@
+
+        /* Container for the scrollable content */
+        .scroll-container {
+            /* max-height: 300px; /* Set a max height to make it scrollable */
+            /* overflow-y: auto; /* Enable vertical scrolling */
+            /* border: 1px solid #dee2e6; /* Bootstrap-like border */
+            /* border-radius: 0.5rem; /* Rounded corners for the container */
+            /* background-color: #fff; /* White background for the content area */
+            /* padding: 1.5rem; /* Internal padding for content, not scrollbar */
+            /* width: 100%; /* Ensure it takes full width of its parent */
+            /* max-width: 400px; /* Max width for better presentation */
+            /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05); /* Subtle shadow */
+        }
+
+        /* --- Custom Scrollbar Styles for WebKit browsers (Chrome, Safari, Edge) --- */
+
+        /* Width of the scrollbar */
+        .scroll-container::-webkit-scrollbar, .filter-sub-section::-webkit-scrollbar{
+            width: 8px; /* Make it narrower */
+        }
+
+        /* Track of the scrollbar (the area behind the thumb) */
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1; /* Light gray track */
+            border-radius: 10px; /* Rounded track */
+        }
+
+        /* Thumb of the scrollbar (the draggable part) */
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #888; /* Darker gray thumb */
+            border-radius: 10px; /* Rounded thumb */
+        }
+
+        /* Hover state for the scrollbar thumb */
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #555; /* Even darker gray on hover */
+        }
+
+        /* --- Scrollbar Styles for Firefox --- */
+        /* Note: Firefox styling is more limited. */
+        .scroll-container {
+            /* scrollbar-width: thin; /* 'auto' or 'thin' */
+            /* scrollbar-color: #888 #f1f1f1; /* thumb color track color */
+        }
+
+        
+        
+        .filter-sub-section{
+            /* position:fixed;   */
+            /* top:20px;  */
+            /*background:red;*/
+            /*height:634px;*/
+            /* height: 60rem; */
+            /* overflow-y:auto; */
+        }
+        
+        /*.filter-sub-section-filler{
+            height:300px;
+        }*/
+
+        .filter-button {
+            display:none;
+            /* display: flex; */
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            
+            /*background: linear-gradient(145deg, #ffffff, #e6e6e6);*/
+            background: linear-gradient(145deg, #8A2BE2, #9932CC, #BA55D3);
+            /*box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1);*/
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+            /*color: #333;*/
+            color: #fff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed;
+            bottom: 7vh;
+            right: 5vw;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        @media screen and (min-width: 320px) and (max-width: 768px){
+            #filter-section{
+                display:none;
+            }
+
+            .filter-button{
+                display:flex;
+            }
+        }
+    

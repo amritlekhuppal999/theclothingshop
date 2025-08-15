@@ -20,10 +20,10 @@
                 @foreach($bannerImages as $key => $bannerImage)
                     <div class="carousel-item {{ ($key == 0) ? "active" : "" }}">
                         <img 
-                            class="d-block img-fluid w-100" 
+                            class="" {{-- d-block img-fluid w-100 --}}
                             src="{{ asset($bannerImage["image_location"]) }}" 
                             alt="First slide" 
-                            style="width:100%; max-height:68vh; object-fit: cover;"
+                            {{-- style="width:100%; height:68vh; object-fit: cover;" --}}
                         />
                     </div>
                 @endforeach

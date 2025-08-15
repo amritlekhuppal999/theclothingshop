@@ -162,6 +162,7 @@ define('ADMIN_LTE', "XAdminLTE");
             //   'value' => session('test_key'),
             //   'csrf_token' => csrf_token()
             // ];
+            \Log::info('session', session()->all());
             return session()->all();
         }
 

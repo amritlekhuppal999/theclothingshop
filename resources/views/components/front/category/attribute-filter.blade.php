@@ -91,29 +91,29 @@
                     $section_class = "color_filter_body";
                 }
             @endphp
-            <div class="col-md-12">
-                <div class="card" style="">
-                    <div class="card-body pr-0">
-                        <p class="card-text"> {{ $attributeData["attribute_type"] }} </p>
-                            <div 
-                                class="{{ $section_class }}"
-                                id=""
-                                style="max-height:150px; overflow-y:auto;">
-                                @foreach($attributeData["attribute_value_array"] as $key => $attr_value)
-                                    <label class="btn btn-outline-secondary cursor-pointer">
-                                        <input 
-                                            class="{{ $input_class }}"
-                                            type="checkbox" 
-                                            name="{{ $attributeData["attribute_type"] }}[]" 
-                                            value="{{ $attr_value["value"] }}"
-                                            {{ ( strtolower($attributeData["attribute_type"]) == "size" && in_array($attr_value["value"], $size_data) ) ? "checked" : "" }}
-                                            {{ ( strtolower($attributeData["attribute_type"]) == "color" && in_array($attr_value["value"], $color_data ) ) ? "checked" : "" }}
-                                        /> 
-                                        {{ $attr_value["value"] }} 
-                                    </label>
-                                @endforeach
-                            </div>
-                    </div>
+
+            {{-- <div class=""></div> --}}
+            <div class="card" style="">
+                <div class="card-body pr-0">
+                    <p class="card-text"> {{ $attributeData["attribute_type"] }} </p>
+                        <div 
+                            class="{{ $section_class }}"
+                            id=""
+                            style="max-height:150px; overflow-y:auto;">
+                            @foreach($attributeData["attribute_value_array"] as $key => $attr_value)
+                                <label class="btn btn-outline-secondary cursor-pointer">
+                                    <input 
+                                        class="{{ $input_class }}"
+                                        type="checkbox" 
+                                        name="{{ $attributeData["attribute_type"] }}[]" 
+                                        value="{{ $attr_value["value"] }}"
+                                        {{ ( strtolower($attributeData["attribute_type"]) == "size" && in_array($attr_value["value"], $size_data) ) ? "checked" : "" }}
+                                        {{ ( strtolower($attributeData["attribute_type"]) == "color" && in_array($attr_value["value"], $color_data ) ) ? "checked" : "" }}
+                                    /> 
+                                    {{ $attr_value["value"] }} 
+                                </label>
+                            @endforeach
+                        </div>
                 </div>
             </div>
             

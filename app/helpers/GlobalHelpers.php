@@ -187,6 +187,11 @@ use App\Services\WishlistService;
             return $role_arr[$role_id];
         }
     }
+    if(!function_exists('AdminRoleArr')){
+        function AdminRoleArr(){
+            return ["2", "3", "4", "5"];
+        }
+    }
 
 
     if(!function_exists('getAddressType')){

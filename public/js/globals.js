@@ -279,6 +279,17 @@ if (!MyApp.initDone){
     // COPY to CLIPBOARD END
 
 
+    // Limit String to a given ch length
+        MyApp.limitString = function (str, maxLength) {
+            if (str.length <= maxLength || maxLength == 0) {
+                return str;
+            }
+            // console.log(str.length, maxLength);
+            return str.substring(0, maxLength) + "...";
+        }
+    // Limit String END
+
+
     
     // Set it to false so we can customise toastr methods
         //toastr.options.escapeHtml = false;

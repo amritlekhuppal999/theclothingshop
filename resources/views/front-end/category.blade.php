@@ -3,84 +3,11 @@
 
 @section('content-css')
     <link rel="stylesheet" href="{{ asset('css/front-end/category.css') }}">
+    
+    <link rel="stylesheet" href="{{ asset('css/front-end/category-load-product.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/front-end/category-filter-section.css') }}">
 
-    <style>
-        /* Container for the scrollable content */
-        .scroll-container {
-            /* max-height: 300px; /* Set a max height to make it scrollable */
-            /* overflow-y: auto; /* Enable vertical scrolling */
-            /* border: 1px solid #dee2e6; /* Bootstrap-like border */
-            /* border-radius: 0.5rem; /* Rounded corners for the container */
-            /* background-color: #fff; /* White background for the content area */
-            /* padding: 1.5rem; /* Internal padding for content, not scrollbar */
-            /* width: 100%; /* Ensure it takes full width of its parent */
-            /* max-width: 400px; /* Max width for better presentation */
-            /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05); /* Subtle shadow */
-        }
-
-        /* --- Custom Scrollbar Styles for WebKit browsers (Chrome, Safari, Edge) --- */
-
-        /* Width of the scrollbar */
-        .scroll-container::-webkit-scrollbar, .filter-sub-section::-webkit-scrollbar{
-            width: 8px; /* Make it narrower */
-        }
-
-        /* Track of the scrollbar (the area behind the thumb) */
-        .scroll-container::-webkit-scrollbar-track {
-            background: #f1f1f1; /* Light gray track */
-            border-radius: 10px; /* Rounded track */
-        }
-
-        /* Thumb of the scrollbar (the draggable part) */
-        .scroll-container::-webkit-scrollbar-thumb {
-            background: #888; /* Darker gray thumb */
-            border-radius: 10px; /* Rounded thumb */
-        }
-
-        /* Hover state for the scrollbar thumb */
-        .scroll-container::-webkit-scrollbar-thumb:hover {
-            background: #555; /* Even darker gray on hover */
-        }
-
-        /* --- Scrollbar Styles for Firefox --- */
-        /* Note: Firefox styling is more limited. */
-        .scroll-container {
-            /* scrollbar-width: thin; /* 'auto' or 'thin' */
-            /* scrollbar-color: #888 #f1f1f1; /* thumb color track color */
-        }
-
-        
-        
-        .filter-sub-section{
-            position:sticky; 
-            top:20px; 
-            /*background:red;*/
-            /*height:634px;*/
-            height: 60rem;
-            overflow-y:auto;
-        }
-        
-        /*.filter-sub-section-filler{
-            height:300px;
-        }*/
-
-        @media (min-width: 768px) {
-            .filter-sub-section {
-                height: 34rem;
-            }
-        }
-        @media (max-width: 1870px) {
-            .filter-sub-section {
-                /*max-height: 61rem;*/
-                
-                
-            }
-            
-            /*.filter-sub-section-filler{
-                height:30rem;
-            }*/
-        }
-    </style>
+      
 @endsection
 
 
@@ -95,11 +22,10 @@
         <div class="container-fluid">
             <!-- <p>Page Content..</p> -->
 
-            
             <div class="row">
 
                 <!-- display applied filters here, along with pagination if possible -->
-                <div class="col-md-9 offset-md-3 mt-2 mb-2">
+                <div class="col-md-12 mt-2 mb-2">
 
                     <div class="row">
                         {{-- searchbar --}}
@@ -141,15 +67,17 @@
             </div>
 
             
-            <!-- PRODUCT & SUB-CATEGORY -->
+            <!-- PRODUCT & FILTERS -->
             <div class="row">
             
                 <div class="col-md-12">
 
                     <div class="row">
 
+                        {{-- WE WILL USE SOME JS MAGIC TO MAKE IT MOVE the filters IN MOBILE AND DESKTOP VIEW --}}
+
                         <!-- FILTERS -->
-                        <div class="col-md-3  " id="filter-section" >
+                        <div class="col-12 col-md-3" id="filter-section">
 
                             <div class="filter-sub-section ">
                             
@@ -178,7 +106,7 @@
                         </div>
 
                         <!-- PRODUCTS -->
-                        <div class="col-md-9">
+                        <div class="col-12 col-lg-9">
 
                             <livewire:front.product.load-products :categorySlug="$category_slug" />
                 
@@ -188,6 +116,31 @@
                 </div>
             
             </div>
+
+
+            <!-- Overlay Category -->
+            <div class="overlay-category pl-4 pr-4" id="overlay-category" style="overflow-y:auto;">
+                {{-- <div class="overlay-category-content" onclick="">
+                    <button class="close-overlay-category-btn">&times;</button>
+                </div> --}}
+                
+                {{-- filter element is loaded here --}}
+                <div 
+                    class="filter-overlay-section" 
+                    id="filter-overlay-section"
+                    style="">
+                
+                </div>
+            </div>
+
+
+            {{-- Launch Filter BTN --}}
+            <span 
+                class="filter-button" 
+                id="filter-overlay-btn"
+                type="button">
+                <i class="fas fa-filter"></i>
+            </span>
 
         </div>
     </div>
@@ -357,6 +310,85 @@
                 }
             }
 
+
+
+            
+        });
+
+        
+        // OVERLAY FUNCTIONS
+        document.addEventListener('DOMContentLoaded', e=>{
+            
+            //console.log(document.getElementById("filter-overlay-btn"));
+            const FILTER_OVERLAY_BTN = document.getElementById("filter-overlay-btn");
+
+            let FILTER_SECTION_MAIN = document.getElementById("filter-section");
+            let FILTER_OVERLAY_SECTION = document.getElementById("filter-overlay-section");
+
+            FILTER_OVERLAY_BTN.addEventListener('click', event=>{
+                openOverlay();
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeOverlay();
+                }
+            });
+
+            // close overlay when clicking anywhere on the body
+            document.getElementById("overlay-category").addEventListener('click', event=>{ 
+                closeOverlay(event);
+             });
+
+            /*
+            document.querySelector('.close-overlay-category-btn')
+                    .addEventListener('click', event=>{
+                event.stopPropagation();
+                closeOverlay(event);
+            });
+            */
+
+            // Prevent scrolling when overlay is open
+            document.getElementById('overlay-category').addEventListener('wheel', function(e) {
+                //e.preventDefault();
+            });
+
+
+            // launch category page overlay
+            function openOverlay() {
+                document.getElementById('overlay-category').classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                moveFilterChild("to-overlay");
+            }
+
+            // close category page overlay
+            function closeOverlay(event) {
+                
+                // if ( event && event.target !== document.getElementById('overlay-category') ) return;
+                if ( event.target !== document.getElementById('overlay-category') ) return;
+                
+                document.getElementById('overlay-category').classList.remove('active');
+                document.body.style.overflow = 'auto';
+
+                moveFilterChild("from-overlay");
+            }
+            
+
+            function moveFilterChild(movement="to-overlay"){
+                if(movement == "to-overlay"){
+
+                    while(FILTER_SECTION_MAIN.firstChild){
+                        FILTER_OVERLAY_SECTION.appendChild(FILTER_SECTION_MAIN.firstChild);
+                    }
+                }
+
+                else {
+                    while(FILTER_OVERLAY_SECTION.firstChild){
+                        FILTER_SECTION_MAIN.appendChild(FILTER_OVERLAY_SECTION.firstChild);
+                    }
+                }
+            }
         });
     </script>
 @endsection

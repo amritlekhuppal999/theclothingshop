@@ -98,7 +98,7 @@ class HomeController extends Controller
                 $prod_data = array(
                     "displayPage" => "home",
                     "cardType" => "category",
-                    "cardSize" => "4",
+                    "cardSize" => "12",
                     "cardTheme" => ($key == 0) ? "dark" : "",
                     "slug" => 'category/'.$sub_cat["category_slug"].'?sc='.$sub_cat["SC_slug"],
                     "imageSlug" => ($sub_cat["SCIL"]) ? $sub_cat["SCIL"] : "images/product-card-loader.jpg",
@@ -189,7 +189,7 @@ class HomeController extends Controller
             foreach ($sub_category->toArray() as $key => $sub_cat) {
                 $prod_data = array(
                     "displayPage" => "home",
-                    "cardType" => "category",
+                    "cardType" => "category-remaining",
                     "cardSize" => "3",
                     "cardTheme" => ($key == 0) ? "dark" : "",
                     "slug" => 'category/'.$sub_cat["category_slug"].'?sc='.$sub_cat["SC_slug"],

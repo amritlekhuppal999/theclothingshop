@@ -33,6 +33,7 @@ class LoginController extends Controller
             ]);
     
             // Facilitate a special account type if an admin decides to login as customer
+            $credentials['role'] = 1;   //  role id for user
     
             if(Auth::guard("web")->attempt($credentials)){
                 $request->session()->regenerate();

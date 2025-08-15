@@ -6,26 +6,25 @@
         }
     @endphp
 
-    <div class="col-md-12">
-        <div class="card" style="">
-            <div class="card-body" id="theme_option_body">
-                <p class="card-text"> THEME </p>
+    {{-- <div class="col-md-12"></div> --}}
+    <div class="card" style="">
+        <div class="card-body" id="theme_option_body">
+            <p class="card-text"> THEME </p>
 
-                <div class="list-group list-group-flush scroll-container" style="max-height:300px; overflow-y:auto;">
-                    @foreach($themeList as $key => $theme)
-                        <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                            <input 
-                                class="form-check-input me-1 select_theme_option" 
-                                type="checkbox" 
-                                value="{{ $theme["sub_category_slug"] }}"
-                                {{ ( in_array($theme["sub_category_slug"], $theme_values) ) ? "checked" : "" }}
-                            />
-                            {{ $theme["sub_category_name"] }}
-                        </label>
-                    @endforeach
-                </div>
-
+            <div class="list-group list-group-flush scroll-container" style="max-height:300px; overflow-y:auto;">
+                @foreach($themeList as $key => $theme)
+                    <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
+                        <input 
+                            class="form-check-input me-1 select_theme_option" 
+                            type="checkbox" 
+                            value="{{ $theme["sub_category_slug"] }}"
+                            {{ ( in_array($theme["sub_category_slug"], $theme_values) ) ? "checked" : "" }}
+                        />
+                        {{ $theme["sub_category_name"] }}
+                    </label>
+                @endforeach
             </div>
+
         </div>
     </div>
 

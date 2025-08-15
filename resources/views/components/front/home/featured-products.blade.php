@@ -9,7 +9,7 @@
     @endphp
 
 
-    <div class="row w-100 m-auto">
+    <div class="row "> <!--w-100 m-auto -->
         @if(count($product_array))
             @foreach($product_array as $product_html)
                 

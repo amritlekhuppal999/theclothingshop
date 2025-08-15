@@ -6,7 +6,7 @@
             
             @foreach($wishlist_items as $key => $item)
                 
-                <div class="col-md-3" wire:key="item-{{ $item["id"] }}" @if($loop->last) id="last_record" @endif>
+                <div class="col-6 col-md-3" wire:key="item-{{ $item["id"] }}" @if($loop->last) id="last_record" @endif>
                     
                     <div class="card product-card border-0 {{ ($key == 0) ? 'dark' : '' }}">
                         <div class="product-image">

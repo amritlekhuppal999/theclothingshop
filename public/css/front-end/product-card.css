@@ -114,3 +114,16 @@
     font-size: clamp(0.625rem, 0.9vw, 0.875rem);
     font-weight: 600;
 }
+
+
+@media screen and (min-width: 320px) and (max-width: 425px){
+    .price-section {
+        display: revert;
+    }
+}
+
+@media screen and (width: 1024px){
+    .price-section {
+        display: revert;
+    }
+}

@@ -7,30 +7,28 @@
     @endphp
     
     
-    <div class="col-md-12">
-        <div class="card" style="">
-            <div class="card-body pr-1" style="">
-                <p class="card-text"> SUB-CATEGORY </p>
+    <div class="card" style="">
+        <div class="card-body pr-1" style="">
+            <p class="card-text"> SUB-CATEGORY </p>
 
-                <div 
-                    class="list-group list-group-flush scroll-container" 
-                    style="max-height:300px; overflow-y:auto;"
-                    id="sub_category_filter_body">
-                    @foreach($subCategoryList as $key => $subCategory)
-                        <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
-                            <input 
-                                class="form-check-input me-1 sub_category_filter_options" 
-                                type="checkbox" 
-                                value="{{ $subCategory["sub_category_slug"] }}"
-                                data-sub_cat_id="{{ $subCategory["id"] }}"
-                                {{ ( in_array($subCategory["sub_category_slug"], $sub_category_values) ) ? "checked" : "" }}
-                            />
-                            {{ $subCategory["sub_category_name"] }}
-                        </label>
-                    @endforeach
-                </div>
-
+            <div 
+                class="list-group list-group-flush scroll-container" 
+                style="max-height:300px; overflow-y:auto;"
+                id="sub_category_filter_body">
+                @foreach($subCategoryList as $key => $subCategory)
+                    <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
+                        <input 
+                            class="form-check-input me-1 sub_category_filter_options" 
+                            type="checkbox" 
+                            value="{{ $subCategory["sub_category_slug"] }}"
+                            data-sub_cat_id="{{ $subCategory["id"] }}"
+                            {{ ( in_array($subCategory["sub_category_slug"], $sub_category_values) ) ? "checked" : "" }}
+                        />
+                        {{ $subCategory["sub_category_name"] }}
+                    </label>
+                @endforeach
             </div>
+
         </div>
     </div>
 
