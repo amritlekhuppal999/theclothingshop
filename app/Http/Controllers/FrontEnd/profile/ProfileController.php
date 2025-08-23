@@ -100,8 +100,11 @@ class ProfileController extends Controller{
             ];
 
             UserAddress::create($address_arr);
-
+            
+            // if($request->requestedFrom === "profile"){}
+            
             return redirect()->back()->with('success', 'Address added');
+
         } 
         catch (ModelNotFoundException $e) {
             return redirect()->back()->with('error', 'User not found.')->withInput();

@@ -4,6 +4,7 @@ use App\Services\CategoryService;
 use App\Services\ProductService;
 use App\Services\AttributeService;
 use App\Services\WishlistService;
+use App\Services\BillingService;
 
     if (!function_exists('base64_to_file')) {
         
@@ -164,6 +165,17 @@ use App\Services\WishlistService;
             }
         }
     // WISHLIST END
+
+
+    // BILLING 
+        if (!function_exists('getCheckoutBill')) {
+            function getCheckoutBill(){   // can use slug aswell
+
+                return app(BillingService::class)->getCheckoutBill();
+                // if confused what the hell this is , its a service class, read docs
+            }
+        }
+    // BILLING END
     
     
     if(!function_exists('get_target_group')){

@@ -94,6 +94,7 @@
             background: grey;
             color: lightgrey;
             border-color: #dee2e6;
+            opacity: 0.25;
         }
         
         .size-chart-link {

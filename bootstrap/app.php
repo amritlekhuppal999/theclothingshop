@@ -27,6 +27,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'set_session' => UseAdminSession::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'payment-callback',
+            // or wildcard patterns like 'payment/*/callback'
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

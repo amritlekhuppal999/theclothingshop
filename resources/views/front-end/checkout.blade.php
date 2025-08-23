@@ -183,12 +183,16 @@
         }
         
         .add-address-btn {
+            display:block;
+            text-align: center;
+            
             border: 2px dashed #667eea;
             background: rgba(102, 126, 234, 0.05);
             color: #667eea;
             border-radius: 15px;
             padding: 1.5rem;
             width: 100%;
+            /*margin-top: 1rem;*/
             margin-bottom: 1rem;
             transition: all 0.3s ease;
         }
@@ -205,25 +209,13 @@
 
 @section('content')
 
-    {{-- select address
-        have a default or option to add new
-
-    payment method
-
-        Saved Cards
-        Wallet (optional)
-        Other
-            Chose Credit / Debit Card
-            NetBanking
-            UPI
-            COD / POD
-        RAZORPAY
-
-    Delivery Info
-
-    Thankyou / Sorry Page     --}}
     
-    
+
+    {{-- @php
+        var_dump($orderSummaryData);
+    @endphp --}}
+
+    {{-- @dd(session()->get('web'))  --}}
 
     <div class="content"> 
         <div class="container">
@@ -237,6 +229,7 @@
 
             
             <div class="checkout-container">
+                
                 <div class="checkout-header">
                     {{-- <h2><i class="fas fa-shopping-cart me-2"></i>Checkout</h2> --}}
                     <div class="step-indicator">
@@ -257,239 +250,240 @@
                 
                 <div class="checkout-content">
                     <!-- Step 1: Address Selection -->
-                    <div class="checkout-step active" id="step-1">
-                        <h4 class="mb-4"><i class="fas fa-map-marker-alt text-primary me-2"></i>Select Delivery Address</h4>
-                        
-                        <div class="address-card" onclick="selectAddress(this)">
-                            <input type="radio" name="address" value="home" class="form-check-input">
-                            <div class="d-flex align-items-start">
-                                <div class="me-3">
-                                    <i class="fas fa-home text-primary" style="font-size: 1.5rem;"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Home</h6>
-                                    <p class="mb-1 text-muted">John Doe</p>
-                                    <p class="mb-1">123 Main Street, Apartment 4B</p>
-                                    <p class="mb-0 text-muted">New York, NY 10001</p>
-                                    <small class="text-success"><i class="fas fa-check-circle me-1"></i>Default Address</small>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="address-card" onclick="selectAddress(this)">
-                            <input type="radio" name="address" value="office" class="form-check-input">
-                            <div class="d-flex align-items-start">
-                                <div class="me-3">
-                                    <i class="fas fa-building text-info" style="font-size: 1.5rem;"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Office</h6>
-                                    <p class="mb-1 text-muted">John Doe</p>
-                                    <p class="mb-1">456 Business Ave, Suite 200</p>
-                                    <p class="mb-0 text-muted">New York, NY 10002</p>
-                                    <small class="text-info"><i class="fas fa-clock me-1"></i>9 AM - 6 PM delivery</small>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="address-card" onclick="selectAddress(this)">
-                            <input type="radio" name="address" value="other" class="form-check-input">
-                            <div class="d-flex align-items-start">
-                                <div class="me-3">
-                                    <i class="fas fa-map-pin text-warning" style="font-size: 1.5rem;"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Other Address</h6>
-                                    <p class="mb-1 text-muted">Jane Smith</p>
-                                    <p class="mb-1">789 Oak Street</p>
-                                    <p class="mb-0 text-muted">Brooklyn, NY 11201</p>
-                                    <small class="text-warning"><i class="fas fa-exclamation-triangle me-1"></i>Verify phone number</small>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button class="add-address-btn" onclick="addNewAddress()">
-                            <i class="fas fa-plus me-2"></i>Add New Address
-                        </button>
-                        
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-custom btn-lg" onclick="proceedToPayment()" id="proceedBtn" disabled>
-                                Proceed to Payment <i class="fas fa-arrow-right ms-2"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <x-front.checkout.select-address />
                     
                     <!-- Step 2: Payment Selection -->
-                    <div class="checkout-step" id="step-2">
-                        <h4 class="mb-4"><i class="fas fa-credit-card text-primary me-2"></i>Select Payment Method</h4>
-                        
-                        <div class="payment-option" onclick="selectPayment(this)">
-                            <input type="radio" name="payment" value="card" class="form-check-input me-3">
-                            <div class="payment-icon">
-                                <i class="fas fa-credit-card text-primary"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">Credit/Debit Card</h6>
-                                <small class="text-muted">Visa, Mastercard, American Express</small>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-option" onclick="selectPayment(this)">
-                            <input type="radio" name="payment" value="paypal" class="form-check-input me-3">
-                            <div class="payment-icon">
-                                <i class="fab fa-paypal text-info"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">PayPal</h6>
-                                <small class="text-muted">Pay with your PayPal account</small>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-option" onclick="selectPayment(this)">
-                            <input type="radio" name="payment" value="upi" class="form-check-input me-3">
-                            <div class="payment-icon">
-                                <i class="fas fa-mobile-alt text-success"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">UPI</h6>
-                                <small class="text-muted">Google Pay, PhonePe, Paytm</small>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-option" onclick="selectPayment(this)">
-                            <input type="radio" name="payment" value="cod" class="form-check-input me-3">
-                            <div class="payment-icon">
-                                <i class="fas fa-money-bill-wave text-warning"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">Cash on Delivery</h6>
-                                <small class="text-muted">Pay when you receive your order</small>
-                            </div>
-                        </div>
-                        
-                        <div class="order-summary">
-                            <h6 class="mb-3"><i class="fas fa-receipt me-2"></i>Order Summary</h6>
-                            <div class="summary-item">
-                                <span>Subtotal (3 items)</span>
-                                <span>$89.97</span>
-                            </div>
-                            <div class="summary-item">
-                                <span>Shipping</span>
-                                <span class="text-success">Free</span>
-                            </div>
-                            <div class="summary-item">
-                                <span>Tax</span>
-                                <span>$7.20</span>
-                            </div>
-                            <div class="summary-item summary-total">
-                                <span>Total</span>
-                                <span class="text-primary">$97.17</span>
-                            </div>
-                        </div>
-                        
-                        <div class="d-flex justify-content-between mt-4">
-                            <button class="btn btn-outline-secondary btn-lg" onclick="backToAddress()">
-                                <i class="fas fa-arrow-left me-2"></i>Back to Address
-                            </button>
-                            <button class="btn btn-custom btn-lg" onclick="placeOrder()" id="placeOrderBtn" disabled>
-                                Place Order <i class="fas fa-check ms-2"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <x-front.checkout.payment-method :orderSummaryData="$orderSummaryData" />
                 </div>
             </div>
 
-            
+           
         </div>
     </div>
 @endsection
-
+{{-- $total_discount_amount = round($orderSummaryData["total_price_after_discount"], 2); --}}
 
 
 
 @push('scripts') 
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
     <script>
-        function proceedToPayment() {
-            // Hide step 1, show step 2
-            document.getElementById('step-1').classList.remove('active');
-            document.getElementById('step-2').classList.add('active');
-            
-            // Update step indicators
-            document.querySelector('[data-step="1"]').classList.add('completed');
-            document.querySelector('[data-step="1"]').classList.remove('active');
-            document.querySelector('[data-step="2"]').classList.add('active');
-            
-            // Change completed step icon to checkmark
-            document.querySelector('[data-step="1"] .step-circle').innerHTML = '<i class="fas fa-check"></i>';
-        }
-
-        function selectPayment(option) {
-            // Remove selected class from all options
-            document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
-            // Add selected class to clicked option
-            option.classList.add('selected');
-            // Check the radio button
-            option.querySelector('input[type="radio"]').checked = true;
-            // Enable place order button
-            document.getElementById('placeOrderBtn').disabled = false;
-        }
-
-        function selectAddress(card) {
-            // Remove selected class from all cards
-            document.querySelectorAll('.address-card').forEach(c => c.classList.remove('selected'));
-            // Add selected class to clicked card
-            card.classList.add('selected');
-            // Check the radio button
-            card.querySelector('input[type="radio"]').checked = true;
-            // Enable proceed button
-            document.getElementById('proceedBtn').disabled = false;
-        }
-        
-        
-        
-        
-        
-        function backToAddress() {
-            // Hide step 2, show step 1
-            document.getElementById('step-2').classList.remove('active');
-            document.getElementById('step-1').classList.add('active');
-            
-            // Update step indicators
-            document.querySelector('[data-step="2"]').classList.remove('active');
-            document.querySelector('[data-step="1"]').classList.add('active');
-            document.querySelector('[data-step="1"]').classList.remove('completed');
-            
-            // Change step 1 icon back to map marker
-            document.querySelector('[data-step="1"] .step-circle').innerHTML = '<i class="fas fa-map-marker-alt"></i>';
-        }
-        
-        function addNewAddress() {
-            alert('Add New Address functionality would open a modal or redirect to address form');
-        }
-        
-        function placeOrder() {
-            // Show success animation
-            const btn = document.getElementById('placeOrderBtn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
-            btn.disabled = true;
-            
-            setTimeout(() => {
-                alert('Order placed successfully! 🎉\n\nOrder ID: #12345\nEstimated delivery: 2-3 business days');
-                btn.innerHTML = '<i class="fas fa-check me-2"></i>Order Placed!';
-                btn.classList.add('btn-success');
-                btn.classList.remove('btn-custom');
-            }, 2000);
-        }
-
         document.addEventListener('DOMContentLoaded', event=>{
             const firstAddress = document.querySelector('.address-card');
-            selectAddress(firstAddress);
+            //selectAddress(firstAddress);
             
+            let ADDRESS_SECTION = document.getElementById('step-1');
+            let SELECT_PAYMENT_SECTION = document.getElementById('step-2');
             
+            let PLACE_ORDER_BTN = document.getElementById('place-order');
 
+
+
+            ADDRESS_SECTION.addEventListener('click', event=>{
+                
+                let element = event.target;
+
+                // select address
+                if(element.className.includes("address-card")){
+                    selectAddress(element);
+                }
+
+                // proceede to payment section
+                if(element.id == "proceedBtn"){
+                    proceedToPayment();
+                }
+            });
+
+
+            SELECT_PAYMENT_SECTION.addEventListener('click', event=>{
+                
+                let element = event.target;
+                
+                // select payment type
+                if(element.className.includes("payment-option")){
+                    selectPayment(element);
+                }
+
+                // proceede to payment section
+                if(element.id == "back-to-address"){
+                    backToAddress();
+                }
+            });
+
+            PLACE_ORDER_BTN.addEventListener('click', event=>{
+                createOrder(PLACE_ORDER_BTN);
+            });
+
+            // create razorpay payment order
+            async function createOrder (PLACE_ORDER_BTN){
+
+                btn_backup = PLACE_ORDER_BTN.innerHTML;
+                PLACE_ORDER_BTN.innerHTML = `processing... ${MyApp.LOADER_SMALL}`;
+                PLACE_ORDER_BTN.disabled = true;
+                //return false;
+
+                let address_input = document.querySelectorAll('[name="address"]');
+                address_input = Array.from(address_input).filter(element => element.checked === true);
+                address_id = address_input[0].value;
+
+                
+                let totalAmt = document.getElementById("total-amount").innerText;
+
+                const request_data = {
+                    address_id: address_id,
+                    amount: totalAmt,
+                };
+                const params = new URLSearchParams(request_data);
+                
+                const request_options = {
+                    method: 'GET',
+                    // headers: {},
+                    // body: JSON.stringify(request_data)
+                };
+        
+                let url = 'create-order?'+params;
+                
+                //console.log(url);
+                //return false;
+        
+                try{
+                    let response = await fetch(url, request_options);
+                    // console.log(response);
+                    let response_data = await response.json();
+                    console.log(response_data);
+
+                    if(response_data.code === 200){
+                        let payment_order_data = response_data.order;
+                        PLACE_ORDER_BTN.remove();
+                        makePayment(payment_order_data);
+                    }
+
+                    else {
+                        toastr.danger(response_data.message);
+                        PLACE_ORDER_BTN.innerHTML = btn_backup;
+                        PLACE_ORDER_BTN.disabled = false;
+                    }
+
+                    //return response_data;
+                }
+                catch(error){   // Handles Network Errors
+                    console.error('Error:', error);
+                    PLACE_ORDER_BTN.innerHTML = btn_backup;
+                    PLACE_ORDER_BTN.disabled = false;
+                }
+            }
+
+            //launch the razorpay payment UI and method
+            function makePayment(payment_order_data){
+
+                var options = {
+                    "key": "{{env('RAZORPAY_API')}}", // Enter the Key ID generated from the Dashboard
+                    "amount": payment_order_data.amount, // Amount is in currency subunits. 
+                    "currency": payment_order_data.currency,
+                    "name": "{{env('APP_NAME')}}", //your business name
+                    "description": "Test Transaction",
+                    "image": "{{env('APP_NAME')}}",
+                    "order_id": payment_order_data.id, 
+                    "callback_url": "{{ safe_route('payment-callback') }}",
+                    //"callback_url": "",
+                    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+                        "name": "{{ session()->get('web.name') }}", //your customer's name
+                        "email": "{{ session()->get('web.email') }}",
+                        "contact": "{{ session()->get('web.phone_no') }}" //Provide the customer's phone number for better conversion rates 
+                    },
+                    "notes": {
+                        "address": "Razorpay Corporate Office"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                };
+                //console.log(options); 
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            }
+            
+            // display payment section
+            function proceedToPayment() {
+                // Hide step 1, show step 2
+                document.getElementById('step-1').classList.remove('active');
+                document.getElementById('step-2').classList.add('active');
+                
+                // Update step indicators
+                document.querySelector('[data-step="1"]').classList.add('completed');
+                document.querySelector('[data-step="1"]').classList.remove('active');
+                document.querySelector('[data-step="2"]').classList.add('active');
+                
+                // Change completed step icon to checkmark
+                document.querySelector('[data-step="1"] .step-circle').innerHTML = '<i class="fas fa-check"></i>';
+            }
+
+            // select payment type
+            function selectPayment(option) {
+                
+                // Remove selected class from all options
+                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+                // Add selected class to clicked option
+                option.classList.add('selected');
+                // Check the radio button
+                option.querySelector('input[type="radio"]').checked = true;
+                // Enable place order button
+                document.getElementById('place-order').disabled = false;
+            }
+
+            // select address 
+            function selectAddress(card) {
+                console.log("function call");
+                // Remove selected class from all cards
+                document.querySelectorAll('.address-card').forEach(c => c.classList.remove('selected'));
+                // Add selected class to clicked card
+                card.classList.add('selected');
+                // Check the radio button
+                card.querySelector('input[type="radio"]').checked = true;
+                // Enable proceed button
+                document.getElementById('proceedBtn').disabled = false;
+            }
+            
+            // go back to address selection section            
+            function backToAddress() {
+                // Hide step 2, show step 1
+                document.getElementById('step-2').classList.remove('active');
+                document.getElementById('step-1').classList.add('active');
+                
+                // Update step indicators
+                document.querySelector('[data-step="2"]').classList.remove('active');
+                document.querySelector('[data-step="1"]').classList.add('active');
+                document.querySelector('[data-step="1"]').classList.remove('completed');
+                
+                // Change step 1 icon back to map marker
+                document.querySelector('[data-step="1"] .step-circle').innerHTML = '<i class="fas fa-map-marker-alt"></i>';
+            }
+            
+            // old place order function
+            function placeOrderX() {
+                // Show success animation
+                const btn = document.getElementById('place-order');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    alert('Order placed successfully! 🎉\n\nOrder ID: #12345\nEstimated delivery: 2-3 business days');
+                    btn.innerHTML = '<i class="fas fa-check me-2"></i>Order Placed!';
+                    btn.classList.add('btn-success');
+                    btn.classList.remove('btn-custom');
+                }, 2000);
+            }
         });
+
+
+
+        
     </script>
+
+    
+    
 @endpush
 
 {{-- @once @endonce --}}

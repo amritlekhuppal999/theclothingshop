@@ -63,6 +63,11 @@
                 </div>
             </div>
             
-            <button class="btn-checkout">Checkout</button>
+            {{-- <button class="btn-checkout">Checkout</button> --}}
+            <a 
+                href="{{ safe_route("checkout") }}" 
+                class="btn-checkout text-center text-decoration-none">
+                Checkout
+            </a>
         </div>
     </div>

@@ -24,6 +24,7 @@ use App\View\Components\front\category\AttributeFilter;
 use App\View\Components\front\profile\EditProfile;
 use App\View\Components\front\profile\ManageAddress;
 
+use App\View\Components\front\checkout\SelectAddress;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -58,5 +59,6 @@ class AppServiceProvider extends ServiceProvider
         
         
         Blade::component('front.profile.manage-address', ManageAddress::class);
+        Blade::component('front.checkout.select-address', SelectAddress::class);
     }
 }

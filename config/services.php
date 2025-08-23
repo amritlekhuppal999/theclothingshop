@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    
+    // Added later for razorpay
+    'razorpay' => [
+        'key'    => env('RAZORPAY_API'),
+        'secret' => env('RAZORPAY_SECRET'),
+    ],
+
 ];

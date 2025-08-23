@@ -245,6 +245,8 @@
                     };
                     const params = new URLSearchParams(request_data);
 
+                    
+
                     const request_options = {
                         method: 'GET',
                         // headers: {},
@@ -257,6 +259,8 @@
 
                     }
                     let url = route+params;
+
+                    console.log(url);
 
                     try{
                         let response = await fetch(url, request_options);

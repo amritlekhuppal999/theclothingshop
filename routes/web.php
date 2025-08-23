@@ -12,6 +12,8 @@ use App\Http\Controllers\FrontEnd\cart\CartController;
 use App\Http\Controllers\FrontEnd\wishlist\WishlistController;
 
 use App\Http\Controllers\FrontEnd\profile\ProfileController;
+use App\Http\Controllers\FrontEnd\checkout\CheckoutController;
+use App\Http\Controllers\FrontEnd\payments\PaymentController;
 
 use App\Mail\WelcomeMail;
 // use Illuminate\Support\Facades\Artisan;  // TO Run migrations without shell via route (DID NOT WORK)
@@ -138,9 +140,15 @@ define('ADMIN_LTE', "XAdminLTE");
 
 
     // CHECKOUT
-        Route::get('/checkout', function () {
-            return view(FRONT_END.'/checkout');
+        // Route::get('/checkout', function () {
+        //     return view(FRONT_END.'/checkout');
+        // })->name('checkout');
+        Route::middleware(['auth'])->group(function(){
+            Route::get('/checkout', [CheckoutController::class, 'INDEX'])->name('checkout');
+            Route::get('/checkout-add-address', [CheckoutController::class, 'STORE_ADDRESS'])->name('checkout-add-address');
         });
+        
+
     // CHECKOUT END
 
     // SEND TEST MAIL
@@ -148,6 +156,15 @@ define('ADMIN_LTE', "XAdminLTE");
             Mail::to('amritlekhuppal999@gmail.com')->send(new WelcomeMail());
         });
     // SEND TEST MAIL END
+
+
+    // RAZORPAY
+        Route::get('/create-order', [PaymentController::class, 'CREATE_ORDER'])->name('create-order');
+        Route::post('/payment-callback', [CheckoutController::class, 'PLACE_ORDER'])->name('payment-callback');     // RAZORPAY'S CALLBACK ROUTE
+        Route::get('/payment-successful', [CheckoutController::class, 'PAYMENT_SUCCESSFUL'])->name('payment-successful');
+        Route::get('/payment-unsuccessful', [CheckoutController::class, 'PAYMENT_UNSUCCESSFUL'])->name('payment-unsuccessful');
+    // RAZORPAY END
+
 
     
     // FRONT-END   END

@@ -173,7 +173,11 @@
     <div class="d-flex justify-content-center mb-3" id="add_new_address">
         
         {{-- Go back --}}
-        <a href="{{ safe_route("profile", ["page" => "manage-address"]) }}">Back</a>
+        <a href="{{ 
+            request()->path() == 'profile' ?  
+                safe_route("profile", ["page" => "manage-address"]) : 
+                'checkout'
+            }}">Back</a>
 
         <div class="col-md-10 ">
         
@@ -190,6 +194,9 @@
                 <form id="addressForm" action="{{ safe_route('add-address') }}" method="POST">
                     
                     @csrf
+
+                    {{-- Add request sent from (Turns out we dont need this)--}}
+                    {{-- <input type="text" name="requestedFrom" value="{{ request()->path() }}"> --}}
 
                     {{-- Name --}}
                     <div class="form-group">

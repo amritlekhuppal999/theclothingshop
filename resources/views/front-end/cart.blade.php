@@ -168,6 +168,8 @@
         }
         
         .btn-checkout {
+            display:block;
+            /*align-items:center;*/
             width: 100%;
             padding: 12px;
             font-size: 1.1rem;
@@ -181,6 +183,7 @@
         
         .btn-checkout:hover {
             background: #0056b3;
+            color: white;
         }
         
         .gift-wrap-section {
@@ -305,8 +308,17 @@
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <h4>Cart Empty!!</h4>
-                        <img class="mb-2" src="{{ asset('images/arey-le-lo.jpg') }}" alt="" style="height:50%; border-radius:10px;">
-                        <h4>Offer Jabar hai humhari... kuch le lo.. arey le lo.</h4>
+                        <img 
+                            class="mb-2" 
+                            src="{{ asset('images/arey-le-lo.jpg') }}" 
+                            alt="" 
+                            style="height:50vw; border-radius:10px;"
+                        />
+                        <h4>
+                            Offer Jabar hai humhari... 
+                            kuch le lo.. 
+                            arey le lo.
+                        </h4>
                     </div>
                 </div>
             @endif
