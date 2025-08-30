@@ -165,7 +165,7 @@ define('ADMIN_LTE', "XAdminLTE");
         Route::get('/payment-unsuccessful', [CheckoutController::class, 'PAYMENT_UNSUCCESSFUL'])->name('payment-unsuccessful');
     // RAZORPAY END
 
-
+    
     
     // FRONT-END   END
 
@@ -184,6 +184,12 @@ define('ADMIN_LTE', "XAdminLTE");
         }
 
         return "sry bro, you can't see...";
+    });
+
+
+    // TO VIEW and test pages 
+    Route::get('/test-page', function (){
+        return response()->file('/var/www/html/theclothingshop/resources/views/front-end/test-page.html');
     });
 
 

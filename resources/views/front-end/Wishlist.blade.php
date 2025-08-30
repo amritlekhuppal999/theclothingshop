@@ -26,13 +26,14 @@
                         <!-- search bar -->
                         {{-- <x-front.search-bar 
                             page="wishlist"
-                            divClass="col-md-8"
+                            divClass="col-3 col-md-8"
                             placeholder="Search wishlist"
                             id="wishlist-search-bar"
                         /> --}}
                         
                         <!-- Order Duration Filter -->
                         <x-front.sort-button 
+                            divClass="offset-3  col-9 "
                             page="wishlist" 
                             class="offset-md-8"
                             buttonText="Newest First">

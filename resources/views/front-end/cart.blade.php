@@ -209,7 +209,33 @@
         .form-control {
             border-radius: 6px;
         }
+
+        .empty-cart-img{
+            height:50vw; 
+            border-radius:10px;
+        }
         
+        
+        @media (max-width: 576px) {
+            .product-details {
+                text-align: center;
+                margin-top: 15px;
+            }
+            
+            .price-section {
+                text-align: center;
+                margin-top: 15px;
+            }
+            
+            .action-buttons {
+                text-align: center;
+            }
+            
+            .btn-wishlist {
+                margin-left: 10px;
+            }
+        }
+
         @media (max-width: 768px) {
             .cart-container {
                 padding: 15px;
@@ -238,25 +264,13 @@
             .btn-wishlist {
                 margin-left: 15px;
             }
+
+            
         }
-        
-        @media (max-width: 576px) {
-            .product-details {
-                text-align: center;
-                margin-top: 15px;
-            }
-            
-            .price-section {
-                text-align: center;
-                margin-top: 15px;
-            }
-            
-            .action-buttons {
-                text-align: center;
-            }
-            
-            .btn-wishlist {
-                margin-left: 10px;
+
+        @media (min-width: 768px){
+            .empty-cart-img{
+                height:25vw;
             }
         }
     </style>
@@ -309,15 +323,17 @@
                     <div class="col-lg-12 text-center">
                         <h4>Cart Empty!!</h4>
                         <img 
-                            class="mb-2" 
-                            src="{{ asset('images/arey-le-lo.jpg') }}" 
-                            alt="" 
-                            style="height:50vw; border-radius:10px;"
+                            class="mb-2 opacity-25 empty-cart-img" 
+                            {{-- src="{{ asset('images/arey-le-lo.jpg') }}" 
+                            alt="{{ asset('images/arey-le-lo.jpg') }}" --}}
+
+                            src="{{ asset('images/sad-empty-cart.png') }}" 
+                            alt="{{ asset('images/sad-empty-cart.png') }}"
                         />
                         <h4>
-                            Offer Jabar hai humhari... 
+                            {{-- Offer Jabar hai humhari... 
                             kuch le lo.. 
-                            arey le lo.
+                            arey le lo. --}}
                         </h4>
                     </div>
                 </div>

@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="{{ asset("css/front-end/product-card.css") }}">
         
         <link rel="stylesheet" href="{{ asset("css/front-end/nav-bar.css") }}">
+        <link rel="stylesheet" href="{{ asset("css/front-end/search-bar.css") }}">
         
         @if(env("APP_ENV") == "local")
             @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -46,6 +47,7 @@
 
         {{-- @livewireScripts --}}
         @stack('scripts')
+        @stack('searchbar-scripts')
         @yield('content-scripts')
     </body>
 </html>

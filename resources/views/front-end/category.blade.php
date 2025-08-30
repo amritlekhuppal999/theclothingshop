@@ -38,8 +38,9 @@
 
                         <!-- SORT OPTIONS -->
                         <x-front.sort-button 
+                            divClass="offset-3  col-9"
                             page="category"
-                            class="offset-md-8"
+                            {{-- class="offset-md-8" --}}
                             buttonText="Select Sorting Options">
                             <ul 
                                 class="dropdown-menu dropdown-menu-dark" 

@@ -6,7 +6,7 @@
         <!-- ORDER card header -->
         <div class="card-header">
             <div class="row small">
-                <div class="col-md-6 d-flex ">
+                <div class="col-md-8 d-flex ">
                     <div class="mr-3">
                         <span class="text-muted">ORDER PLACED</span> 
                         <span class="d-block text-muted text-bold"> {{ $orderRec["order_date"] }} </span>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-6 text-right"> 
+                <div class="col-md-4 text-right"> 
                     <span class="text-muted">Order Id #{{ $orderRec["order_id"] }}</span>
                     <div class="d-block">
                         <a href="#">View Order Details</a> |

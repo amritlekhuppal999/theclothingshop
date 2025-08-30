@@ -20,7 +20,7 @@
                 /> --}}
 
 
-                <div class="col-6 col-md-6 col-lg-3 col-xl-3" wire:key="item-{{ $product["product_id"] }}" @if($loop->last) id="last_record" @endif>
+                <div class="col-6 col-md-4 col-lg-3 col-xl-3" wire:key="item-{{ $product["product_id"] }}" @if($loop->last) id="last_record" @endif>
                     
                     <div class="card product-card border-0 {{ ($key == 0) ? 'dark' : '' }}">
                         <div class="product-image">

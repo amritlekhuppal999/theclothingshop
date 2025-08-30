@@ -332,7 +332,8 @@
                 let totalAmt = document.getElementById("total-amount").innerText;
 
                 const request_data = {
-                    address_id: address_id,
+                    shipping_address_id: address_id,
+                    billing_address_id: address_id,
                     amount: totalAmt,
                 };
                 const params = new URLSearchParams(request_data);
@@ -370,6 +371,7 @@
                 }
                 catch(error){   // Handles Network Errors
                     console.error('Error:', error);
+                    toastr.error("Something went wrong!");
                     PLACE_ORDER_BTN.innerHTML = btn_backup;
                     PLACE_ORDER_BTN.disabled = false;
                 }

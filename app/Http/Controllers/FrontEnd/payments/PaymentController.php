@@ -40,6 +40,8 @@ class PaymentController extends Controller
         }
 
         $amount = (int)$request->amount;
+        $shipping_address_id = $request->shipping_address_id;
+        $billing_address_id = $request->billing_address_id;
 
         try {
             $api = new Api($this->key, $this->secret);
@@ -62,7 +64,11 @@ class PaymentController extends Controller
             if(isset($order["id"])){
 
                 // storing new payment data in sessions
-                session(['payment_data.order' => $order]);
+                session([
+                    'payment_data.order' => $order, 
+                    'payment_data.shipping_address_id' => $shipping_address_id,
+                    'payment_data.billing_address_id' => $billing_address_id,
+                ]);
                 
                 return response()->json([
                     "type" => "Success",

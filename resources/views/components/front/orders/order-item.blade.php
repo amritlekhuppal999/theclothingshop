@@ -10,7 +10,7 @@
                             src="{{ asset($orderItem["product_image"]) }}" 
                             class="img-fluid rounded-start" 
                             alt="..." 
-                            style="height:167px;"
+                            style="height:100%;"
                         />
                         
                     </a>
