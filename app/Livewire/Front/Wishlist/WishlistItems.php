@@ -43,7 +43,7 @@ class WishlistItems extends Component
         $wishlist = Wishlist::join('products as PRO', function($query){
                                     $query->on('PRO.id', '=', 'wishlist.product_id');
                                 })
-                                ->join('product_images as PI', function($query){
+                                ->leftjoin('product_images as PI', function($query){
                                     $query->on('PRO.id', '=', 'PI.product_id')->where('PI.prime_image', 1);
                                 })
                                 ->select(
