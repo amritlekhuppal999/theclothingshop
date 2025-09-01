@@ -1,0 +1,62 @@
+
+
+    <div class="card card-success card-outline">
+                        
+        <!-- ORDER card header -->
+        <div class="card-header">
+            <div class="row small">
+                <div class="col-md-8 d-flex ">
+                    <div class="mr-3">
+                        <span class="text-muted">ORDER PLACED</span> 
+                        {{-- <span class="d-block text-muted text-bold"> {{ $orderRec["order_date"] }} </span> --}}
+                    </div>
+
+                    <!-- Total Amount -->
+                    <div class="mr-3">
+                        <span class="text-muted">TOTAL</span>
+                        {{-- <span class="d-block text-muted text-bold">₹{{ $orderRec["order_total"] }}</span> --}}
+                    </div>
+
+                    <div class="mr-3">
+                        <span class="text-muted">SHIP TO</span>
+                        {{-- <span class="d-block text-muted text-bold">{{ $orderRec["shipping_address"] }}</span> --}}
+                    </div>
+                </div>
+                
+                <div class="col-md-4 text-right"> 
+                    {{-- <span class="text-muted">Order Id #{{ $orderRec["order_id"] }}</span> --}}
+                    <div class="d-block">
+                        <a href="#">View Order Details</a> |
+                        <a href="#">Invoice</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ORDER card body -->
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-12 mb-3">
+                    
+
+                    {{-- <h5 class="card-text {{ $text_type }}"> --}}
+                        {{-- {{ $delivery_message }} --}}
+                    </h5>
+                </div>
+
+                {{-- @foreach($orderItems as $orderItem)
+                    
+                    <x-front.orders.order-item :orderItem="$orderItem" />    
+
+                @endforeach --}}
+            </div>
+        </div>
+
+        <!-- ORDER card footer -->
+        <div class="card-footer">
+            <button type="button" class="btn btn-sm btn-warning text-white">Track</button>
+            <button type="button" class="btn btn-sm btn-default text-secondary">View or Edit Order</button>
+            <button type="button" class="btn btn-sm btn-secondary">Feedback</button>
+        </div>
+    </div>

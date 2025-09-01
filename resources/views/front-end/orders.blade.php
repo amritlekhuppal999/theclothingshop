@@ -172,7 +172,7 @@
                             <p class="card-text"> ORDER TYPE </p>
 
                             <div class="list-group list-group-flush opacity-75">
-                                <label class="list-group-item cursor-pointer pl-4 bg-purple rounded" style="border-top:none;">
+                                <label class="list-group-item cursor-pointer pl-4" style="border-top:none;">
                                     <input class="form-check-input me-1" type="checkbox" value="all">
                                     All Orders
                                 </label>
@@ -218,6 +218,8 @@
                     @foreach($order_data_list as $orderRec)
                         
                         <x-front.orders.order-card :$orderRec />
+                        {{-- <livewire:front.product.load-products :categorySlug="$category_slug" /> --}}
+                        <livewire:front.orders.load-orders />
 
                     @endforeach
 
