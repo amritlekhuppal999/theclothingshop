@@ -9,5 +9,3 @@ docker-compose.yaml
 tests
 .env
 storage/*.key
-project-schema
-project-schema-copy
