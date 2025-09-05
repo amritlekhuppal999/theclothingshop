@@ -43,17 +43,16 @@
                                         alt="User profile picture"> -->
                                 </div>
 
-                                <h3 class="profile-username text-center">Drew Mcintire</h3>
-                                <!-- <h3 class="profile-username text-center">Nina Mcintire</h3> -->
+                                {{-- <h3 class="profile-username text-center">Drew Mcintire</h3> --}}
 
-                                <p class="text-muted text-center">
+                                {{-- <p class="text-muted text-center">
                                     <small>4.5</small>
                                     <i class="fas fa-star text-warning"></i>
                                     <i class="fas fa-star text-warning"></i>
                                     <i class="fas fa-star text-warning"></i>
                                     <i class="fas fa-star text-warning"></i>
                                     <i class="fas fa-star-half text-warning"></i>
-                                </p>
+                                </p> --}}
 
                                 <ul class="list-group list-group-unbordered mb-3">
                                     <li class="list-group-item">
