@@ -25,7 +25,7 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     
     // Dashboard Routes
     Route::get('/', [AdminDashboardController::class, 'INDEX'])->name('dashboard');
-    Route::get('dashboard', [AdminDashboardController::class, 'INDEX'])->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'INDEX'])->name('dashboard');
     
     
     // PRODUCT Routes

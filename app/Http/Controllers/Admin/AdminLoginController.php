@@ -15,8 +15,14 @@ class AdminLoginController extends Controller
     //To return login page view
     public function LOGIN_PAGE()
     {
-        return view('layouts/login');
+        // return view('layouts/login');
         // return view(FRONT_END.'/layouts/login');
+
+        if (!Auth::guard('admin')->check()){
+            return view('layouts/login');
+        }
+
+        return redirect('/admin/dashboard');
     }
 
 
@@ -56,7 +62,7 @@ class AdminLoginController extends Controller
     
                 // Access them like this: `session('role');`
     
-                return redirect()->intended('dashboard');
+                return redirect()->intended('/admin/dashboard');
             }
     
             return redirect()->back()

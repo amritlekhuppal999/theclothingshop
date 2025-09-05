@@ -96,12 +96,16 @@
 
                     <!-- Forggot password -->
                     <p class="mb-1">
-                        <a href="/forgot-password" class="text-muted">I forgot my password</a>
+                        <a href="{{ safe_route("forgot-password") }}" class="text-muted">I forgot my password</a>
                     </p>
+                    
                     <!-- New Member -->
-                    <p class="mb-0">
-                        <a href="{{ Request::is('admin/*') ? route('admin-register') : route('resgister') }}" class="text-center text-muted">Register a new membership</a>
-                    </p>
+                    @if(! Request::is('admin/*'))
+                        <p class="mb-0">
+                            <a href="{{ Request::is('admin/*') ? route('admin-register') : route('resgister') }}" class="text-center text-muted">Register a new membership</a>
+                            {{-- <a href="{{ Request::is('admin/*') ? '#' : route('resgister') }}" class="text-center text-muted">Register a new membership</a> --}}
+                        </p>
+                    @endif
                 </div>
             </div>
 
