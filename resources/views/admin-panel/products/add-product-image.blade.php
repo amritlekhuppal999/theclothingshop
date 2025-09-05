@@ -12,23 +12,27 @@
     <style>
         .image-container {
             position: relative;
-            width: 200px;
+            /*width: 200px;*/
             padding-bottom: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            border-bottom: 10px solid rgba(255,0,255,0.7)
         }
 
         .image-wrapper {
             position: relative;
-            width: 100%;
+            /*width: 100%;*/
         }
 
         .selected-image {
+            min-height:100px;
             width: 100%;
             max-height: 300px;
             object-fit: cover;
             display: block;
+            /*border-bottom: 15px solid grey;
+            border-right: 15px solid grey;*/
         }
 
         .added-images{
@@ -73,7 +77,10 @@
 
 
         .highlighter{
-            border: 3px solid rgba(255,0,255,0.7);
+            /*border: 3px solid rgba(255,0,255,0.7);*/
+            /*border-bottom: 10px solid rgba(255,0,255,0.7);*/
+            /*border: 10px solid red;*/
+            box-shadow: 10px 10px 5px rgba(255,0,255,0.7);
             animation: movingShadow 4s linear infinite;
         }
     </style>
@@ -94,7 +101,7 @@
 
             {{-- PRODUCT Image FORM --}}
             <div class="row">
-                <div class="col-8 offset-md-2">
+                <div class="offset-lg-1 col-md-12 col-lg-10">
                     
                     <div class="card card-purple">
                         <div class="card-header">
@@ -149,7 +156,10 @@
                                 <div>
                                     <label> Selected Image</label>
                                     {{-- position-relative --}}
-                                    <div id="image-preview" class="d-flex flex-wrap"> </div>
+                                    <div id="image-preview" 
+                                        {{-- class="d-flex flex-wrap" --}}
+                                        class="row"
+                                        > </div>
                                 </div>
 
                                 {{-- Operation Error Message --}}
@@ -319,20 +329,20 @@
                             }
 
                         inner_HTML += `
-                            <div class="col-md-3 img-block ${highlighter_selector}">
+                            <div class="col-6 col-md-4 col-lg-3 img-block ${highlighter_selector}">
                                 <div class="card card bg-dark text-white" style="" data-img_id="${image_id}">
                                     <img src="${MyApp.PUBLIC_PATH}/${image_URL}" class="card-img-top" />
 
                                     <div class="card-body">
-                                        <button type="button" class="btn btn-danger delete-image" data-img_id="${image_id}" title="Delete Image">
+                                        <button type="button" class="btn btn-sm btn-danger delete-image" data-img_id="${image_id}" title="Delete Image">
                                             <span class="remove-img" data-img_id="${image_id}"> 
                                                 <i class="fas fa-trash-alt"></i>
                                             </span>
                                         </button>
                                         
-                                        <label class="btn btn-success radio-wrapper" title="Change Banner Image">
+                                        <label class="btn btn-sm btn-success radio-wrapper" title="Change Banner Image">
                                             <input type="radio" class="change_primary" name="select-image" id="" data-img_id="${image_id}" ${checked}>
-                                            Set Banner
+                                            Banner
                                         </label>
                                     </div>
                                 </div>
@@ -340,12 +350,17 @@
                         });
 
 
-                        FETCHED_IMAGE_SECTION.innerHTML = inner_HTML;
+                        FETCHED_IMAGE_SECTION.innerHTML = `
+                            <div class="offset-lg-1 col-md-12 col-lg-10">
+                                <div class="row">
+                                    ${inner_HTML}
+                                </div>
+                            </div>`;
                     }
 
                     else{
                         FETCHED_IMAGE_SECTION.innerHTML = `
-                            <div class="col-md-8 offset-md-2">
+                            <div class="offset-lg-1 col-md-12 col-lg-10">
                                 <h3 class="text-danger"> No Images added for this product.</h3>
                             </div>`;
                     }
@@ -705,26 +720,28 @@
                 
                 let div_ele = document.createElement('div');
                 div_ele.dataset.img_id = img_id;
-                div_ele.classList = "card mr-2 ";
+                div_ele.classList = "col-12 col-md-4";
 
                 div_ele.innerHTML = `
-                    <div class="card-body p-0" data-img_id="${img_id}">
-                        <div class="image-wrapper">
-                            <img 
-                                src="${IMG_URI}" 
-                                alt="Sample image" 
-                                class="selected-image"
-                                id="${img_id}"
-                            />
-                            
-                            <button type="button" class="remove-btn" data-img_id="${img_id}">
-                                <span class="remove-icon remove-img" data-img_id="${img_id}">&times;</span>
-                            </button>
-                            
-                            <label class="btn btn-success mb-0 radio-wrapper">
-                                <input type="radio" class="set_primary" name="select-image" id="" data-img_id="${img_id}">
-                                Set Primary
-                            </label>
+                    <div class="card">
+                        <div class="card-body p-0" data-img_id="${img_id}">
+                            <div class="image-wrapper">
+                                <img 
+                                    src="${IMG_URI}" 
+                                    alt="Sample image" 
+                                    class="selected-image"
+                                    id="${img_id}"
+                                />
+                                
+                                <button type="button" class="remove-btn" data-img_id="${img_id}">
+                                    <span class="remove-icon remove-img" data-img_id="${img_id}">&times;</span>
+                                </button>
+                                
+                                <label class="btn btn-success mb-0 radio-wrapper">
+                                    <input type="radio" class="set_primary" name="select-image" id="" data-img_id="${img_id}">
+                                    Set Primary
+                                </label>
+                            </div>
                         </div>
                     </div>`;
 

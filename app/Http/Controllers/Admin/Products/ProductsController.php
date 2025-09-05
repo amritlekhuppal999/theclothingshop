@@ -445,6 +445,15 @@ class ProductsController extends Controller
                         "reload" => false
                     ];
                 }
+                catch(\Throwable $th){
+                    // \Log::error('UNKNOWN ERROR', [$th->getMessage()]);
+                    return [
+                        "type" => "Failed",
+                        "message" => "An error occurred:".$th->getMessage(),
+                        "requested_action_performed" => false,
+                        "reload" => false
+                    ];
+                }
                 
             }
 

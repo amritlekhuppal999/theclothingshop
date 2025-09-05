@@ -37,8 +37,51 @@ class LoadOrders extends Component
 
 
     public function getOrderData(){
-        $orderData = Order::where('user_id', $this->userId);
+        
+
+        // we need 
+        //     order items
+        //         - product id, variant id using order id
+            
+        //     products
+        //         - product name, product slug, category_id
+
+        //     sub products
+        //         - id
+            
+        //     category
+        //         - category_id, cat name, cat slug
+            
+        //     attribute mapper
+        //         - attr value id, variant id, 
+            
+        //     attribute values
+        //         - value,
+        
+        // $orderData = Order::from('orders')->where('user_id', $this->userId);
+
+        $orderData = Order::from('orders')
+                            ->leftjoin('user_address as UADD', function($join){
+                                $join->on('orders.shipping_address_id', '=', 'UADD.id');
+                            })
+                            ->with(['orderItems'])
+                            // ->with(['orderItems' => fn($q) => $q->select('ORDER_ID', 'product_name')])
+
+                            ->select('orders.*', 
+                                     'UADD.name as recp_name', 'UADD.city', 'UADD.state', 'UADD.street_name', 'UADD.full_address'
+                                    )
+                            
+                            ->where('orders.user_id', $this->userId);
+
+
         \Log::info('Order Data', [$orderData->get()->toArray()]);
+        // \Log::info('User Id', [$this->userId]);
+        
+        
+        // \Log::info('SQL DEBUG', [
+        //     $orderData->toSql(),
+        //     $orderData->getBindings()
+        // ]);
         
         // $orderData = Order::get();
         // \Log::info('Order Data', [$orderData->toArray()]);

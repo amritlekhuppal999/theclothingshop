@@ -40,4 +40,30 @@ class Order extends Model
         'delivered_at'
     ];
 
+    
+    public function orderItems() {
+        return $this->hasMany(OrderItems::class, 'order_id', 'order_id')
+                // ->from('order_items as OI')
+                ->leftjoin('products as PROD', function($join){
+                    $join->on('PROD.id', '=', 'order_items.product_id');
+                })
+                ->leftjoin('product_images as PI', function($join){
+                    $join->on('PROD.id', '=', 'PI.product_id')->where('PI.prime_image', 1);
+                })
+                ->leftjoin('category as CAT', function($join){
+                    $join->on('CAT.id', '=', 'PROD.category_id');
+                })
+                ->select('order_items.order_id', 'order_items.product_id',
+                        'PROD.product_name', 'PROD.product_slug', 
+                        'PI.image_location',
+                        'CAT.category_name', 'CAT.category_slug'
+                    );
+    }
+
+
+    // public function orderItems() {
+    //     return $this->hasMany(OrderItems::class, 'order_id', 'order_id')
+    //             ->select('order_items.*');
+    // }
+
 }

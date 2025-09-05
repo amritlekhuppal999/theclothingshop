@@ -53,7 +53,8 @@
         $color_attribute = array_values(array_filter($color_attribute, fn($ele) => $ele !== NULL));
         $color_attribute = $color_attribute[0]; // since its from the same array
 
-        $product_image = $cartItems["product"]["primary_image"]["image_location"];
+        //$product_image = $cartItems["product"]["primary_image"]["image_location"];
+        $product_image = isset($cartItems["product"]["primary_image"]["image_location"]) ? $cartItems["product"]["primary_image"]["image_location"] : "";
 
         $size_list = getAttributeList("Size");
 

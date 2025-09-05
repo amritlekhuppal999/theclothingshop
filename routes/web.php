@@ -117,8 +117,10 @@ define('ADMIN_LTE', "XAdminLTE");
     // PROFILE END
 
     // ORDERS
-        Route::get('/orders', function () {
-            return view(FRONT_END.'/orders');
+        Route::middleware(['auth'])->group(function(){
+            Route::get('/orders', function () {
+                return view(FRONT_END.'/orders');
+            });
         });
     // ORDERS END
 

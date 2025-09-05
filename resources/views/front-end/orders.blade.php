@@ -213,17 +213,21 @@
                 </div>
 
                 <!-- ORDERS -->
-                <div class="col-md-12 col-lg-9">
+
+                <livewire:front.orders.load-orders />
+
+                {{-- <div class="col-md-12 col-lg-9">
 
                     @foreach($order_data_list as $orderRec)
                         
                         <x-front.orders.order-card :$orderRec />
-                        {{-- <livewire:front.product.load-products :categorySlug="$category_slug" /> --}}
-                        <livewire:front.orders.load-orders />
 
                     @endforeach
 
-                </div>
+                </div> --}}
+                
+                
+
             </div>
 
             {{-- Launch Filter BTN --}}
@@ -254,7 +258,15 @@
 @section('content-scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    
+
     <script>
+        // Initialize pop overs
+        MyApp.enablePopovers();
+        /*const popover = new bootstrap.Popover('.popover-dismiss', {
+            trigger: 'focus'
+        })*/
+
         const filterBTN = document.getElementById('filter-overlay-btn');
         const FILTER_SECTION_MAIN = document.getElementById('order-filter-section');
         

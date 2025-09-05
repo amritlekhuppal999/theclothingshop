@@ -290,6 +290,14 @@ if (!MyApp.initDone){
     // Limit String END
 
 
+    // Enables or initializes Bootstrap popovers
+        MyApp.enablePopovers = function(){
+            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+            
+        }
+    // Enables or initializes Bootstrap popovers END
+
     
     // Set it to false so we can customise toastr methods
         //toastr.options.escapeHtml = false;
