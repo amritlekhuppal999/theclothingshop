@@ -1,38 +1,85 @@
+# TheClothingShop
 
-# A project I built to learn Laravel.
-
-An ecommerce site inspired from my fav souled store.
+A ecommerce site/portal built on LARAVEL.
 
 ## See the live site here: [TheClothingShop](http://157.173.220.30/)
 
-## Basic Structure:
-- Front-end 
-- Back-end
+## Table of Contents
+- [System Requirement](##Requirements)
+- [Installation](##installation)
+- Project Structure
+- Demo Credentials
+- [Features](##features)
+- [License](##license)
 
-### Front End
-#### Whats working
-- Homepage
-- Category page
-- Products page
-- Wishlist
-- Cart
-- Checkout
-- Payment Gateway
-#### What's still under construction?
-- Orders -> Order Tracking -> Order update
-- Forgot Password
-- Remember Me
-- Search Operation across pages
+## Requirements
+- PHP >= 8.2
+- Composer
+- Laravel >= 10.x
+- MySQL/PostgreSQL/SQLite
+- Node.js & NPM/Yarn (if using Laravel Mix/Vite for frontend)
+- Apache (If you wish to run on apache instead of its own server)
 
-### Back End
-#### What's operational
-- Products -> add, update, images add, images update, manage
-- Variants -> add, update, manage
-- Category
-- Sub category
-- Attributes
 
-#### What's remaining?
-Well a lot of things still remain like email queing, order data, etc ect.
-I update it regularly.
+## Installation
 
+1. Clone the repo
+   Using SSH
+   ```bash
+   git clone git@github.com:amritlekhuppal999/theclothingshop.git
+   ```
+   OR Using HTTPS
+   ```
+   git clone https://github.com/amritlekhuppal999/theclothingshop.git
+   ```
+
+2. Navigate to project
+   ```bash
+   cd project-name
+   ```
+
+3. Install Dependencies
+   ```bash
+   composer install
+   npm install && npm run dev 
+   ```
+   
+4. copy `.env` file
+   ```bash
+   cp .env.example .env
+   ```
+   - Update the database and other required environmental variables in .env
+
+5. Generate application key
+   ```
+   php artisan key:generate
+   ```
+
+6. Run migrations
+   ```
+   php artisan migrate
+   ```
+   This will create the required tables using the migration files.
+
+7. Start Development Server
+   ```
+   php artisan serve
+   ```
+   Visit `localhost:8000` or `http://127.0.0.1:8000` on your browser
+
+
+## Project Structure
+```
+app/        # Core application code
+routes/     # API & web routes
+database/   # Migrations and seeders
+resources/  # Blade templates, JS, CSS
+public/     # Public assets
+```
+
+## Demo Credentials
+- Admin → admin@example.com / password
+- User → user@example.com / password
+>[!info] will update this soon.
+
+## Features
